@@ -9,17 +9,17 @@ Un sistema de Gestión de Emergencias, basado en el Algoritmo ESI para deducir e
 
 Profesores Encargados y Evaluadores:
 =========
-Yudith Cardinale
-# Carlos Figueira
-# Wilmer Pereira
+Yudith Cardinale,
+Carlos Figueira,
+Wilmer Pereira
 
 Medico Guia:
 =========
-# Cristian Gonzalez
+Cristian Gonzalez
 
 Programadores:
 =========
-# José Lezama
-# Katty Samaniego
-# Ma.Isabel Jilo
-# Ramiro Vergara
+José Lezama,
+Katty Samaniego,
+Ma.Isabel Jilo,
+Ramiro Vergara
