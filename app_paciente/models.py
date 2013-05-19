@@ -23,11 +23,11 @@ class Paciente(models.Model):
 class Antecedente(models.Model):
     nombre = models.CharField(max_length=64)
 
-class Pertinente(models.Model):
+class Pertenencia(models.Model):
     paciente    = models.ForeignKey(Paciente)
     antecedente = models.ForeignKey(Antecedente)
 
-class Comentario(models.Model):
-    pertinente  = models.ForeignKey(Pertinente)
-    informacion = models.CharField(max_length=256)
+class ComentarioPertenencia(models.Model):
+    pertenencia = models.ForeignKey(Pertenencia)
+    informacion = models.CharField(max_length=512)
 

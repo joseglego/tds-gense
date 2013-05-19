@@ -3,6 +3,20 @@ from app_paciente.models import *
 from app_usuario.models import * 
 
 # Create your models here.
+
+class AreaEmergencia(models.Model):
+    nombre = models.CharField(max_length=48)
+
+class AreaEgreso(models.Model):
+    nombre = models.CharField(max_length=48)
+
+class Cubiculo(models.Model):
+    nombre = models.CharField(max_length=48)
+    area   = models.ForeignKey(AreaEmergencia)
+
+class Destino(models.Model):
+    nombre = models.CharField(max_length=48)
+
 class Emergencia(models.Model):
     paciente         = models.ForeignKey(Paciente)
     responsable      = models.ForeignKey(Usuario,related_name="A cargo")
@@ -10,6 +24,9 @@ class Emergencia(models.Model):
     hora_ingreso     = models.DateTimeField()
     hora_ingresoReal = models.DateTimeField(auto_now_add=True)
     hora_egreso      = models.DateTimeField(blank=True,null=True)
+    hora_egresoReal  = models.DateTimeField(auto_now_add=True)
+    egreso           = models.ForeignKey(Usuario,related_name="De alta por",blank=True)
+    destino          = models.ForeignKey(Destino,blank=True)
     def __unicode__(self):
         return "%s - %s" % (self.id,self.paciente)
     def triage(self):
@@ -18,6 +35,16 @@ class Emergencia(models.Model):
         if triages:
             triage = triages[0].nivel
         return triage
+
+class ComentarioEmergencia(models.Model):
+    emergencia = models.ForeignKey(Emergencia)
+    comentario = models.CharField(max_length=512)
+
+class Admision(models.Model):
+    emergencia       = models.ForeignKey(Emergencia)
+    area             = models.ForeignKey(AreaEgreso)
+    hora_ingreso     = models.DateTimeField()
+    hora_ingresoReal = models.DateTimeField(auto_now_add=True)    
 
 class Triage(models.Model):
     emergencia     = models.ForeignKey(Emergencia)
@@ -38,8 +65,9 @@ class Triage(models.Model):
     def __unicode___(self):
         return "Triaje %s" % self.id
 
-class Cuerpo(models.Model):
-    nombre = models.CharField(max_length=1)
+class ComentarioTriage(models.Model):
+    triage = models.ForeignKey(Triage)
+    comentario = models.CharField(max_length=512)
 
 class Atencion(models.Model):
     emergencia     = models.ForeignKey(Emergencia)
@@ -47,10 +75,30 @@ class Atencion(models.Model):
     fecha          = models.DateTimeField()
     fechaReal      = models.DateTimeField(auto_now_add=True)
     area_atencion  = models.CharField(max_length=1)
-    enfermedad     = models.CharField(max_length=256)
+    enfermedad     = models.CharField(max_length=256)   
 
-class Problema(models.Model):
-    atencion    = models.ForeignKey(Atencion)
-    cuerpo      = models.ForeignKey(Cuerpo)
-    descripcion = models.CharField(max_length=256)
+class ComentarioAtencion(models.Model):
+    atencion = models.ForeignKey(Atencion)
+    comentario = models.CharField(max_length=512)
+
+class CategoriaDeIndicacion(models.Model):
+    nombre = models.CharField(max_length=128)
+
+class Indicacion(models.Model):
+    nombre = models.CharField(max_length=128)
+    tipo   = models.CharField(max_length=1)
+
+class IndicacionEsp(models.Model):
+    indicacion = models.ForeignKey(Indicacion)
+    categoria  = models.ForeignKey(CategoriaDeIndicacion)
+
+class Asignar(models.Model):
+    emergencia = models.ForeignKey(Emergencia)
+    indicacion = models.ForeignKey(Indicacion)
+    persona    = models.ForeignKey(Usuario)
+    fecha      = models.DateTimeField()
+    fechaReal  = models.DateTimeField()
     
+class ComentarioAsignar(models.Model):
+    asignacion = models.ForeignKey(Asignar)
+    comentario = models.CharField(max_length=512)

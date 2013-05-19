@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/jlego/Dropbox/Estudio/TallerDesarrolloSoftware/proy/AM/BD/BD.sqlite3',                      # Or path to database file if using sqlite3.
+        'NAME': '/home/jlego/tds-gense/BD/BD.sqlite3',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -52,7 +52,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/jlego/Dropbox/Estudio/TallerDesarrolloSoftware/proy/AM/media/'
+MEDIA_ROOT = '/home/jlego/tds-gense/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -71,7 +71,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    '/home/jlego/Dropbox/Estudio/TallerDesarrolloSoftware/proy/AM/static/',
+    '/home/jlego/tds-gense/static/',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -111,7 +111,7 @@ ROOT_URLCONF = 'AM.urls'
 WSGI_APPLICATION = 'AM.wsgi.application'
 
 TEMPLATE_DIRS = (
-    "/home/jlego/Dropbox/Estudio/TallerDesarrolloSoftware/proy/AM/plantillas/",
+    "/home/jlego/tds-gense/plantillas/",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -127,6 +127,7 @@ INSTALLED_APPS = (
 
     # Aplicaciones de nuestro proyecto
     'app_emergencia',
+    'app_enfermedad',
     'app_paciente',
     'app_registro',
     'app_usuario',
