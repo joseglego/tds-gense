@@ -243,7 +243,7 @@ body {
 }
 
 .nivel1 {
-  background-color: #DE045C;
+  background-color: #FF0050;
 }
 
 .nivel2 {
@@ -259,7 +259,7 @@ body {
 }
 
 .nivel5 {
-  background-color: #00C1E8;
+  background-color: #0099FF;
 }
 
 input {
@@ -374,3 +374,39 @@ a:hover {
 }
 
 
+.tablaAgregar {
+	font-family: 'Raleway', sans-serif;
+
+}
+
+.solicitar{
+	font-family: 'Raleway', sans-serif;
+	color: #0099cc;	
+	font-weight: bold;
+	text-decoration: underline !important;
+}
+
+.reevaluar a{
+	font-family: 'Raleway', sans-serif;
+	color: black;
+}
+
+a.uno:hover {
+  color: #FF0050 !important;
+}
+
+a.dos:hover  {
+  color: #F7821B;
+}
+
+a.tres:hover {
+  color: #F2FF03;
+}
+
+a.cuatro:hover {
+  color: #41CC00;
+}
+
+a.cinco:hover {
+  color: #0099FF;
+}

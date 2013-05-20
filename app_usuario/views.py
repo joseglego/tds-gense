@@ -43,3 +43,34 @@ def sesion_cerrar(request):
     logout(request)
     return redirect('/')
 
+def usuario_solicitar(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = SolicitarCuenta(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            u_cedula           = pcd['cedula']
+            u_nombres          = pcd['nombres']
+            u_apellidos        = pcd['apellidos']
+            u_tipo		         = pcd['tipo']
+            u_sexo             = pcd['sexo']
+            u_cel              = pcd['cod_cel'] + pcd['num_cel']
+            u_direccion        = pcd['direccion']
+            u_tlf_casa         = pcd['cod_tlf_casa'] + pcd['num_tlf_casa']
+            u_email            = pcd['email']
+            u_clave            = pcd['clave']
+            u_clave0           = pcd['clave0']
+            prueba = Usuario.objects.filter(cedula=u_cedula)
+            if not prueba:
+                u = Usuario(cedula=u_cedula,nombres=u_nombres,apellidos=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,clave=u_clave,clave0=u_clave0)
+                u.save()
+                return redirect('/')
+            else:
+                mensaje = "Ya hay un usuario registrado con esa cedula"                
+        info = {'form':form,'mensaje':mensaje}
+        return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
+    form = SolicitarCuenta()
+    info = {'form':form}
+    return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
+
+

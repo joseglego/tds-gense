@@ -25,3 +25,5 @@ class AgregarPacienteForm(forms.Form):
     contacto_nombre  = forms.CharField(max_length=64)
     contacto_cod_tlf = forms.ChoiceField(choices=COD_TELEFONICOS)
     contacto_num_tlf = forms.CharField(max_length=11)
+
+

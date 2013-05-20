@@ -19,6 +19,7 @@ def emergencia_listar(request):
     info = {'lista':lista}
     return render_to_response('lista.html',info)
 
+@login_required(login_url='/')
 def emergencia_listarPacientes(request):    
     listaP = Emergencia.objects.all()
     info = {'listaP':listaP}

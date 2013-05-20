@@ -31,7 +31,7 @@
 	      <li><a href='/emergencia/listar'>Estados</a></li>
 	      <li><a href='/emergencia/listarPacientes'>Lista de Pacientes</a></li>
 				<li><a href='./'>Triage</a></li>
-	      <li><a href='./l'>Otros</a></li>		  
+	      <li><a href='./'>Otros</a></li>		  
 	    </ul>
       </div>
     </div>

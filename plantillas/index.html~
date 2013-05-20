@@ -42,29 +42,27 @@
 							</div>
 							<div class="usarioClave">
 								<form method="post" action="/">
-								{% csrf_token %}
-								<table>
-								<tr>
-										<td>Usuario</td>
-								</tr>
-								<tr>
-										<td>{{ form.unombre }}</td>
-								</tr>
-								<tr>
-										<td>Clave</td>
-								</tr>
-								<tr>
-										<td>{{ form.uclave }}</td>
-								</tr>
-								<tr>
-									<td>  
-										<input type="submit" class="button" value="Entrar" />
-										<input type="hidden" name="next" value="{{ next }}"/>
-									</td>
-								</tr>
-								</table>
-							</form>
-						</div>
+									{% csrf_token %}
+									<table>
+										<tr>
+    									<td>Usuario</td>
+   									 	<td>{{ form.unombre }}</td>
+										</tr>
+										<tr>
+											<td>Clave</td>
+											<td>{{ form.uclave }}</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td>  
+												<input type="submit" class="button" value="Entrar" />
+												<input type="hidden" name="next" value="{{ next }}" />
+												</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+							<a class="solicitar" href='./usuario/solicitar'>Solicitar Cuenta</a>
 					</div> 	  
 				</div>  
       </div>
