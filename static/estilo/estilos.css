@@ -60,7 +60,7 @@ body {
 }
 
 #navBar {
-  width: 400px;
+/*  width: 400px;*/
   margin: 0px auto 0px auto;  
 }
 
@@ -155,6 +155,13 @@ body {
 	text-align:left;
 }
 
+.tablaEstados a {
+	font-family: 'Raleway', sans-serif;
+	color: #0099cc;	
+	text-decoration: none;
+	font-weight: bold;
+}
+
 .tablaEstados th{
 	border-color: #007aa1;
 	color: white;
@@ -194,7 +201,7 @@ body {
 }
 
 #cabecera {
-  height: 190px !important;
+  height: 150px !important;
 }
 
 .campoCI {
@@ -256,7 +263,7 @@ body {
 }
 
 .nivel1 {
-  background-color: #DE045C;
+  background-color: #FF0000;
 }
 
 .nivel2 {
@@ -286,7 +293,6 @@ input {
 }
 
 .barraMenu {
-	float:left;
 	font-family: 'Raleway', sans-serif;
 	padding: 10px;
 	color: #3c3e4d;
@@ -296,12 +302,10 @@ input {
 	color: #3c3e4d;
 	margin-bottom: 10px;
 	text-decoration: none;
-	text-transform: uppercase;
 }
 
 .barraMenu ul {
 	font-size:20px;
-	text-transform:none;
 	margin:15px;
 	padding:5;
 	list-style:none;
@@ -359,4 +363,12 @@ a:hover {
 	color: #0099cc;
 	font-weight: bold;
 }
+
+.activa {
+	color: red;
+}
+
+
+
+
 

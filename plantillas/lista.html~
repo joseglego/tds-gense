@@ -5,34 +5,29 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  <div class="titulo">Estado del Paciente</div>
+  <div class="titulo">Lista de Pacientes</div>
   <table class="tablaEstados">
     <tr>
-      <th>Emergencia</th>
+      <th>Cédula de Identidad</th>
       <th>Nombre Paciente</th>
-      <th>Hora de Ingreso</th>
-      <th>Acciones Rapidas</th>
-      <th>Clasificaci&oacute;n</th>
+			<th>Estado Emergencia</th>
     </tr>
     {% for l in lista %}
       <tr>
-        <td>{{l.id}}</td>
+				<td><span class="nombreLista">{{l.paciente.cedula}}</span></td>
         <td><span class="nombreLista">{{l.paciente}}</span></td>
-        <td>{{l.hora_ingreso}}</td>
-        {% if l.triage != 0 %}
-          <td><a href="/emergencia/{{l.id}}/t1">Re Evaluar</a></td>
-          <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
+				{% if l.hora_egreso != null %}
+					<td class = "lista"> Emergencia Lista </td>
         {% else %}
-          <td>
-            <a href="/emergencia/{{l.id}}/t1">Pasar de Inmediato</a>
-            <a href="/emergencia/{{l.id}}/t2">Pasar ESI 2</a>
-          </td>
-          <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
-        {% endif %}
+          <td class = "activa"> Emergencia Activa </td>
 
+        {% endif %}
       </tr>
     {% endfor %}
   </table>
   </div>
 </div>
 {% endblock %}
+
+        
+        

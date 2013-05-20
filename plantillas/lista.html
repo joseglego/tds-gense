@@ -5,18 +5,19 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  <div class="titulo">Lista de Pacientes</div>
+  <div class="titulo">Estado del Paciente</div>
   <table class="tablaEstados">
     <tr>
       <th>Emergencia</th>
       <th>Nombre Paciente</th>
+      <th>Hora de Ingreso</th>
+      <th>Acciones Rapidas</th>
+      <th>Clasificaci&oacute;n</th>
     </tr>
     {% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
         <td><span class="nombreLista">{{l.paciente}}</span></td>
-<<<<<<< HEAD
-=======
         <td>{{l.hora_ingreso}}</td>
         {% if l.triage != 0 %}
           <td><a href="/emergencia/{{l.id}}/t1">Re Evaluar</a></td>
@@ -30,10 +31,11 @@
           <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
         {% endif %}
 
->>>>>>> fa4f189b0cd67e106e87f223512ff14f0b17302c
       </tr>
     {% endfor %}
   </table>
   </div>
 </div>
 {% endblock %}
+        
+        

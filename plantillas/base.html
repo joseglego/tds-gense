@@ -12,36 +12,28 @@
     <link rel="stylesheet" href="/static/estilo/droppy.css">
   </head>
   <body>
-    <div id ="cabecera">
-    	<div  class="contenedor">
-				    	<div  class="recuadro">
-				<div class="imagenLogo">		
-					<h1>
-					<a id="logo" href="/"><img src="/static/img/cabecera.png"></a>
-					</h1>
-				</div>
-				<div class="barraMenu">	
-				<ul class='navBar'>
-				  <li class="inicio"><a href='/'>Inicio</a></li>
-				  <li class="ingreso"><a href='/emergencia/agregar'>Ingreso</a></li>
-				  <li class="listado"><a href='/emergencia/listar'>Listado</a></li>
+    <div  id="cabecera">
+			<div class="imagenLogo">		
+				<a id="logo" href="/"><img src="/static/img/cabecera.png"></a>
+			</div>
+			<div class="barraMenu">	
+				<ul id='navBar'>
+				  <li class="inicio"><a href='/'>INICIO</a></li>
+				  <li class="ingreso"><a href='/emergencia/agregar'>INGRESO</a></li>
+				  <li class="listado"><a href='/emergencia/listar'>LISTADO</a></li>
+				  <li class="otras"><a href='./'>OTRAS</a></li>
 				  <li class="pacientes">
-						<a href='./'>Pacientes</a>
-						<ul class='pacientesMenu'>
+						<a href='./'>PACIENTES</a>
+						<ul id='pacientesMenu'>
 							<li><a href='/'>Esperando por Clasificación</a></li>	  
 							<li><a href='/'>Esperando por Atención</a></li>
-							<li><a href='/'>En Atención</a></li>
+							<li><a href='/emergencia/listar'>En Atención</a></li>
 							<li><a href='/'>Buscar Pacientes</a></li>
-							<li><a href='/'>Lista Pacientes</a></li>
+							<li><a href='/emergencia/listarPacientes'>Lista Pacientes</a></li>
 						</ul>  
 				  </li>
-				  <li class="otras"><a href='./'>Otras</a>
-
-					</li>
 				</ul>  
-			</div>
-		</div>	
-</div>	
+			</div>		
 		</div>
     <div id="separacion">	
     </div>

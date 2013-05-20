@@ -8,13 +8,21 @@
   <div class="titulo">Lista de Pacientes</div>
   <table class="tablaEstados">
     <tr>
-      <th>Emergencia</th>
+      <th>Cédula de Identidad</th>
       <th>Nombre Paciente</th>
+			<th>Fecha Nacimiento</th>
+			<th>Estado Emergencia</th>
     </tr>
-    {% for l in lista %}
+    {% for l in listaP %}
       <tr>
-        <td>{{l.id}}</td>
+				<td><span class="nombreLista">{{l.paciente.cedula}}</span></td>
         <td><span class="nombreLista">{{l.paciente}}</span></td>
+				<td><span class="nombreLista">{{l.paciente.fecha_nacimiento}}</span></td>
+				{% if l.hora_egreso != null %}
+					<td> Emergencia Lista </td>
+        {% else %}
+          <td class = "activa"> Emergencia Activa </td>
+        {% endif %}
       </tr>
     {% endfor %}
   </table>
