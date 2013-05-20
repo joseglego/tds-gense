@@ -21,9 +21,9 @@
 				<td><span class="nombreLista">{{l.paciente.sexoR}}</span></td>
 				<td><span class="nombreLista">{{l.paciente.edad}}</span></td>
 				{% if l.hora_egreso != null %}
-					<td> Emergencia Lista </td>
+					<td> Atendida </td>
         {% else %}
-          <td class = "activa"> Emergencia Activa </td>
+          <td class = "activa"> Activa </td>
         {% endif %}
       </tr>
     {% endfor %}

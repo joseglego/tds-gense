@@ -6,7 +6,7 @@
 <div class="centrar">
   <div class="cuadroGrande">
   <div class="titulo">Agregar Paciente</div>
-<form method="post" action="/emergencia/agregar">
+<form class= "tablaAgregar" method="post" action="/emergencia/agregar">
   {% csrf_token %}
   <table>
     <tr>
@@ -55,7 +55,7 @@
     </tr>
     <tr>
       <td>Hora de Ingreso</td>
-      <td>{{form.ingreso}} <a href="#" onclick="buena()">Ahora</a></td>
+      <td class="ahora">{{form.ingreso}} <a href="#" onclick="buena()">Ahora</a></td>
     </tr>
     <tr>
       <td></td>

@@ -10,32 +10,30 @@
     <script type="text/javascript" src="/static/scripts/jquery.min.js"></script>   
     <script type="text/javascript" src="/static/scripts/script.js"></script>  
     <link rel="stylesheet" href="/static/estilo/droppy.css">
+    <script type="text/javascript" src="/static/scripts/jquery.droppy.js"></script>
+    <script type='text/javascript'>
+      $(function() {
+      $('#nav').droppy();
+      });
+    </script>
   </head>
   <body>
     <div  id="cabecera">
-			<div class="imagenLogo">		
-				<a id="logo" href="/"><img src="/static/img/cabecera.png"></a>
-			</div>
-			<div class="barraMenu">	
-				<ul id='navBar'>
-				  <li class="inicio"><a href='/'>INICIO</a></li>
-				  <li class="ingreso"><a href='/emergencia/agregar'>INGRESO</a></li>
-				  <li class="listado"><a href='/emergencia/listar'>LISTADO</a></li>
-				  <li class="otras"><a href='./'>OTRAS</a></li>
-				  <li class="pacientes">
-						<a href='./'>PACIENTES</a>
-						<ul id='pacientesMenu'>
-							<li><a href='/'>Esperando por Clasificación</a></li>	  
-							<li><a href='/'>Esperando por Atención</a></li>
-							<li><a href='/emergencia/listar'>En Atención</a></li>
-							<li><a href='/'>Buscar Pacientes</a></li>
-							<li><a href='/emergencia/listarPacientes'>Lista Pacientes</a></li>
-						</ul>  
-				  </li>
-				</ul>  
-			</div>		
-		</div>
-    <div id="separacion">	
+	  <div class="centrar">
+	    <a id="logo" href="/"><img src="/static/img/cabecera.png"></a>
+	  </div>	  
+	</div>
+   <div class="menu">
+	  <div id="navBar">
+	    <ul id='nav'>
+	      <li><a href='/'>Inicio</a></li>
+	      <li><a href='/emergencia/agregar'>Ingreso</a></li>
+	      <li><a href='/emergencia/listar'>Estados</a></li>
+	      <li><a href='/emergencia/listarPacientes'>Lista de Pacientes</a></li>
+				<li><a href='./'>Triage</a></li>
+	      <li><a href='./'>Otros</a></li>		  
+	    </ul>
+      </div>
     </div>
     <div id="cuerpo">	
       {% block cuerpo %}

@@ -19,19 +19,10 @@ body {
 	background-color:white;
 	padding: 10px 0px 0px 0px;
 }
-#sti {
-  position: relative;
-  top: 5px;
-}
 
-#usb {
-  position: relative;
-  top: 5px;
-  left: 580px;
-}
 
 #pie {
-	font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 12px;
   font-weight: bold;
   padding: 2px;
@@ -58,19 +49,17 @@ body {
 .menu {
   background-color:#0099cc;	
 }
-
 #navBar {
-/*  width: 400px;*/
+  width: 400px;
   margin: 0px auto 0px auto;  
 }
 
 #noticias{
   /*height: 300px;*/
 }
-
 .cuadro {
   /*background-image:url('./cuadro.png');*/
-	font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif;
   float: left;
   width: 248px;
   margin: 10px;
@@ -117,7 +106,7 @@ body {
 	background-color: #EEE;
 }
 .infoPrincipal {
-	font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif;
   float: left;
   width: 500px;
   margin: 5px 10px;
@@ -155,13 +144,6 @@ body {
 	text-align:left;
 }
 
-.tablaEstados a {
-	font-family: 'Raleway', sans-serif;
-	color: #0099cc;	
-	text-decoration: none;
-	font-weight: bold;
-}
-
 .tablaEstados th{
 	border-color: #007aa1;
 	color: white;
@@ -179,7 +161,7 @@ body {
 }
 
 .inicioSesion {
-	font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif;
   padding: 10px 20px;
 	font-weight: bold;
 	color: #0099cc;  
@@ -193,7 +175,6 @@ body {
 
 .cuadro.span3 a {
 	margin: 20px !important;
-	ffont-family: 'Raleway', sans-serif;
 }
 
 #noticias{
@@ -201,14 +182,14 @@ body {
 }
 
 #cabecera {
-  height: 150px !important;
+  height: 90px !important;
 }
 
 .campoCI {
 	margin: 30px;
 }
 
-.button {
+.boton {
 	border-top: 1px solid #96d1f8;
 	background: #65a9d7;
 	background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
@@ -226,8 +207,7 @@ body {
 	text-shadow: rgba(0,0,0,.4) 0 1px 0;
 	color: white;
 	font-size: 14px;
-	font-weight:bold;
-	font-family: 'Raleway', sans-serif;
+	font-family: font-family: 'Raleway', sans-serif;
 	text-decoration: none;
 	vertical-align: middle;
 	margin: 20px;
@@ -263,7 +243,7 @@ body {
 }
 
 .nivel1 {
-  background-color: #FF0000;
+  background-color: #DE045C;
 }
 
 .nivel2 {
@@ -285,6 +265,11 @@ body {
 input {
   padding:2px;
   margin:5px;
+}
+/*
+
+#cabecera {
+  height: 150px !important;
 }
 
 .menu {
@@ -311,11 +296,6 @@ input {
 	list-style:none;
 }
 
-a:hover {
-	font-weight:bold;
-	color: #0099CC;
-}
-
 #navBar li {
 	display: inline;
 }
@@ -323,6 +303,7 @@ a:hover {
 
 .imagenLogo {
 	float: left;	
+	margin-top: 20px;
 }
 
 #navBar {
@@ -333,7 +314,6 @@ a:hover {
 
 #pacientesMenu {
 	font-size:14px;
-	float:right;
 }
 
 
@@ -349,6 +329,9 @@ a:hover {
 	height: 5px;
   background-color:#EEE;	
 }
+
+
+*/
 
 .exito {
 	font-family: 'Raleway', sans-serif;
@@ -369,7 +352,25 @@ a:hover {
 	color: red;
 }
 
+.ahora a {
+	font-family: 'Raleway', sans-serif;
+	color: #0099cc;	
+	font-weight: bold;
+	text-decoration: none;
+}
 
 
+a:hover {
+	font-weight:bold;
+	color: blue;
+	text-decoration: underline;
+}
+
+.tablaEstados a{
+	font-family: 'Raleway', sans-serif;
+	color: #0099cc;	
+	font-weight: bold;
+	text-decoration: none;
+}
 
 

@@ -10,14 +10,16 @@
     <tr>
       <th>Cédula de Identidad</th>
       <th>Nombre Paciente</th>
-			<th>Fecha Nacimiento</th>
+			<th>Sexo</th>
+			<th>Edad</th>
 			<th>Estado Emergencia</th>
     </tr>
     {% for l in listaP %}
       <tr>
 				<td><span class="nombreLista">{{l.paciente.cedula}}</span></td>
         <td><span class="nombreLista">{{l.paciente}}</span></td>
-				<td><span class="nombreLista">{{l.paciente.fecha_nacimiento}}</span></td>
+				<td><span class="nombreLista">{{l.paciente.sexoR}}</span></td>
+				<td><span class="nombreLista">{{l.paciente.edad}}</span></td>
 				{% if l.hora_egreso != null %}
 					<td> Emergencia Lista </td>
         {% else %}
