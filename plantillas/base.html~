@@ -14,12 +14,9 @@
   <body>
     <div id ="cabecera">
     	<div  class="contenedor">
-				    	<div  class="recuadro">
 				<div class="imagenLogo">		
-					<h1>
 					<a id="logo" href="/"><img src="/static/img/cabecera.png"></a>
-					</h1>
-				</div>
+				
 				<div class="barraMenu">	
 				<ul class='navBar'>
 				  <li class="inicio"><a href='/'>Inicio</a></li>
@@ -40,8 +37,8 @@
 					</li>
 				</ul>  
 			</div>
-		</div>	
-</div>	
+</div>
+		</div>		
 		</div>
     <div id="separacion">	
     </div>

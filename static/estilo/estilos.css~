@@ -67,7 +67,6 @@ body {
 #noticias{
   /*height: 300px;*/
 }
-
 .cuadro {
   /*background-image:url('./cuadro.png');*/
 	font-family: 'Raleway', sans-serif;
