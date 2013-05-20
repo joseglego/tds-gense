@@ -57,12 +57,9 @@ def emergencia_agregar(request):
     return render_to_response('agregarPaciente.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def emergencia_aplicarTriaje(request,idE,vTriage):
+def emergencia_aplicarTriage(request,idE,vTriage):
     emergencia = get_object_or_404(Emergencia,id=idE)
     medico = Usuario.objects.get(username=request.user)
-    print "Medico es:"+str(medico.tipo)
-    print "Emergencia es:"+str(idE)
-    print "Triage es"+str(vTriage)
     if ((medico.tipo == "1") or (medico.tipo == "2")):
         print "Entre"
         fechaReal  = datetime.now()
@@ -72,3 +69,11 @@ def emergencia_aplicarTriaje(request,idE,vTriage):
             t.save()
             return redirect("/emergencia/listar")
     return redirect("/")
+
+#@login_required(login_url='/')
+#def emergencia_calcularTriage(request,idE):
+#    mensaje = ""
+#    if request.method == 'POST':
+#        emergencia = get_object_or_404(Emergencia,id=idE)
+#        medico = Usuario.objects.get(username=request.user)
+        

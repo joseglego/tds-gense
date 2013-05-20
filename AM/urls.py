@@ -13,7 +13,8 @@ urlpatterns = patterns('',
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
     url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
-    url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriaje'),
+    url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
+#    url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),        
                        
     ## COSAS DJANGISTICAS
     # Admin
