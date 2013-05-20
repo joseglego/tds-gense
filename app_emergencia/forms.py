@@ -27,4 +27,9 @@ class AgregarEmergenciaForm(forms.Form):
     contacto_num_tlf = forms.CharField(max_length=11)
     ingreso          = forms.DateTimeField()
     
+class calcularTriage(forms.Form):
+    temperatura     = forms.FloatField()
+    freCardiaca     = forms.FloatField()
+    freRespiratoria = forms.IntegerField()
+    tensionArterial = forms.IntegerField()
     

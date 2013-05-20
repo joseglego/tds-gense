@@ -24,8 +24,9 @@
           <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1">Pasar de Inmediato</a>
-            <a href="/emergencia/{{l.id}}/t2">Pasar ESI 2</a>
+            <a href="/emergencia/{{l.id}}/t1">ESI 1</a>
+            <a href="/emergencia/{{l.id}}/t2">ESI 2</a>
+            <a href="/emergencia/{{l.id}}/triage/calcular">ESI 2</a>
           </td>
           <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
         {% endif %}

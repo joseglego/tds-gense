@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 SEXO = (
     ('1','Hombre'),
     ('2','Mujer'),
@@ -19,6 +21,8 @@ class Paciente(models.Model):
     contacto_tlf     = models.CharField(max_length=11)
     def __unicode__(self):
         return "%s %s" % (self.apellidos,self.nombres)
+    def edad(self):
+        return time.now().year - self.fecha_nacimiento.year
 
 class Antecedente(models.Model):
     nombre = models.CharField(max_length=64)

@@ -24,9 +24,9 @@ class Emergencia(models.Model):
     hora_ingreso     = models.DateTimeField()
     hora_ingresoReal = models.DateTimeField(auto_now_add=True)
     hora_egreso      = models.DateTimeField(blank=True,null=True)
-    hora_egresoReal  = models.DateTimeField(auto_now_add=True)
-    egreso           = models.ForeignKey(Usuario,related_name="De alta por",blank=True)
-    destino          = models.ForeignKey(Destino,blank=True)
+    hora_egresoReal  = models.DateTimeField(blank=True,null=True)
+    egreso           = models.ForeignKey(Usuario,related_name="De alta por",blank=True,null=True)
+    destino          = models.ForeignKey(Destino,blank=True,null=True)
     def __unicode__(self):
         return "%s - %s" % (self.id,self.paciente)
     def triage(self):
