@@ -31,6 +31,14 @@ class Paciente(models.Model):
             if dia < 0:
                 edad = edad -1
         return edad
+    def meses(self):
+        meses = (timezone.datetime.now().year - self.fecha_nacimiento.year)*12
+        mes = timezone.datetime.now().month - self.fecha_nacimiento.month
+        dia = timezone.datetime.now().day - self.fecha_nacimiento.day
+        if dia < 0:
+            mes = - 1
+        meses = meses + mes        
+        return abs(meses)
 
     def sexoR(self):
         resp = "Hombre"
