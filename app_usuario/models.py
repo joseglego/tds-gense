@@ -20,5 +20,3 @@ class Usuario(User):
     tlf_cel     = models.CharField(max_length=11)
     direccion   = models.CharField(max_length=128)
     tlf_casa    = models.CharField(max_length=11)
-    activo      = models.BooleanField()
-

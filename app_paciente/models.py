@@ -22,7 +22,12 @@ class Paciente(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.apellidos,self.nombres)
     def edad(self):
-        return time.now().year - self.fecha_nacimiento.year
+        return timezone.datetime.now().year - self.fecha_nacimiento.year
+    def sexoR(self):
+        resp = "Hombre"
+        if (self.sexo == '2'):
+            resp = "Mujer"
+        return resp
 
 class Antecedente(models.Model):
     nombre = models.CharField(max_length=64)
