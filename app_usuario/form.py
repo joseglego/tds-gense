@@ -27,8 +27,9 @@ class SolicitarCuenta(forms.Form):
     num_casa  = forms.CharField(max_length=7)
     email     = forms.emailField()
     clave     = forms.CharField(widget=forms.PasswordInput())
-    claveV    = forms.CharField(widget=forms.PasswordInput())
+    claveO    = forms.CharField(widget=forms.PasswordInput())
 
-    
-
-
+class cambioClave(forms.Form):
+    claveV = forms.CharField(widget=forms.PasswordInput())
+    clave  = forms.CharField(widget=forms.PasswordInput())
+    claveO = forms.CharField(widget=forms.PasswordInput())

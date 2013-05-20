@@ -22,7 +22,24 @@ class Paciente(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.apellidos,self.nombres)
     def edad(self):
-        return timezone.datetime.now().year - self.fecha_nacimiento.year
+        edad = timezone.datetime.now().year - self.fecha_nacimiento.year
+        mes = timezone.datetime.now().month - self.fecha_nacimiento.month
+        if mes < 0:
+            edad = edad -1
+        elif mes == 0:
+            dia = timezone.datetime.now().day - self.fecha_nacimiento.day
+            if dia < 0:
+                edad = edad -1
+        return edad
+    def meses(self):
+        meses = (timezone.datetime.now().year - self.fecha_nacimiento.year)*12
+        mes = timezone.datetime.now().month - self.fecha_nacimiento.month
+        dia = timezone.datetime.now().day - self.fecha_nacimiento.day
+        if dia < 0:
+            mes = - 1
+        meses = meses + mes        
+        return abs(meses)
+
     def sexoR(self):
         resp = "Hombre"
         if (self.sexo == '2'):
