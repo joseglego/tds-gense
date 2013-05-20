@@ -1,4 +1,10 @@
 *.log
 *.pot
 *.pyc
+*~
+#*#
+./AM/settings.py
+./BD/BD.sqlite3
 local_settings.py
+*#
+.#*
