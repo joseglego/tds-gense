@@ -103,7 +103,7 @@ body {
 	background-repeat:no-repeat;
 }
 .cuadroGrande .cuerpo {
-	background-color: #EEE;
+	background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 }
 .infoPrincipal {
   font-family: 'Raleway', sans-serif;
@@ -135,7 +135,7 @@ body {
 .tablaEstados {
 	font-family: 'Raleway', sans-serif;
 	border-color: #0099cc;
-	background-color: #FFFFFF;
+	background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 	width: 95%; 
 	margin: 5px;
 	border: 1px solid #0099cc;
@@ -148,7 +148,6 @@ body {
 	border-color: #007aa1;
 	color: white;
 	background-color: #0099cc;
-	margin: 5px;
 	padding:3px 7px 2px 7px;
 }
 
@@ -160,17 +159,10 @@ body {
   position: relative;
 }
 
-.inicioSesion {
-  font-family: 'Raleway', sans-serif;
-  padding: 10px 20px;
-	font-weight: bold;
-	color: #0099cc;  
-  text-align:center;
-}
-
 .cuadro.span3  {
-	border: 2px solid #0099cc;
-  background-color: #EEE;
+	border: 2px solid #ddd;
+  background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
+	border-radius: 6px;
 }
 
 .cuadro.span3 a {
@@ -190,37 +182,37 @@ body {
 }
 
 .boton {
-	border-top: 1px solid #96d1f8;
-	background: #65a9d7;
-	background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
-	background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
-	background: -moz-linear-gradient(top, #3e779d, #65a9d7);
-	background: -ms-linear-gradient(top, #3e779d, #65a9d7);
-	background: -o-linear-gradient(top, #3e779d, #65a9d7);
-	padding: 5px 10px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	-webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-	-moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-	box-shadow: rgba(0,0,0,1) 0 1px 0;
-	text-shadow: rgba(0,0,0,.4) 0 1px 0;
-	color: white;
-	font-size: 14px;
-	font-family: font-family: 'Raleway', sans-serif;
-	text-decoration: none;
-	vertical-align: middle;
-	margin: 20px;
-}
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 7px 14px;
+   -webkit-border-radius: 28px;
+   -moz-border-radius: 28px;
+   border-radius: 28px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: 'Raleway',sans-serif;
+   text-decoration: none;
+   vertical-align: middle;
+	 font-weight: bold;	
+   }
 .boton:hover {
-	border-top-color: #28597a;
-	background: #28597a;
-	color: #ccc;
-}
+   border-top-color: #28597a;
+   background: #28597a;
+   color: #ccc;
+   }
 .boton:active {
-	border-top-color: #1b435e;
-	background: #1b435e;
-}
+   border-top-color: #1b435e;
+   background: #1b435e;
+   }
 	 
 .cedula {
 	font-weight: bold;
@@ -336,16 +328,17 @@ input {
 .exito {
 	font-family: 'Raleway', sans-serif;
 	padding: 20px;
-  background-color:#EEE;	
+  background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 }
 
 
 .exito a{
-  background-color:#EEE;	
 	font-family: 'Raleway', sans-serif;
-	text-decoration: none;
-	color: #0099cc;
-	font-weight: bold;
+	color: #848484;	
+	font-size: 16px;
+	font-weight: none;
+	text-shadow: 0 1px 0 rgba(255,255,255,.6);
+	text-decoration:none;
 }
 
 .activa {
@@ -354,9 +347,11 @@ input {
 
 .ahora a {
 	font-family: 'Raleway', sans-serif;
-	color: #0099cc;	
+	color: #848484;	
+	font-size: 17px;
 	font-weight: bold;
-	text-decoration: none;
+	text-decoration:none;
+	text-shadow: 0 2px 0 rgba(255,255,255,.6);
 }
 
 
@@ -376,14 +371,15 @@ a:hover {
 
 .tablaAgregar {
 	font-family: 'Raleway', sans-serif;
-
+	background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 }
 
 .solicitar{
 	font-family: 'Raleway', sans-serif;
-	color: #0099cc;	
-	font-weight: bold;
-	text-decoration: underline !important;
+	color: #848484;	
+	font-size: 12px;
+	font-weight: none;
+	text-shadow: 0 1px 0 rgba(255,255,255,.6);
 }
 
 .reevaluar a{
