@@ -5,64 +5,67 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  <div class="titulo">Agregar Paciente</div>
-<form method="post" action="/emergencia/agregar">
-  {% csrf_token %}
-  <table>
-    <tr>
-      <td>C&eacute;dula</td>
-      <td>{{form.cedula}}</td>
-    </tr>
-    <tr>
-      <td>Nombres</td>
-      <td>{{form.nombres}}</td>
-    </tr>
-    <tr>
-      <td>Apellidos</td>
-      <td>{{form.apellidos}}</td>
-    </tr>
-    <tr>
-      <td>Sexo</td>
-      <td>{{form.sexo}}</td>
-    </tr>
-    <tr>
-      <td>Fecha Nacimiento</td>
-      <td>{{form.fecha_nacimiento}}</td>
-    </tr>
-    <tr>
-      <td>N&uacute;mero de M&oacute;vil</td>
-      <td>{{form.cod_cel}}{{form.num_cel}}</td>
-    </tr>
-    <tr>
-      <td>Correo El&eacute;ctronico</td>
-      <td>{{form.email}}</td>
-    </tr>
-    <tr>
-      <td>Direcci&oacute;n de Residencia</td>
-      <td>{{form.direccion}}</td>
-    </tr>
-    <tr>
-      <td>N&uacute;mero de Residencia</td>
-      <td>{{form.cod_tlf_casa}}{{form.num_tlf_casa}}</td>
-    </tr>
-    <tr>
-      <td>Persona de Contacto</td>
-      <td>{{form.contacto_nombre}}</td>
-    </tr>
-    <tr>
-      <td>N&uacute;mero de Contacto</td>
-      <td>{{form.contacto_cod_tlf}}{{form.contacto_num_tlf}}</td>
-    </tr>
-    <tr>
-      <td>Hora de Ingreso</td>
-      <td>{{form.ingreso}} <a href="#" onclick="buena()">Ahora</a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Ingresar" /></td>
-    </tr>
-  </table>
-</form>
-  </div>
+		<center>
+			<div class="titulo">Agregar Paciente</div>
+				<form class= "tablaAgregar" method="post" action="/emergencia/agregar">
+				{% csrf_token %}
+					<table>
+						<tr>
+							<td>C&eacute;dula</td>
+							<td>{{form.cedula}}</td>
+						</tr>
+						<tr>
+							<td>Nombres</td>
+							<td>{{form.nombres}}</td>
+						</tr>
+						<tr>
+							<td>Apellidos</td>
+							<td>{{form.apellidos}}</td>
+						</tr>
+						<tr>
+							<td>Sexo</td>
+							<td>{{form.sexo}}</td>
+						</tr>
+						<tr>
+							<td>Fecha Nacimiento</td>
+							<td>{{form.fecha_nacimiento}}</td>
+						</tr>
+						<tr>
+							<td>N&uacute;mero de M&oacute;vil</td>
+							<td>{{form.cod_cel}}{{form.num_cel}}</td>
+						</tr>
+						<tr>
+							<td>Correo El&eacute;ctronico</td>
+							<td>{{form.email}}</td>
+						</tr>
+						<tr>
+							<td>Direcci&oacute;n de Residencia</td>
+							<td>{{form.direccion}}</td>
+						</tr>
+						<tr>
+							<td>N&uacute;mero de Residencia</td>
+							<td>{{form.cod_tlf_casa}}{{form.num_tlf_casa}}</td>
+						</tr>
+						<tr>
+							<td>Persona de Contacto</td>
+							<td>{{form.contacto_nombre}}</td>
+						</tr>
+						<tr>
+							<td>N&uacute;mero de Contacto</td>
+							<td>{{form.contacto_cod_tlf}}{{form.contacto_num_tlf}}</td>
+						</tr>
+						<tr>
+							<td>Hora de Ingreso</td>
+							<td class="ahora">{{form.ingreso}} <a href="#" onclick="buena()">Ahora</a></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="button-blue" type="submit" value="Ingresar" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</center>
+	</div>
 </div>
 {% endblock %}

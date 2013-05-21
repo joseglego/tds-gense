@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
+<div class="centrar">
+  <div class="cuadroGrande">
+  <div class="titulo">Lista de Pacientes</div>
+  <table class="tablaEstados">
+    <tr>
+      <th>Cédula de Identidad</th>
+      <th>Nombre Paciente</th>
+			<th>Sexo</th>
+			<th>Edad</th>
+			<th>Estado Emergencia</th>
+    </tr>
+    {% for l in listaP %}
+      <tr>
+				<td><span class="nombreLista">{{l.paciente.cedula}}</span></td>
+        <td><span class="nombreLista">{{l.paciente}}</span></td>
+				<td><span class="nombreLista">{{l.paciente.sexoR}}</span></td>
+				<td><span class="nombreLista">{{l.paciente.edad}}</span></td>
+				{% if l.hora_egreso != null %}
+					<td> Atendida </td>
+        {% else %}
+          <td class = "activa"> Activa </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+{% endblock %}

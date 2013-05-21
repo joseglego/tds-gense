@@ -6,6 +6,7 @@
 	  	<center>			
 		  	<div class="exito">					
 	 				<p>Ud ya inició sesión como {{ usuario }}.</p>
+					<p></p>
 					<p>Si desea puede <a href="/sesion/cerrar">Cerrar Sesión</a></p>
 				</div>	
 			</center>				

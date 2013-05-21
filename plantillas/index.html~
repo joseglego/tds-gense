@@ -52,7 +52,7 @@
 						<tr>
 							<td></td>
 							<td>  
-								<input class="button-blue" type="submit" class="button" value="Iniciar Sesión" />
+								<input class="freshbutton-blue" type="submit" class="button" value="Iniciar Sesión" />
 								<input type="hidden" name="next" value="{{ next }}" />
 							</td>
 						</tr>

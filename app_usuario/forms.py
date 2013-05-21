@@ -1,6 +1,30 @@
 from django import forms
 from models import *
 
+COD_TELEFONICOS = (
+  ('0212','0212'),
+  ('0412','0412'),
+  ('0414','0414'),
+  ('0424','0424'),
+  ('0416','0416'),
+  ('0426','0426'),
+  )
+
 class IniciarSesionForm(forms.Form):
-    unombre = forms.CharField(max_length=64)
+    unombre  = forms.CharField(max_length=64)
     uclave   = forms.CharField(max_length=32,widget=forms.PasswordInput())
+
+class SolicitarCuenta(forms.Form):
+    cedula    = forms.IntegerField()
+    nombres   = forms.CharField()
+    apellidos = forms.CharField()
+    tipo      = forms.ChoiceField(choices=USUARIO)
+    sexo      = forms.ChoiceField(choices=SEXO)
+    cod_cel   = forms.ChoiceField(choices=COD_TELEFONICOS)
+    num_cel   = forms.CharField(max_length=7)
+    direccion = forms.CharField(max_length=128)
+    cod_casa  = forms.ChoiceField(choices=COD_TELEFONICOS)
+    num_casa  = forms.CharField(max_length=7)
+    email     = forms.EmailField(max_length=64)
+    clave     = forms.CharField(widget=forms.PasswordInput())
+    clave0    = forms.CharField(widget=forms.PasswordInput())
