@@ -18,7 +18,7 @@
     {% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
-        <td><span class="nombreLista">{{l.paciente}}</span></td>
+		<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.hora_ingreso}}</td>
         {% if l.triage != 0 %}
           <td><a href="/emergencia/{{l.id}}/t1">Re-Evaluar</a></td>
