@@ -21,11 +21,11 @@
         <td><span class="nombreLista">{{l.paciente}}</span></td>
         <td>{{l.hora_ingreso}}</td>
         {% if l.triage != 0 %}
-          <td><a href="/emergencia/{{l.id}}/t1">Re Evaluar</a></td>
+          <td><a href="/emergencia/{{l.id}}/t1">Re-Evaluar</a></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1">ESI 1</a>
-            <a href="/emergencia/{{l.id}}/t2">ESI 2</a>
+            <a href="/emergencia/{{l.id}}/t1">ESI1</a>
+            <a href="/emergencia/{{l.id}}/t2">ESI2</a>
             <a href="/emergencia/{{l.id}}/triage/calcular">Triage</a>
           </td>
         {% endif %}

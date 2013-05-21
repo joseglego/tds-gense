@@ -21,15 +21,12 @@
         <td><span class="nombreLista">{{l.paciente}}</span></td>
         <td>{{l.hora_ingreso}}</td>
         {% if l.triage != 0 %}
-          <td>
-						<a href="/emergencia/{{l.id}}/t1"><img src="/static/img/rojo.png" /></a>
-            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/naranja.png" /></a>
-					</td>
+          <td><a href="/emergencia/{{l.id}}/t1">Re Evaluar</a></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/rojo.png" /></a>
-            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/naranja.png" /></a>
-            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/triaje.png" /></a>
+            <a href="/emergencia/{{l.id}}/t1">ESI 1</a>
+            <a href="/emergencia/{{l.id}}/t2">ESI 2</a>
+            <a href="/emergencia/{{l.id}}/triage/calcular">Triage</a>
           </td>
         {% endif %}
           <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
