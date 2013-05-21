@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url('^$','app_usuario.views.sesion_iniciar'),
     url('^sesion/cerrar$','app_usuario.views.sesion_cerrar'),
     url('^usuario/solicitar$','app_usuario.views.usuario_solicitar'),
+	url(r'^',include('app_atencion.urls')),
 
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
