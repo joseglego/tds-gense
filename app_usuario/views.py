@@ -1,5 +1,5 @@
 # Manejo de Sesion
-from django.contrib.auth import authenticate, login, logout
+2from django.contrib.auth import authenticate, login, logout
 
 # Formularios
 from django.core.context_processors import csrf
@@ -42,4 +42,3 @@ def sesion_iniciar(request):
 def sesion_cerrar(request):
     logout(request)
     return redirect('/')
-
