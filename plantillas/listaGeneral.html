@@ -16,10 +16,10 @@
     </tr>
     {% for l in listaP %}
       <tr>
-				<td><span class="nombreLista">{{l.paciente.cedula}}</span></td>
-        <td><span class="nombreLista">{{l.paciente}}</span></td>
-				<td><span class="nombreLista">{{l.paciente.sexoR}}</span></td>
-				<td><span class="nombreLista">{{l.paciente.edad}}</span></td>
+				<td><span class="nombreLista">{{l.cedula}}</span></td>
+        <td><span class="nombreLista">{{l}}</span></td>
+				<td><span class="nombreLista">{{l.sexoR}}</span></td>
+				<td><span class="nombreLista">{{l.edad}}</span></td>
 				{% if l.hora_egreso != null %}
 					<td> Atendida </td>
         {% else %}
