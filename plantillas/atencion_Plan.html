@@ -1,0 +1,79 @@
+
+{% extends "atencion.html" %}
+  {% block cambia %}
+  <script>
+      $(document).ready(function() {
+          /*$('#ImageMap1').maphilight();*/
+          var logoHeight = $('#cuerpito #ImageMap1').height();
+          //alert("Hola"+logoHeight);
+          if (logoHeight < 73%) {
+            var margintop = (73% - logoHeight) / 2;
+            $('#cuerpito #ImageMap1').css('margin-top', margintop);
+          }
+          $('#ImageMap1').maphilight({fillColor: '0000ff',strokeColor: '0000ff',fillOpacity: 0.4});
+          $('#q1, #q2, #q3, #q4,.colorAzul').click(function(e) {
+            e.preventDefault();
+            var data = $(this).mouseout().data('maphilight') || {};
+            data.alwaysOn = !data.alwaysOn;
+            $(this).data('maphilight', data).trigger('alwaysOn.maphilight');
+        });
+
+      });
+
+     
+    </script>
+    <div id="cuerpito">
+      <img id='ImageMap1' src="/static/img/cuerpoHombreNormal.png" usemap='#mapita'>
+  <map name="mapita">
+  <area class='colorAzul' shape="poly" title="piernaDer" coords="120,526,194,562,194,658,134,658,122,604,118,566,118,540" />
+  <area class='colorAzul' shape="poly" title="musloIzq" coords="196,562,276,528,272,572,266,612,262,642,256,658,200,660,196,596" />
+  <area class='colorAzul' shape="poly" title="piernaDer" coords="138,780,192,776,190,812,192,850,190,872,190,882,188,898,192,902,168,902,168,882,162,874,148,858,146,842,138,814,138,788" />
+  <area class='colorAzul' shape="poly" title="piernaIzq" coords="202,774,260,772,252,818,246,848,238,882,234,900,230,902,206,902,206,868,204,840,200,810,198,796,200,780" />
+  <area class='colorAzul' shape="poly" title="pieDer" coords="166,924,196,920,196,952,186,958,172,958,148,958,140,956,146,946,154,940,160,932" />
+  <area class='colorAzul' shape="poly" title="pieIzq" coords="200,916,200,932,202,950,204,964,222,960,236,960,260,954,246,944,238,932,240,926,238,928" />
+  <area class='colorAzul' shape="poly" title="rodillaDer" coords="146,688,168,692,194,696,196,710,192,738,188,754,176,758,160,760,152,756,142,752,146,736,152,712,148,702" />
+  <area class='colorAzul' shape="poly" title="rodillader" coords="204,694,230,686,246,696,254,734,246,752,224,758,212,752,204,744,198,720,202,700,198,700" />
+  <area class='colorAzul' shape="poly" title="genitales" coords="180,514,186,546,198,550,210,548,210,532,210,518,196,514" />
+  <area class='colorAzul' shape="poly" title="manoIzq" coords="360,510,326,512,324,542,328,572,338,596,350,606,358,608,370,602,368,568,368,552,370,548,382,556,390,556,386,546,380,532,368,520" />
+  <area class='colorAzul' shape="poly" title="brazoIzq" coords="270,384,314,362,328,394,332,434,348,486,352,494,320,498,280,432,272,410" />
+  <area class='colorAzul' shape="poly" title="anteBrazoIzq" coords="300,222,272,306,268,340,268,358,272,364,310,346,306,300,306,260,300,230" />
+  <area class='colorAzul' shape="poly" title="abdomen" coords="122,324,264,324,254,374,258,418,262,436,256,444,134,442,136,388,126,362" />
+  <area class='colorAzul' shape="poly" title="manoDer" coords="36,510,70,522,66,564,62,586,52,596,40,610,26,608,26,600,20,552,6,558,4,556,10,546,14,536,18,522,28,510" />
+  <area class='colorAzul' shape="poly" title="brazoDer" coords="76,360,118,380,112,424,92,464,78,496,72,504,44,488,66,390" />
+  <area class='colorAzul' shape="poly" title="antebrazoDer" coords="90,220,116,304,120,328,116,360,116,362,86,350,84,284,82,244" />
+  <area class='colorAzul' shape="poly" title="pecho" coords="150,186,110,198,92,210,100,224,100,236,102,250,108,266,112,284,120,296,122,300,132,304,136,304,172,310,264,306,274,290,290,258,292,226,292,216,294,210,296,208,272,198,256,190,240,184" />
+  <area class='colorAzul' shape="circle" coords="263,37,5" />
+  <area class='colorAzul' shape="circle" title="cabeza" coords="194,102,64" />
+</map>
+    </div>
+    <div id="info_cuerpito">
+      
+                <table id= tabMod>
+                      <tr>
+                      <th colspan=1 > SINTOMAS ASOCIADOS A <br> Cabeza</th>
+                    
+                      </tr>
+                      <td align='center'>  </td>
+
+                      
+                    </tr><tr>
+                      <td align='center'>  </td>
+
+                      
+                    </tr><tr>
+                      <td align='center'>  </td>
+
+                      
+                    </tr><tr>
+                      <td align='center'>  </td>
+
+                      
+                    </tr>
+    </table>
+    </div>
+    <div id="form_plan">
+      <!--h1> JEEEEEEEEEEEEEEEEE</h1-->
+    </div>
+
+  {% endblock %}
+        
