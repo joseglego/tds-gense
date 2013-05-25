@@ -44,3 +44,8 @@ def paciente_agregar(request):
     form = AgregarPacienteForm()
     info = {'form':form}
     return render_to_response('agregarPaciente.html',info,context_instance=RequestContext(request))
+
+#@login_required(login_url='/')
+#def paciente_buscar(request,ced):
+#    pacientes = Paciente.objects.filter(cedula__startswith=ced)
+    

@@ -1,5 +1,6 @@
 # Manejo de Sesion
-2from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Formularios
 from django.core.context_processors import csrf
@@ -12,6 +13,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Manejo de Informacion de esta aplicacion
 from forms import *
 from models import *
+
+# Envio de Correos
+from django.core.mail import EmailMessage
 
 # Create your views here.
 def sesion_iniciar(request):
@@ -39,11 +43,10 @@ def sesion_iniciar(request):
     info = {'form':form}
     return render_to_response('index.html',info,context_instance=RequestContext(request))
 
+
 def sesion_cerrar(request):
     logout(request)
     return redirect('/')
-<<<<<<< HEAD
-=======
 
 def usuario_solicitar(request):
     mensaje = ""
@@ -75,5 +78,60 @@ def usuario_solicitar(request):
     info = {'form':form}
     return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
 
+@login_required(login_url='/')
+def clave_cambiar(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = cambioClave(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            f_claveV          = pcd['claveV']
+            f_clave           = pcd['clave']
+            f_claveO          = pcd['claveO']
+            usuario           = Usuario.objects.get(username=request.user)
+            if usuario.check_password(f_claveV):
+                if (f_clave == f_claveO):
+                    usuario.set_password(f_clave)
+                    usuario.save()
+                    mensaje = "Clave cambiada"
+                    form = cambioClave()
+                    info = {'form':form,'mensaje':mensaje}
+                    return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))                    
+                else:
+                    mensaje = "Las dos claves son distintas"
+            else:
+                mensaje = "La clave vieja no es correcta"
+        else:
+            mensaje = "Error con el formulario"
+        info = {'form':form,'mensaje':mensaje}
+        return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))
+    form = cambioClave()
+    info = {'form':form,'mensaje':mensaje}
+    return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))
 
->>>>>>> f7af8710fe162777fe88d229114ca18cd7bc76f6
+def clave_restablecer(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = restablecerClave(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            f_correo = pcd['correo']
+            usuario = Usuario.objects.filter(email=f_correo)
+            if len(usuario) == 0 :
+                mensaje = "Correo Invalido"
+            else:
+                usuario = usuario[0]
+                clave = User.objects.make_random_password()
+                email = EmailMessage('[GenSE] Admin - Cambio de Clave','Estimado '+usuario.first_name+' '+usuario.last_name+'\n\nSe recibio una solicitud de cambiar su clave, la nueva clave es: '+clave+'\n\nSaludos\nAdministrador del Sistema', to=[f_correo]) 
+                email.send()
+                usuario.set_password(clave)
+                usuario.save()
+                mensaje = "Su nueva clave fue enviada al correo suministrado"
+                form = restablecerClave()
+                info = {'form':form,'mensaje':mensaje}
+                return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
+        else:
+            mensaje = "Error con el formulario"
+    form = restablecerClave()
+    info = {'form':form,'mensaje':mensaje}
+    return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))

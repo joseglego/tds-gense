@@ -52,7 +52,7 @@
 						<tr>
 							<td></td>
 							<td>  
-								<input class="freshbutton-blue" type="submit" class="button" value="Iniciar Sesión" />
+								<input class="button-blue" type="submit" class="button" value="Iniciar Sesión" />
 								<input type="hidden" name="next" value="{{ next }}" />
 							</td>
 						</tr>
@@ -62,7 +62,7 @@
 			<table>
 						<tr>
 				<th><a class="solicitar" href='./usuario/solicitar'>Solicitar Cuenta</a></th>
-				<th><a class="solicitar" href='./usuario/solicitar'>Olvidó Contraseña</a></th>
+				<th><a class="solicitar" href='./usuario/restablecer'>Olvidó Contraseña</a></th>
 						</tr>
 			</table>
 		</div>

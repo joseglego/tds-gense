@@ -10,13 +10,16 @@ urlpatterns = patterns('',
     url('^$','app_usuario.views.sesion_iniciar'),
     url('^sesion/cerrar$','app_usuario.views.sesion_cerrar'),
     url('^usuario/solicitar$','app_usuario.views.usuario_solicitar'),
+    url('^usuario/clave$','app_usuario.views.clave_cambiar'),
+    url('^usuario/restablecer$','app_usuario.views.clave_restablecer'),
+                      
 
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
     url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
     url('^emergencia/listarPacientes$','app_emergencia.views.emergencia_listarPacientes'),
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
-#    url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),        
+    url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),        
                        
     ## COSAS DJANGISTICAS
     # Admin
