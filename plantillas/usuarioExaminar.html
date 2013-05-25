@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
+<div class="centrar">
+  <div class="cuadroGrande">
+  	<div class="titulo">Examinar Usuario</div>
+		<table class="tablaEstados">
+			  <tr>
+					<th><span class="nombreLista">{{l.cedula}}</span></td>
+			    <th><span class="nombreLista">{{l}}</span></td>
+					<th><span class="nombreLista">{{l.sexoR}}</span></td>
+					<th><span class="nombreLista">{{l.tipoR}}</span></td>
+			  </tr>
+		</table>
+  </div>
+</div>
+{% endblock %}

@@ -8,38 +8,32 @@
   <div class="titulo">Estado de Pacientes en Área de Emergencia</div>
   <table class="tablaEstados">
     <tr>
-      <th>Número</th>
+      <th>N&uacute;mero</th>
       <th>Nombre</th>
       <th>Hora de Ingreso</th>
-      <th>Acciones Rapidas</th>
+      <th>Acciones R&aacute;pidas</th>
       <th>Clasificaci&oacute;n</th>
       <th>Alarma</th>
     </tr>
   	{% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
-		<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
+				<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.hora_ingreso}}</td>
         {% if l.triage != 0 %}
-          <td><a href="/emergencia/{{l.id}}/t1">Re-evaluar</a></td>
+          <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/triage.png" /></a></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/ESI2.png" /></a>
-            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/ESI2.png" /></a>
-            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/triage.png" /></a>
+            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/ESI1.png" title="Colocar en Nivel 1"/></a>
+            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/ESI2.png" title="Colocar en Nivel 2"/></a>
+            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/triage.png" title="Realizar Triage"/></a>
           </td>
         {% endif %}
-				{% if l.triage != 0 %}
-					<td><img src="/static/img/nivel{{ l.triage }}.png" /></td>
-				{% else %}
-					<td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>				
-				{% endif %}
+					<td>{% if l.triage != 0 %}<img src="/static/img/nivel{{ l.triage }}.png" />{% endif %}</td>
 					<td><img src="/static/img/alarmaVerde.png" /></td>
-      </tr>
+      </tr>	
     {% endfor %}
   </table>
   </div>
 </div>
 {% endblock %}
-        
-        

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
+<div class="centrar">
+  <div class="cuadroGrande">
+  	<div class="titulo">Lista de Solicitudes de Usuarios Pendientes</div>
+		<table class="tablaEstados">
+			<tr>
+			  <th>C&eacute;dula</th>
+			  <th>Nombre</th>
+				<th>Sexo</th>
+				<th>Tipo</th>
+				<th>Acciones</th>
+			</tr>
+			{% for l in listaP %}
+			  <tr>
+					<td><span class="nombreLista">{{l.cedula}}</span></td>
+			    <td><span class="nombreLista">{{l}}</span></td>
+					<td><span class="nombreLista">{{l.sexoR}}</span></td>
+					<td><span class="nombreLista">{{l.tipoR}}</span></td>
+					<td>
+						<a href="/usuario/pendientes" title="Autorizar"><img src="/static/img/aprobar.png"/></span>
+						<a href="/usuario/pendientes"><img src="/static/img/negar.png" title="Rechazar"/></span>
+						<a href="/usuario/pendientes"><img src="/static/img/lupa.png" title="Examinar"/></span>
+					</td>
+			  </tr>
+			{% endfor %}
+		</table>
+  </div>
+</div>
+{% endblock %}
