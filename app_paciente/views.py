@@ -38,12 +38,18 @@ def paciente_agregar(request):
                 p.save()
                 return redirect('/')
             else:
-                mensaje = "Ya hay un paciente registrado con esa cédula"                
+                mensaje = "Ya hay un paciente registrado con esa cedula"                
         info = {'form':form,'mensaje':mensaje}
         return render_to_response('agregarPaciente.html',info,context_instance=RequestContext(request))
     form = AgregarPacienteForm()
     info = {'form':form}
     return render_to_response('agregarPaciente.html',info,context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def paciente_listarPacientes(request):    
+    listaP = Paciente.objects.all()
+    info = {'listaP':listaP}
+    return render_to_response('listaGeneral.html',info)
 
 #@login_required(login_url='/')
 #def paciente_buscar(request,ced):

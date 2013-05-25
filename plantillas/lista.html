@@ -13,23 +13,27 @@
       <th>Hora de Ingreso</th>
       <th>Acciones Rapidas</th>
       <th>Clasificaci&oacute;n</th>
-      <th>Ejemplo</th>
+      <th>Alarma</th>
     </tr>
-    {% for l in lista %}
+  	{% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
-        <td><span class="nombreLista">{{l.paciente}}</span></td>
+	<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.horaR}}</td>
         {% if l.triage != 0 %}
-          <td><a href="/emergencia/{{l.id}}/t1">Re-Evaluar</a></td>
+          <td><a href="/emergencia/{{l.id}}/t1">Re-evaluar</a></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1">ESI1</a>
-            <a href="/emergencia/{{l.id}}/t2">ESI2</a>
-            <a href="/emergencia/{{l.id}}/triage/calcular">Triage</a>
+            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/ESI2.png" /></a>
+            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/ESI2.png" /></a>
+            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/triage.png" /></a>
           </td>
         {% endif %}
-          <td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>
+				{% if l.triage != 0 %}
+					<td><img src="/static/img/nivel{{ l.triage }}.png" /></td>
+				{% else %}
+					<td><div class="mostrarNivel nivel{{ l.triage }}"></div></td>				
+				{% endif %}
 					<td><img src="/static/img/alarmaVerde.png" /></td>
       </tr>
     {% endfor %}

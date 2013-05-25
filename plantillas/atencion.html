@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Atención Médica </title>
+    <!--HOJAS DE ESTILOS-->
+    <link rel="stylesheet" type="text/css" href="/static/estilo/estilos1.css" />
+    <link rel="stylesheet" type="text/css" href="/static/estilo/js-image-slider.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/estilo/droppy.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/estilo/menuDer.css" />
+    
+    <!--Javascript-->
+    <script type="text/javascript" src="/static/scripts/js-image-slider.js" ></script>
+    <script type="text/javascript" src="/static/scripts/jquery.min.js"></script>   
+    <script type="text/javascript" src="/static/scripts/script.js"></script>  
+    <script type="text/javascript" src ="/static/scripts/over_click.js" > </script>
+    <script type="text/javascript" src="/static/scripts/jquery.droppy.js"></script>
+    <!--script src ="/static/scripts/jquery.js"> </script-->
+    <script src ="/static/scripts/map-hover.js"> </script>
+    
+    <!--Scripts Iniciales-->
+      <!--Script Efecto menu nav-->
+    <script type='text/javascript'>
+      $(function() {
+      $('#nav').droppy();
+      });
+    </script>
+  </head>
+  
+  <body>
+    <div  id="cabecera">
+      
+    <a id="logo" href="/"><img src="/static/img/cabecera.png" style="height: 89%;"></a>
+    <div class="menu">
+    <div id="navBar">
+      <ul id='nav'>
+        <li><a href='/'>Inicio</a></li>
+        <li><a href='/emergencia/agregar'>Ingreso</a></li>
+        <!-- PAra probar mi vista atencion-->
+        <!--li><a href='/emergencia/listar'>Estados</a></li-->
+        <!--Funciona con atencion-->
+        <li><a href='/emergencia/listar'>Estados</a></li>
+        <li><a href='./triaje.html'>Triaje</a></li>
+
+        <li><a href='./informacion.html'>Acerca de</a></li>     
+      </ul>
+      </div>
+    </div>
+   
+  </div>
+   
+  <div id="cuerpo"> 
+    <div id="contenedorA">
+      <div id="contentV">    
+          <div id="cambia">
+            {% block cambia %}
+            {% endblock %}
+            <!--p>Matching mask shadow color blends to solid background.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p-->
+        
+          </div> 
+      </div>        
+      <div class="barraIzq">
+      <!--div id="sideLeft"-->
+        <section class="ac-container">
+            <div>
+              <input id="ac-1" name="accordion-1" type="radio" checked />
+              <label for="ac-1">Información Paciente</label>
+              <article class="ac-small">
+                <p>Nombre Paciente:</p>
+                <p>Nombre Responsable:</p>
+              </article>
+            </div>
+            <div>
+              <input id="ac-2" name="accordion-1" type="radio" />
+              <label for="ac-2">Motivo de Consulta</label>
+              <article class="ac-medium">
+                <p>Info Paciente! </p>
+              </article>
+            </div>
+            <div>
+              <input id="ac-3" name="accordion-1" type="radio" />
+              <label for="ac-3">Signos Vitales</label>
+              <article class="ac-large">
+                <p>INfo Signos vitales!!</p>
+              </article>
+            </div>
+
+      </section>
+      </div>  
+      <div class="barraDer">
+      <!--div id="sideRight"-->
+        <ul class="navDer">
+            <!--<li><a class='boton-off' href="/emergencia/atencion/{{emergencia.id}}/cuerpo/(?P<perfil>">Enfermedad Actual</a></li> -->
+            <li><a class='boton-off' href="#">Enfermedad Actual</a></li>
+            <li><a class='boton-off' href="/emergencia/atencion/{{emergencia.id}}/cuerpo/indicaciones/(?P<perfil>">Indicaciones</a></li>
+            <li><a class='boton-off' href="/emergencia/atencion/{{emergencia.id}}/diagnostico/(?P<perfil>">Diagn&oacutes;tico</a></li>
+            <!--li><a href="#">Caso de uso 4</a></li>
+            <li><a href="#">Caso de uso 5</a></li>
+            <li><a href="#">Caso de uso 6</a></li>
+            <li><a href="#">Caso de uso 7</a></li>
+            <li><a href="#">Caso de uso 8</a></li-->
+        </ul>
+      </div>
+    
+</div> <!-- TErmina contenedorA-->
+
+   </div>
+    <div id="pie">
+      <div class="centrar centrado">
+        Desarrollado por la Universidad Simón Bolívar. &reg; Todos los derechos reservados
+      </div>
+    </div>
+  </body>
+</html>

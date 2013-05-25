@@ -1,0 +1,545 @@
+* {
+  padding:0px;
+  margin:0px;
+}
+/* Cambios en el body para mantener al footer abajo*/
+body {
+  background-color: #EEE;
+  padding-bottom:5%;
+  height: 100%;
+  width: 100%;
+}
+
+#cabecera {
+  /*background-color:white;
+  background-image:url('./cabecera.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 110px;*/
+
+  background-color: #D6EDF5;
+  /*background-image:url('./cabecera.png');*/
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#cuerpo{
+	background-color:white;
+	padding: 10px 0px 0px 0px;
+}
+#sti {
+  position: relative;
+  top: 5px;
+}
+
+#usb {
+  position: relative;
+  top: 5px;
+  left: 580px;
+}
+
+#pie {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: bold;
+  /*padding: 2px;*/
+
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: #BBB;
+  background-color: #EEE;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:5%;
+}
+
+.centrado {
+  text-align: center;
+}
+
+.centrar {
+	width: 924px;
+	margin: 0px auto 0px auto;
+}
+
+.separador {
+  height:6px;
+  background-color: #0099CC;  
+}
+
+.menu {
+  /*background-color:#0099cc;*/
+  background-color: #09C;
+  position: absolute;
+  top: 6%;
+  right: 2%;
+}
+
+#navBar {
+  /*width: 400px;
+  margin: 0px auto 0px auto; */
+  width: 101%;
+  margin: 0px auto 0px auto;
+  position: relative;
+}
+
+#noticias{
+  /*height: 300px;*/
+}
+.cuadro {
+  /*background-image:url('./cuadro.png');*/
+  font-family: Arial;
+  float: left;
+  width: 248px;
+  margin: 10px;
+  padding: 10px 20px;
+}
+.span3 {
+
+
+}.cuadro.span3 a {
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 5px;
+	margin: 0px auto 0px auto;
+	display: block;
+}
+.img {
+	text-align: center;
+	padding: 3px;
+}
+.cuadroGrande .titulo {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight:bold;	
+	color: white;
+	display: block;
+	padding: 5px;
+	background-image:url('./cuadroCabecera.png');
+}
+
+.cuadroGrande .cuerpo {
+	font-family: Arial, Helvetica, sans-serif;
+	display: block;
+	font-size:14px;
+	padding: 5px;
+}
+.cuadroGrande {
+	padding: 0px 10px 30px 10px;
+	background-image:url('./cuadroPie.png');
+	background-position:bottom;
+	background-repeat:no-repeat;
+}
+.cuadroGrande .cuerpo {
+	background-color: #EEE;
+}
+.infoPrincipal {
+  font-family: Arial, Helvetica, sans-serif;
+  float: left;
+  width: 500px;
+  margin: 5px 10px;
+  padding: 5px 10px;
+}
+
+.info1 {
+	font-weight: bold;
+	color: #0099cc;  
+}
+
+.info2 {
+	font-size: 14px;
+}
+
+.infoImagen {
+  float: left;
+	margin-top: 5px;
+}
+
+.infoTexto {
+	margin: 10px;
+  padding: 10px;
+}
+
+.tablaEstados {
+	border-color: #0099cc;
+	background-color: #FFFFFF;
+	width: 95%; 
+	margin: 5px;
+	border: 1px solid #0099cc;
+	padding:3px 7px 2px 7px;
+	border-collapse:collapse;
+	text-align:left;
+}
+
+.tablaEstados th{
+	border-color: #007aa1;
+	color: white;
+	background-color: #0099cc;
+	margin: 5px;
+	padding:3px 7px 2px 7px;
+}
+
+.tablaEstados td{
+	padding:3px 7px 2px 7px;
+}
+
+#logo {
+  position: relative;
+  height: 31%;
+}
+
+.inicioSesion {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px 20px;
+	font-weight: bold;
+	color: #0099cc;  
+  text-align:center;
+}
+
+.cuadro.span3  {
+	border: 2px solid #0099cc;
+  background-color: #EEE;
+}
+
+.cuadro.span3 a {
+	margin: 20px !important;
+}
+
+#noticias{
+  overflow: hidden;
+}
+
+#cabecera {
+  height: 90px !important;
+}
+
+.campoCI {
+	margin: 30px;
+}
+
+.boton {
+	border-top: 1px solid #96d1f8;
+	background: #65a9d7;
+	background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+	background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+	background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+	background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+	background: -o-linear-gradient(top, #3e779d, #65a9d7);
+	padding: 5px 10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	-webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+	-moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+	box-shadow: rgba(0,0,0,1) 0 1px 0;
+	text-shadow: rgba(0,0,0,.4) 0 1px 0;
+	color: white;
+	font-size: 14px;
+	font-family: Helvetica, Arial, Sans-Serif;
+	text-decoration: none;
+	vertical-align: middle;
+	margin: 20px;
+}
+.boton:hover {
+	border-top-color: #28597a;
+	background: #28597a;
+	color: #ccc;
+}
+.boton:active {
+	border-top-color: #1b435e;
+	background: #1b435e;
+}
+	 
+.cedula {
+	font-weight: bold;
+	margin: 20px;
+}
+
+.acerca{
+	margin: 20px;
+	padding: 5px;
+}
+
+.usuarioPassword{
+	margin: 20px;
+	padding: 5px;
+}
+
+.mostrarNivel{
+  height: 20px;
+  width:80px;
+}
+
+.nivel1 {
+  background-color: #DE045C;
+}
+
+.nivel2 {
+  background-color: #F7821B;
+}
+
+.nivel3 {
+  background-color: #F2FF03;
+}
+
+.nivel4 {
+  background-color: #41CC00;
+}
+
+.nivel5 {
+  background-color: #00C1E8;
+}
+
+input {
+  padding:2px;
+  margin:5px;
+}
+
+/******************************************
+*
+* Estilo para vistas del area de atencion 
+* 
+*******************************************/
+
+/*atencion_base*/
+/*Contiene a todo el cuerpo de atención*/
+
+#contenedorA {
+	width: 100%;
+	/*float: left;
+	overflow: hidden;*/
+	height:83%;
+}
+
+#contentV {
+	
+	position: absolute;
+	left: 21%;
+	top: 18%;
+	width: 66.2%;
+	height: 73%;
+/*	border: 4px solid #FFFFFF;*/
+	box-shadow: 8px 10px 5px #819091;
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #F6F2EC),color-stop(1, #E2DBCE));
+
+}
+
+
+#cambia {
+	
+	display: block;
+/*	border: 3px solid black;*/
+    /*margin: 100px;*/
+    padding: 10px;
+    width: 95%;
+    height: 88%;
+	margin: 22px;
+	position: absolute;
+    
+    }
+
+
+/*------- Acordion----------------*/
+.barraIzq {
+	/*border: 4px solid #09C;*/
+	position: absolute;
+	left: 0%;
+	top: 28%;
+	width: 21%;
+	height: 78%;
+	margin: 0 auto;
+}
+
+
+
+.ac-container{
+	width: 87%;
+	margin: 0px auto 30px 13px;
+	text-align: left;
+}
+.ac-container label{
+	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+	padding: 5px 20px;
+	position: relative;
+	z-index: 20;
+	display: block;
+	height: 30px;
+	cursor: pointer;
+	color: #777;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	line-height: 33px;
+	font-size: 19px;
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
+	background: -webkit-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+	box-shadow: 
+		0px 0px 0px 1px rgba(155,155,155,0.3), 
+		1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
+		0px 2px 2px rgba(0,0,0,0.1);
+}
+.ac-container label:hover{
+	background: #fff;
+}
+.ac-container input:checked + label,
+.ac-container input:checked + label:hover{
+	background: #c6e1ec;
+	color: #3d7489;
+	text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+	box-shadow: 
+		0px 0px 0px 1px rgba(155,155,155,0.3), 
+		0px 2px 2px rgba(0,0,0,0.1);
+}
+.ac-container label:hover:after,
+.ac-container input:checked + label:hover:after{
+	content: '';
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	right: 13px;
+	top: 7px;
+	background: transparent url(../img/arrow_down.png) no-repeat center center;	
+}
+.ac-container input:checked + label:hover:after{
+	background-image: url(../img/arrow_up.png);
+}
+.ac-container input{
+	display: none;
+}
+.ac-container article{
+	background: rgba(255, 255, 255, 0.5);
+	margin-top: -1px;
+	overflow: hidden;
+	height: 0px;
+	position: relative;
+	z-index: 10;
+	-webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+.ac-container article p{
+	font-style: italic;
+	color: #777;
+	line-height: 23px;
+	font-size: 14px;
+	padding: 20px;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+}
+.ac-container input:checked ~ article{
+	-webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3);
+}
+.ac-container input:checked ~ article.ac-small{
+	height: 140px;
+}
+.ac-container input:checked ~ article.ac-medium{
+	height: 180px;
+}
+.ac-container input:checked ~ article.ac-large{
+	height: 230px;
+}
+
+
+/* Barra lateral derecha */
+.barraDer {
+	
+	position: relative;
+	left: 88%;
+	width: 12%;
+	height: 86%; 
+
+}
+
+
+/*------------Div cambia- con cada vista cambia ese contenido --------------*/ 
+
+#cuerpito{
+/*	border: 3px solid black;*/
+	position: relative;
+	height: 73%;
+	width: 50%;
+	left: 0%;
+	
+	/*border: 3px solid black;
+	position: relative;
+	height: 20%;
+	width: 30%;
+	margin-left: 0px;*/
+}
+#cuerpito #ImageMap1
+{
+max-width:100%; 
+max-height:100%;
+margin:auto;
+display:block;
+}
+
+
+#info_cuerpito{
+	
+/*	border: 3px solid black;*/
+	position: relative;
+	height: 73%;
+	width: 50%;
+	right: 0%;
+	margin-top: -32%;
+	margin-left: 50%;
+	background-color:#EAF2D3;
+}
+/*------------Tablita causas enfermedad --------------*/ 
+	#tabMod{
+    border:2px;
+    cellpadding:4px;
+    cellspacing:0;
+    width: 100%;
+    margin: 0 auto;
+    border-collapse:collapse;
+    font-family: 'Gabriela', serif;
+    font-size:15px;
+}
+
+   #tabMod td, #tabMod th 
+   {
+    font-size:1em;
+    border-left:4px;
+    border-right:4px;
+    padding:3px 7px 2px 7px;
+}
+
+    #tabMod th 
+    {
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(179, 220, 237, 0.9)), 
+		 color-stop(50%,rgba(125, 185, 232, 0.6)), color-stop(100%,rgba(188, 224, 238, 0.9)));
+    color:#006;
+    text-align: center;
+    text-shadow: 1px 1px 3px #666666;
+}
+    #tabMod  td 
+    {
+    color:#000000;
+    /*background-color:#EAF2D3;*/
+}
+
+	#form_plan{
+/*	border: 3px solid black;*/
+	position: relative;
+	height: 21%;
+	width: 100%;
+	top: 0%;
+}			
