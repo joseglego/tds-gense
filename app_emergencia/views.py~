@@ -20,12 +20,6 @@ def emergencia_listar(request):
     return render_to_response('lista.html',info)
 
 @login_required(login_url='/')
-def emergencia_listarPacientes(request):    
-    listaP = Emergencia.objects.all()
-    info = {'listaP':listaP}
-    return render_to_response('listaGeneral.html',info)
-
-@login_required(login_url='/')
 def emergencia_agregar(request):
     mensaje = ""
     if request.method == 'POST':

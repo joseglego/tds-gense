@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 
 # General HTML
+from django.shortcuts import render_to_response,redirect,get_object_or_404
 from django.shortcuts import render_to_response,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -62,17 +63,21 @@ def usuario_solicitar(request):
             u_sexo             = pcd['sexo']
             u_cel              = pcd['cod_cel'] + pcd['num_cel']
             u_direccion        = pcd['direccion']
-            u_tlf_casa         = pcd['cod_tlf_casa'] + pcd['num_tlf_casa']
+            u_tlf_casa         = pcd['cod_casa'] + pcd['num_casa']
             u_email            = pcd['email']
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
+            u_username         = pcd['nombres'] + '.' +pcd['apellidos']
             prueba = Usuario.objects.filter(cedula=u_cedula)
-            if not prueba:
-                u = Usuario(cedula=u_cedula,nombres=u_nombres,apellidos=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,clave=u_clave,clave0=u_clave0)
-                u.save()
+            prueba2 = (u_clave==u_clave0)
+            if not prueba and prueba2:
+                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                u.is_active = False
+                u.set_password(u_clave)
+                u.save() 	
                 return redirect('/')
             else:
-                mensaje = "Ya hay un usuario registrado con esa cedula"                
+                mensaje = "Ya hay un usuario registrado con esa cedula o no hubo coincidencias en las contrasenas ingresadas"     
         info = {'form':form,'mensaje':mensaje}
         return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
     form = SolicitarCuenta()
@@ -80,6 +85,37 @@ def usuario_solicitar(request):
     return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
+def usario_listarPendientes(request):    
+    listaP = Usuario.objects.filter(habilitado=False)
+    info = {'listaP':listaP}
+    return render_to_response('usuariosPendientes.html',info)
+
+@login_required(login_url='/')
+def usario_listar(request):    
+    listaU = Usuario.objects.filter(habilitado=True)
+    info = {'listaU':listaU}
+    return render_to_response('listaUsuarios.html',info)
+
+@login_required(login_url='/')
+def usuario_rechazar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    usuario.delete()
+    return redirect("/usuario/pendientes")
+
+@login_required(login_url='/')
+def usuario_aprobar(request,cedulaU):
+	usuario = get_object_or_404(Usuario,cedula=cedulaU)
+	usuario.habilitado = True
+	usuario.is_active = True
+	usuario.save()
+	return redirect("/usuario/pendientes")
+
+@login_required(login_url='/')
+def usuario_examinar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    info = {'usuario':usuario}
+    return render_to_response('usuarioExaminar.html',info)
+
 def clave_cambiar(request):
     mensaje = ""
     if request.method == 'POST':

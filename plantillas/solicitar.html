@@ -8,56 +8,58 @@
   	<div class="titulo">Solicitar Cuenta</div>
 			<form class= "tablaAgregar" method="post" action="/usuario/solicitar">
 			{% csrf_token %}
-				<table>
-					<tr>
-						<td>C&eacute;dula</td>
-						<td>{{form.cedula}}</td>
-					</tr>
-					<tr>
-						<td>Nombres</td>
-						<td>{{form.nombres}}</td>
-					</tr>
-					<tr>
-						<td>Apellidos</td>
-						<td>{{form.apellidos}}</td>
-					</tr>
-					<tr>
-						<td>Tipo</td>
-						<td>{{form.tipo}}</td>
-					</tr>
-					<tr>
-						<td>Sexo</td>
-						<td>{{form.sexo}}</td>
-					</tr>
-					<tr>
-						<td>N&uacute;mero de M&oacute;vil</td>
-						<td>{{form.cod_cel}}{{form.num_cel}}</td>
-					</tr>
-					<tr>
-						<td>Direcci&oacute;n de Residencia</td>
-						<td>{{form.direccion}}</td>
-					</tr>
-					<tr>
-						<td>N&uacute;mero de Residencia</td>
-						<td>{{form.cod_casa}}{{form.num_casa}}</td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td>{{form.email}}</td>
-					</tr>
-					<tr>
-						<td>Contraseña</td>
-						<td>{{form.clave}}</td>
-					</tr>
-					<tr>
-						<td>Confirmar Contraseña</td>
-						<td>{{form.clave0}}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input class="button-blue" type="submit" value="Enviar Solicitud" /></td>
-					</tr>
-				</table>
+				<center>
+					<table>
+						<tr>
+							<td>C&eacute;dula</td>
+							<td>{{form.cedula}}</td>
+						</tr>
+						<tr>
+							<td>Nombres</td>
+							<td>{{form.nombres}}</td>
+						</tr>
+						<tr>
+							<td>Apellidos</td>
+							<td>{{form.apellidos}}</td>
+						</tr>
+						<tr>
+							<td>Tipo</td>
+							<td>{{form.tipo}}</td>
+						</tr>
+						<tr>
+							<td>Sexo</td>
+							<td>{{form.sexo}}</td>
+						</tr>
+						<tr>
+							<td>N&uacute;mero de M&oacute;vil</td>
+							<td>{{form.cod_cel}}{{form.num_cel}}</td>
+						</tr>
+						<tr>
+							<td>Direcci&oacute;n de Residencia</td>
+							<td>{{form.direccion}}</td>
+						</tr>
+						<tr>
+							<td>N&uacute;mero de Residencia</td>
+							<td>{{form.cod_casa}}{{form.num_casa}}</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td>{{form.email}}</td>
+						</tr>
+						<tr>
+							<td>Contraseña</td>
+							<td>{{form.clave}}</td>
+						</tr>
+						<tr>
+							<td>Confirmar Contraseña</td>
+							<td>{{form.clave0}}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="button-blue" type="submit" value="Enviar Solicitud" /></td>
+						</tr>
+					</table>
+				</center>
 			</form>
 		</div>
   </div>

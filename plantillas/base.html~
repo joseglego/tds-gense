@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Atención Médica </title>
+    <title> Atenci&oacute;n M&eacute;dica </title>
 		<link rel="stylesheet" type="text/css" href="/static/estilo/estilos.css" />
 	
     <link href="/static/estilo/js-image-slider.css" rel="stylesheet" type="text/css" />
@@ -29,7 +29,9 @@
 	      <li><a href='/'>Inicio</a></li>
 	      <li><a href='/emergencia/agregar'>Ingreso</a></li>
 	      <li><a href='/emergencia/listar'>Estados</a></li>
-	      <li><a href='/usuario/listarPacientes'>Lista de Pacientes</a></li>
+	      <li><a href='/paciente/listarPacientes'>Lista Pacientes</a></li>
+				<li><a href='/usuario/pendientes'>Usuarios Pendientes</a></li>
+				<li><a href='/usuario/listar'>Usuarios</a></li>
 				<li><a href='./'>Triage</a></li>
 	      <li><a href='./'>Otros</a></li>		  
 	    </ul>
@@ -41,7 +43,7 @@
     </div>
 		<div id="pie" class="contenedor">
 			<div class="centrar centrado">
-				Desarrollado por la Universidad Simón Bolívar. &reg; Todos los derechos reservados
+				Desarrollado por la Universidad Sim&oacute;n Bolívar. &reg; Todos los derechos reservados
       </div>
     </div>
   </body>
