@@ -28,7 +28,7 @@ urlpatterns = patterns('',
 
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),    
-                       
+    url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
     ## COSAS DJANGISTICAS
     # Admin
     url(r'^admin/', include(admin.site.urls)),

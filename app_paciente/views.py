@@ -9,9 +9,14 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
+# JSON
+from django.core import serializers
+import json
+
 # Manejo de Informacion de esta aplicacion
 from forms import *
 from models import *
+
 # Create your views here.
 
 @login_required(login_url='/')
@@ -51,7 +56,11 @@ def paciente_listarPacientes(request):
     info = {'listaP':listaP}
     return render_to_response('listaGeneral.html',info)
 
-#@login_required(login_url='/')
-#def paciente_buscar(request,ced):
-#    pacientes = Paciente.objects.filter(cedula__startswith=ced)
-    
+@login_required(login_url='/')
+def buscarPacienteJson(request,ced):
+    pacientes = serializers.serialize("json",Paciente.objects.filter(cedula__startswith=ced))
+    response_data = {
+    'result' : 'success',
+    'message' : pacientes,
+    }
+    return HttpResponse(json.dumps(response_data), mimetype="application/json")
