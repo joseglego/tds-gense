@@ -35,9 +35,10 @@ def sesion_iniciar(request):
                 if siguiente:
                     return redirect(siguiente)
                 return render_to_response('loged.html',info)
-        mensaje = 'Error: Usuario o Claves incorrectos'
+        msj_tipo = "error"
+        msj_info = "Error en clave"
         form = IniciarSesionForm()
-        info = {'mensaje':mensaje,'form':form}
+        info = {'msj_tipo':msj_tipo,'msj_info':msj_info,'form':form}
         return render_to_response('index.html',info,context_instance=RequestContext(request))
     form = IniciarSesionForm()
     info = {'form':form}

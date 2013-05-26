@@ -2,70 +2,70 @@
 {% block cuerpo %}
 
 <div class="centrar">
-	<div id="noticias">
-    <div class="infoPrincipal span3">
-			<div class="info1">
-				Atención Médica
-			</div>
-			<div class="info2">
-				Mejorando la gestión de los Sistemas de Emergencia de manera sencilla.
-				<div class="infoImagen">
-					<img src="/static/img/agregar.png" />
-				</div>
-				<div class="infoTexto">
-					Permite registrar de manera rápida nuevos ingresos en el Área de Emergencia.
-				</div>
-				<div class="infoImagen">
-					<img src="/static/img/triaje.png" />
-				</div>
-				<div class="infoTexto">
-					Facilita el registro y la modificación digital de los datos médicos de un paciente.
-				</div>
-				<div class="infoImagen">
-					<img src="/static/img/Barras.png" />
-				</div>
-				<div class="infoTexto">
-					Muestra el estado de salud de los pacientes en el Área de Emergencia con 5 colores, 
-					dependiendo del estado de salud.
-				</div>
-				<div class="infoImagen">
-					<img src="/static/img/reloj.png" />
-				</div>
-				<div class="infoTexto">
-					Posee alarmas que evitan que se sobrepase el tiempo de espera máximo.
-				</div>
-			</div>
+  <div id="noticias">
+    <div class="infoPrincipal span5">
+      <div class="info1">
+	Atención Médica
+      </div>
+      <div class="info2">
+	Mejorando la gestión de los Sistemas de Emergencia de manera sencilla.
+	<div class="infoImagen">
+	  <img src="/static/img/agregar.png" />
+	</div>
+	<div class="infoTexto">
+	  Permite registrar de manera rápida nuevos ingresos en el Área de Emergencia.
+	</div>
+	<div class="infoImagen">
+	  <img src="/static/img/triaje.png" />
+	</div>
+	<div class="infoTexto">
+	  Facilita el registro y la modificación digital de los datos médicos de un paciente.
+	</div>
+	<div class="infoImagen">
+	  <img src="/static/img/Barras.png" />
+	</div>
+	<div class="infoTexto">
+	  Muestra el estado de salud de los pacientes en el Área de Emergencia con 5 colores, 
+	  dependiendo del estado de salud.
+	</div>
+	<div class="infoImagen">
+	  <img src="/static/img/reloj.png" />
+	</div>
+	<div class="infoTexto">
+	  Posee alarmas que evitan que se sobrepase el tiempo de espera máximo.
+	</div>
+      </div>
     </div>
     <div class="cuadro span3">
-			<div class="usarioClave">
-				<form method="post" action="/">
-					{% csrf_token %}
-					<table>
-						<tr>
-							<td>Usuario</td>
-						 	<td >{{ form.unombre }}</td>
-						</tr>
-						<tr>
-							<td>Clave</td>
-							<td>{{ form.uclave }}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>  
-								<input class="button-blue" type="submit" class="button" value="Iniciar Sesión" />
-								<input type="hidden" name="next" value="{{ next }}" />
-							</td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			<table>
-						<tr>
-				<th><a class="solicitar" href='./usuario/solicitar'>Solicitar Cuenta</a></th>
-				<th><a class="solicitar" href='./usuario/restablecer'>Olvidó Contraseña</a></th>
-						</tr>
-			</table>
-		</div>
-	</div> 	  
+      <div class="usarioClave">
+	<form method="post" action="/">
+	  {% csrf_token %}
+	  <table>
+	    <tr>
+	      <td>Usuario</td>
+	      <td >{{ form.unombre }}</td>
+	    </tr>
+	    <tr>
+	      <td>Clave</td>
+	      <td>{{ form.uclave }}</td>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td>  
+		<input class="btn btn-primary" type="submit" value="Iniciar Sesión" />
+		<input type="hidden" name="next" value="{{ next }}" />
+	      </td>
+	    </tr>
+	  </table>
+	</form>
+      </div>
+      <table>
+	<tr>
+	  <th><a class="solicitar" href='./usuario/solicitar'>Solicitar Cuenta</a></th>
+	  <th><a class="solicitar" href='./usuario/restablecer'>Olvidó Contraseña</a></th>
+	</tr>
+      </table>
+    </div>
+  </div> 	  
 </div>
 {% endblock %}
