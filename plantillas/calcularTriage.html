@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+{% if mensaje %}
+  {{ mensaje }}
+{% endif %}
+<div class="centrar">
+  <div class="cuadroGrande">
+		<center>
+			<div class="titulo">Calcular Triage</div>
+				<form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
+				{% csrf_token %}
+					<table>
+						<tr>
+							<td>Fecha</td>
+							<td>{{form.fecha}}  <a href="#" onclick="buena()">Ahora</a></td>
+						</tr>
+						<tr>
+							<td>Atencion</td>
+							<td>{{form.atencion}}</td>
+						</tr>
+						<tr>
+							<td>Esperar</td>
+							<td>{{form.esperar}}</td>
+						</tr>
+						<tr>
+							<td>Recursos</td>
+							<td>{{form.recursos}}</td>
+						</tr>
+						<tr>
+							<td>Motivo</td>
+							<td>{{form.motivo}}</td>
+						</tr>
+						<tr>
+							<td>Area</td>
+							<td>{{form.area}}</td>
+						</tr>
+						<tr>
+							<td>Ingreso</td>
+							<td>{{form.ingreso}}</td>
+						</tr>            
+						<tr>
+							<td>Temperatura</td>
+							<td>{{form.signos_tmp}}</td>
+						</tr>
+						<tr>
+							<td>Frecuencia Cardiaca</td>
+							<td>{{form.signos_fc}}</td>
+						</tr>
+						<tr>
+							<td>Frecuencia Respiratoria</td>
+							<td>{{form.signos_fr}}</td>
+						</tr>
+						<tr>
+							<td>Tensión Arterial</td>
+							<td>{{form.signos_ta}}</td>
+						</tr>
+						<tr>
+							<td>Saturación de Oxigeno en la Sangre</td>
+							<td>{{form.signos_saod}}</td>
+						</tr>
+						<tr>
+							<td>Respuesta Motora</td>
+							<td>{{form.signos_motor}}</td>
+						</tr>
+						<tr>
+							<td>Apertura Ocular</td>
+							<td>{{form.signos_ocular}}</td>
+						</tr>
+						<tr>
+							<td>Respuesta Verbal</td>
+							<td>{{form.signos_verbal}}</td>
+						</tr>
+						<tr>
+							<td>Dolor</td>
+							<td>{{form.signos_dolor}}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="button-blue" type="submit" value="Ingresar" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</center>
+	</div>
+</div>
+{% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
 from models import *
-
+from django.contrib.admin.widgets import AdminDateWidget, AdminSplitDateTime
+from django.forms.widgets import RadioSelect
 COD_TELEFONICOS = (
   ('0212','0212'),
   ('0412','0412'),
@@ -27,9 +28,22 @@ class AgregarEmergenciaForm(forms.Form):
     contacto_num_tlf = forms.CharField(max_length=11)
     ingreso          = forms.DateTimeField()
     
-class calcularTriage(forms.Form):
-    temperatura     = forms.FloatField()
-    freCardiaca     = forms.FloatField()
-    freRespiratoria = forms.IntegerField()
-    tensionArterial = forms.IntegerField()
+class calcularTriageForm(forms.Form):
+    fecha         = forms.DateTimeField()
+    motivo        = forms.ModelChoiceField(required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
+    area          = forms.ModelChoiceField(required=False,queryset=AreaEmergencia.objects.exclude(nombre__startswith=" "))
+    ingreso       = forms.CharField(required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
     
+    atencion      = forms.NullBooleanField()
+    esperar       = forms.NullBooleanField()
+    recursos      = forms.IntegerField(required=False,widget=forms.Select(choices=RECURSOS))
+    
+    signos_tmp    = forms.FloatField(required=False)
+    signos_fc     = forms.FloatField(required=False)
+    signos_fr     = forms.IntegerField(required=False)
+    signos_ta     = forms.IntegerField(required=False)
+    signos_saod   = forms.FloatField(required=False)
+    signos_motor  = forms.IntegerField(required=False,widget=forms.Select(choices=RMOTORA))
+    signos_ocular = forms.IntegerField(required=False,widget=forms.Select(choices=ROCULAR))
+    signos_verbal = forms.IntegerField(required=False,widget=forms.Select(choices=RVERBAL))
+    signos_dolor  = forms.IntegerField(required=False,widget=forms.Select(choices=EDOLOR))

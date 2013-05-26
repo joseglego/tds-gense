@@ -45,9 +45,13 @@ def paciente_agregar(request):
     info = {'form':form}
     return render_to_response('agregarPaciente.html',info,context_instance=RequestContext(request))
 
-
 @login_required(login_url='/')
 def paciente_listarPacientes(request):    
     listaP = Paciente.objects.all()
     info = {'listaP':listaP}
     return render_to_response('listaGeneral.html',info)
+
+#@login_required(login_url='/')
+#def paciente_buscar(request,ced):
+#    pacientes = Paciente.objects.filter(cedula__startswith=ced)
+    

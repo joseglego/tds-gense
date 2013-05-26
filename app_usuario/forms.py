@@ -28,3 +28,12 @@ class SolicitarCuenta(forms.Form):
     email     = forms.EmailField(max_length=64)
     clave     = forms.CharField(widget=forms.PasswordInput())
     clave0    = forms.CharField(widget=forms.PasswordInput())
+
+class cambioClave(forms.Form):
+    claveV = forms.CharField(widget=forms.PasswordInput())
+    clave  = forms.CharField(widget=forms.PasswordInput())
+    claveO = forms.CharField(widget=forms.PasswordInput())
+
+class restablecerClave(forms.Form):
+    correo = forms.EmailField(max_length=64)
+

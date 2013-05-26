@@ -15,12 +15,15 @@ urlpatterns = patterns('',
     url('^usuario/pendientes/(?P<cedulaU>\d+)/aprobar$','app_usuario.views.usuario_aprobar'),
     url('^usuario/pendientes/(?P<cedulaU>\d+)/rechazar$','app_usuario.views.usuario_rechazar'),
 		url('^usuario/pendientes/(?P<cedulaU>\d+)/examinar$','app_usuario.views.usuario_examinar'),
+    url('^usuario/clave$','app_usuario.views.clave_cambiar'),
+    url('^usuario/restablecer$','app_usuario.views.clave_restablecer'),
 	url(r'^',include('app_atencion.urls')),
 
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
     url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
+    url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),        
 #    url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),   
 
 		# Paciente

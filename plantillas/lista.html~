@@ -11,15 +11,20 @@
       <th>N&uacute;mero</th>
       <th>Nombre</th>
       <th>Hora de Ingreso</th>
-      <th>Acciones Rápidas</th>
-      <th>Clasificación</th>
+      <th>Acciones R&aacute;pidas</th>
+      <th>Clasificaci&oacute;n</th>
       <th>Alarma</th>
     </tr>
   	{% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
+<<<<<<< HEAD
 				<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.hora_ingreso}}</td>
+=======
+	<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
+        <td>{{l.horaR}}</td>
+>>>>>>> c902680d3b7f2cfeacc3b609ebec5cf80b31f717
         {% if l.triage != 0 %}
           <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/triage.png" /></a></td>
         {% else %}

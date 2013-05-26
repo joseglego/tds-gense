@@ -15,13 +15,13 @@
 				<th>Habilitado</th>
 				<th>Acciones</th>
 			</tr>
-			{% for l in listaP %}
+			{% for l in listaU %}
 			  <tr>
 					<td><span class="nombreLista">{{l.cedula}}</span></td>
 			    <td><span class="nombreLista">{{l.first_name}} {{l.last_name}}</span></td>
 					<td><span class="nombreLista">{{l.sexoR}}</span></td>
 					<td><span class="nombreLista">{{l.tipoR}}</span></td>
-					{% if l.is_active != true %}
+					{% if l.is_active != True %}
 						<td><span class="nombreLista">No</span></td>
         	{% else %}
 						<td><span class="nombreLista">Si</span></td>

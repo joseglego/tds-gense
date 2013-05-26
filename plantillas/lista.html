@@ -20,6 +20,8 @@
         <td>{{l.id}}</td>
 				<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.hora_ingreso}}</td>
+	<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
+        <td>{{l.horaR}}</td>
         {% if l.triage != 0 %}
           <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/triage.png" /></a></td>
         {% else %}

@@ -14,7 +14,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Manejo de Informacion de esta aplicacion
 from forms import *
 from models import *
-	
+
+# Envio de Correos
+from django.core.mail import EmailMessage
+
 # Create your views here.
 def sesion_iniciar(request):
     if request.user.is_authenticated():
@@ -41,6 +44,7 @@ def sesion_iniciar(request):
     info = {'form':form}
     return render_to_response('index.html',info,context_instance=RequestContext(request))
 
+
 def sesion_cerrar(request):
     logout(request)
     return redirect('/')
@@ -63,14 +67,13 @@ def usuario_solicitar(request):
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
             u_username         = pcd['nombres'] + '.' +pcd['apellidos']
-            u_activo           = 'False'
             prueba = Usuario.objects.filter(cedula=u_cedula)
             prueba2 = (u_clave==u_clave0)
             if not prueba and prueba2:
-                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=u_activo,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
-                active = False
+                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                u.is_active = False
+                u.set_password(u_clave)
                 u.save() 	
-                u.set_password = u_clave
                 return redirect('/')
             else:
                 mensaje = "Ya hay un usuario registrado con esa cedula o no hubo coincidencias en las contrasenas ingresadas"     
@@ -82,13 +85,13 @@ def usuario_solicitar(request):
 
 @login_required(login_url='/')
 def usario_listarPendientes(request):    
-    listaP = Usuario.objects.filter(habilitado='False')
+    listaP = Usuario.objects.filter(habilitado=False)
     info = {'listaP':listaP}
     return render_to_response('usuariosPendientes.html',info)
 
 @login_required(login_url='/')
 def usario_listar(request):    
-    listaU = Usuario.objects.filter(habilitado='True')
+    listaU = Usuario.objects.filter(habilitado=True)
     info = {'listaU':listaU}
     return render_to_response('listaUsuarios.html',info)
 
@@ -100,8 +103,11 @@ def usuario_rechazar(request,cedulaU):
 
 @login_required(login_url='/')
 def usuario_aprobar(request,cedulaU):
-    usuario = get_object_or_404(Usuario,cedula=cedulaU)
-    return redirect("/usuario/pendientes")
+	usuario = get_object_or_404(Usuario,cedula=cedulaU)
+	usuario.habilitado = True
+	usuario.is_active = True
+	usuario.save()
+	return redirect("/usuario/pendientes")
 
 @login_required(login_url='/')
 def usuario_examinar(request,cedulaU):
@@ -109,5 +115,59 @@ def usuario_examinar(request,cedulaU):
     info = {'usuario':usuario}
     return render_to_response('usuarioExaminar.html',info)
 
+def clave_cambiar(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = cambioClave(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            f_claveV          = pcd['claveV']
+            f_clave           = pcd['clave']
+            f_claveO          = pcd['claveO']
+            usuario           = Usuario.objects.get(username=request.user)
+            if usuario.check_password(f_claveV):
+                if (f_clave == f_claveO):
+                    usuario.set_password(f_clave)
+                    usuario.save()
+                    mensaje = "Clave cambiada"
+                    form = cambioClave()
+                    info = {'form':form,'mensaje':mensaje}
+                    return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))                    
+                else:
+                    mensaje = "Las dos claves son distintas"
+            else:
+                mensaje = "La clave vieja no es correcta"
+        else:
+            mensaje = "Error con el formulario"
+        info = {'form':form,'mensaje':mensaje}
+        return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))
+    form = cambioClave()
+    info = {'form':form,'mensaje':mensaje}
+    return render_to_response('cambiarClave.html',info,context_instance=RequestContext(request))
 
-
+def clave_restablecer(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = restablecerClave(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            f_correo = pcd['correo']
+            usuario = Usuario.objects.filter(email=f_correo)
+            if len(usuario) == 0 :
+                mensaje = "Correo Invalido"
+            else:
+                usuario = usuario[0]
+                clave = User.objects.make_random_password()
+                email = EmailMessage('[GenSE] Admin - Cambio de Clave','Estimado '+usuario.first_name+' '+usuario.last_name+'\n\nSe recibio una solicitud de cambiar su clave, la nueva clave es: '+clave+'\n\nSaludos\nAdministrador del Sistema', to=[f_correo]) 
+                email.send()
+                usuario.set_password(clave)
+                usuario.save()
+                mensaje = "Su nueva clave fue enviada al correo suministrado"
+                form = restablecerClave()
+                info = {'form':form,'mensaje':mensaje}
+                return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
+        else:
+            mensaje = "Error con el formulario"
+    form = restablecerClave()
+    info = {'form':form,'mensaje':mensaje}
+    return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
