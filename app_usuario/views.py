@@ -7,13 +7,14 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 
 # General HTML
+from django.shortcuts import render_to_response,redirect,get_object_or_404
 from django.shortcuts import render_to_response,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Manejo de Informacion de esta aplicacion
 from forms import *
 from models import *
-
+	
 # Create your views here.
 def sesion_iniciar(request):
     if request.user.is_authenticated():
@@ -67,6 +68,7 @@ def usuario_solicitar(request):
             prueba2 = (u_clave==u_clave0)
             if not prueba and prueba2:
                 u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=u_activo,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                active = False
                 u.save() 	
                 u.set_password = u_clave
                 return redirect('/')
@@ -83,4 +85,29 @@ def usario_listarPendientes(request):
     listaP = Usuario.objects.filter(habilitado='False')
     info = {'listaP':listaP}
     return render_to_response('usuariosPendientes.html',info)
+
+@login_required(login_url='/')
+def usario_listar(request):    
+    listaU = Usuario.objects.filter(habilitado='True')
+    info = {'listaU':listaU}
+    return render_to_response('listaUsuarios.html',info)
+
+@login_required(login_url='/')
+def usuario_rechazar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    usuario.delete()
+    return redirect("/usuario/pendientes")
+
+@login_required(login_url='/')
+def usuario_aprobar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    return redirect("/usuario/pendientes")
+
+@login_required(login_url='/')
+def usuario_examinar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    info = {'usuario':usuario}
+    return render_to_response('usuarioExaminar.html',info)
+
+
 

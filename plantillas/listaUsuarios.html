@@ -5,13 +5,14 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  	<div class="titulo">Lista de Solicitudes de Usuarios Pendientes</div>
+  	<div class="titulo">Lista de usuarios</div>
 		<table class="tablaEstados">
 			<tr>
 			  <th>C&eacute;dula</th>
 			  <th>Nombre</th>
 				<th>Sexo</th>
 				<th>Tipo</th>
+				<th>Habilitado</th>
 				<th>Acciones</th>
 			</tr>
 			{% for l in listaP %}
@@ -20,10 +21,15 @@
 			    <td><span class="nombreLista">{{l.first_name}} {{l.last_name}}</span></td>
 					<td><span class="nombreLista">{{l.sexoR}}</span></td>
 					<td><span class="nombreLista">{{l.tipoR}}</span></td>
+					{% if l.is_active != true %}
+						<td><span class="nombreLista">No</span></td>
+        	{% else %}
+						<td><span class="nombreLista">Si</span></td>
+        	{% endif %}
 					<td>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/aprobar" ><img src="/static/img/aprobar.png" title="Autorizar"/></a>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/rechazar"><img src="/static/img/negar.png" title="Rechazar"/></a>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/examinar"><img src="/static/img/lupa.png" title="Examinar"/></a>
+						<a href="/usuario/pendientes"><img src="/static/img/aprobar.png" title="Habilitar"/></a>
+						<a href="/usuario/pendientes"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
+						<a href="/usuario/pendientes"><img src="/static/img/lupa.png" title="Examinar"/></a>
 					</td>
 			  </tr>
 			{% endfor %}

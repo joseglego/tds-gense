@@ -6,14 +6,27 @@
 <div class="centrar">
   <div class="cuadroGrande">
   	<div class="titulo">Examinar Usuario</div>
-		<table class="tablaEstados">
-			  <tr>
-					<th><span class="nombreLista">{{l.cedula}}</span></td>
-			    <th><span class="nombreLista">{{l}}</span></td>
-					<th><span class="nombreLista">{{l.sexoR}}</span></td>
-					<th><span class="nombreLista">{{l.tipoR}}</span></td>
-			  </tr>
-		</table>
+  	<div class="exito">					
+			<p class ="categoria"> C&eacute;dula de Identidad:</p> 
+			<p> {{usuario.cedula}}</p></br>
+	    <p class ="categoria"> Nombre: </p>
+	    <p> {{usuario.first_name}} {{usuario.last_name}}</p></br>
+			<p class ="categoria"> Sexo: </p>
+	    <p> {{usuario.sexoR}}</p></br>
+			<p class ="categoria"> Tipo de Usuario: </p>
+	    <p> {{usuario.tipoR}}</p></br>
+			<p class ="categoria"> Direcci&oacute;n: </p>
+	    <p> {{usuario.direccion}}</p></br>
+			<p class ="categoria"> Email: </p>
+	    <p> {{usuario.email}}</p></br>
+			<p class ="categoria"> Tel&eacute;fonos: </p>
+	    <p> {{usuario.tlf_cel}}  /  {{usuario.tlf_casa}}</p>
+			<div class="iconos">
+				<a href="/usuario/pendientes/{{l.usuario.cedula}}/aprobar" ><img src="/static/img/aprobar.png" title="Autorizar"/></a>
+				<a href="/usuario/pendientes/{{l.usuario.cedula}}/rechazar"><img src="/static/img/negar.png" title="Rechazar"/></a>
+				<a href="/usuario/pendientes"><img src="/static/img/lista.png" title="Regresar a Lista de Pendientes"/></a>
+			</div>	
+		</div>				
   </div>
 </div>
 {% endblock %}

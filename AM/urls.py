@@ -11,6 +11,10 @@ urlpatterns = patterns('',
     url('^sesion/cerrar$','app_usuario.views.sesion_cerrar'),
     url('^usuario/solicitar$','app_usuario.views.usuario_solicitar'),
     url('^usuario/pendientes$','app_usuario.views.usario_listarPendientes'),
+    url('^usuario/listar$','app_usuario.views.usario_listar'),
+    url('^usuario/pendientes/(?P<cedulaU>\d+)/aprobar$','app_usuario.views.usuario_aprobar'),
+    url('^usuario/pendientes/(?P<cedulaU>\d+)/rechazar$','app_usuario.views.usuario_rechazar'),
+		url('^usuario/pendientes/(?P<cedulaU>\d+)/examinar$','app_usuario.views.usuario_examinar'),
 	url(r'^',include('app_atencion.urls')),
 
     # Emergencias
