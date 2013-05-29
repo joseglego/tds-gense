@@ -74,6 +74,8 @@ def usuario_solicitar(request):
                 u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
                 u.is_active = False
                 u.set_password(u_clave)
+                if u_tipo == 1:
+                    u.is_staff = True
                 u.save() 	
                 return redirect('/')
             else:
@@ -88,13 +90,19 @@ def usuario_solicitar(request):
 def usario_listarPendientes(request):    
     listaP = Usuario.objects.filter(habilitado=False)
     info = {'listaP':listaP}
-    return render_to_response('usuariosPendientes.html',info)
+    return render_to_response('usuariosPendientes.html',info,context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def usario_listarRechazados(request):    
+    listaP = Usuario.objects.filter(habilitado=False)
+    info = {'listaP':listaP}
+    return render_to_response('usuariosPendientes.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def usario_listar(request):    
     listaU = Usuario.objects.filter(habilitado=True)
     info = {'listaU':listaU}
-    return render_to_response('listaUsuarios.html',info)
+    return render_to_response('listaUsuarios.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def usuario_rechazar(request,cedulaU):
@@ -111,10 +119,10 @@ def usuario_aprobar(request,cedulaU):
 	return redirect("/usuario/pendientes")
 
 @login_required(login_url='/')
-def usuario_examinar(request,cedulaU):
+def pendiente_examinar(request,cedulaU):
     usuario = get_object_or_404(Usuario,cedula=cedulaU)
     info = {'usuario':usuario}
-    return render_to_response('usuarioExaminar.html',info)
+    return render_to_response('pendienteExaminar.html',info)
 
 def clave_cambiar(request):
     mensaje = ""
@@ -172,3 +180,61 @@ def clave_restablecer(request):
     form = restablecerClave()
     info = {'form':form,'mensaje':mensaje}
     return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
+
+
+def usuario_crear(request):
+    mensaje = ""
+    if request.method == 'POST':
+        form = SolicitarCuenta(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            u_cedula           = pcd['cedula']
+            u_nombres          = pcd['nombres']
+            u_apellidos        = pcd['apellidos']
+            u_tipo		         = pcd['tipo']
+            u_sexo             = pcd['sexo']
+            u_cel              = pcd['cod_cel'] + pcd['num_cel']
+            u_direccion        = pcd['direccion']
+            u_tlf_casa         = pcd['cod_casa'] + pcd['num_casa']
+            u_email            = pcd['email']
+            u_clave            = pcd['clave']
+            u_clave0           = pcd['clave0']
+            u_username         = pcd['nombres'] + '.' +pcd['apellidos']
+            prueba = Usuario.objects.filter(cedula=u_cedula)
+            prueba2 = (u_clave==u_clave0)
+            if not prueba and prueba2:
+                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                u.is_active = True
+                u.set_password(u_clave)
+                if u_tipo == 1:
+                    u.is_staff = True
+                u.save() 	
+                return redirect('/')
+            else:
+                mensaje = "Ya hay un usuario registrado con esa cedula o no hubo coincidencias en las contrasenas ingresadas"     
+        info = {'form':form,'mensaje':mensaje}
+        return render_to_response('crearUsuario.html',info,context_instance=RequestContext(request))
+    form = SolicitarCuenta()
+    info = {'form':form}
+    return render_to_response('crearUsuario.html',info,context_instance=RequestContext(request))
+
+
+@login_required(login_url='/')
+def usuario_deshabilitar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    usuario.is_active = False
+    usuario.save()
+    return redirect("/usuario/listar")
+
+@login_required(login_url='/')
+def usuario_habilitar(request,cedulaU):
+	usuario = get_object_or_404(Usuario,cedula=cedulaU)
+	usuario.is_active = True
+	usuario.save()
+	return redirect("/usuario/listar")
+
+@login_required(login_url='/')
+def usuario_examinar(request,cedulaU):
+    usuario = get_object_or_404(Usuario,cedula=cedulaU)
+    info = {'usuario':usuario}
+    return render_to_response('usuarioExaminar.html',info)

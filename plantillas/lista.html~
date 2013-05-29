@@ -5,7 +5,7 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  <div class="titulo">Estado de Pacientes en Área de Emergencia</div>
+  <div class="titulo">Estado de Pacientes en &Aacute;rea de Emergencia</div>
   <table class="tablaEstados">
     <tr>
       <th>N&uacute;mero</th>
@@ -18,24 +18,19 @@
   	{% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
-<<<<<<< HEAD
 				<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
-        <td>{{l.hora_ingreso}}</td>
-=======
-	<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.horaR}}</td>
->>>>>>> c902680d3b7f2cfeacc3b609ebec5cf80b31f717
         {% if l.triage != 0 %}
-          <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/triage.png" /></a></td>
+          <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/Estados/triage.png" title="Recalcular"/></a></td>
         {% else %}
           <td>
-            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/ESI1.png" title="Colocar en Nivel 1"/></a>
-            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/ESI2.png" title="Colocar en Nivel 2"/></a>
-            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/triage.png" title="Realizar Triage"/></a>
+            <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/Estados/ESI1.png" title="Colocar en Nivel 1"/></a>
+            <a href="/emergencia/{{l.id}}/t2"><img src="/static/img/Estados/ESI2.png" title="Colocar en Nivel 2"/></a>
+            <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/Estados/triage.png" title="Realizar Triage"/></a>
           </td>
         {% endif %}
-					<td>{% if l.triage != 0 %}<img src="/static/img/nivel{{ l.triage }}.png" />{% endif %}</td>
-					<td><img src="/static/img/alarmaVerde.png" /></td>
+					<td>{% if l.triage != 0 %}<img src="/static/img/Estados/nivel{{ l.triage }}.png" />{% endif %}</td>
+					<td><img src="/static/img/Estados/alarmaVerde.png" /></td>
       </tr>	
     {% endfor %}
   </table>

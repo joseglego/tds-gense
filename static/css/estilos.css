@@ -50,15 +50,11 @@ body {
   background-color:#0099cc;	
 }
 #navBar {
-  width: 600px;
+  width: 650px;
   margin: 0px auto 0px auto;  
 }
 
-#noticias{
-  /*height: 300px;*/
-}
 .cuadro {
-  /*background-image:url('./cuadro.png');*/
   font-family: 'Raleway', sans-serif;
   float: left;
   width: 248px;
@@ -324,8 +320,8 @@ input {
 
 a:hover {
 	font-weight:bold;
-	color: blue;
-	text-decoration: underline;
+	color: #848484;	
+	text-decoration:none;
 }
 
 .tablaEstados a{
@@ -337,13 +333,14 @@ a:hover {
 }
 
 .tablaEstados a:hover{
+	color: #848484;	
 	font-weight:bold;
-	color: blue;
-	text-decoration: underline;
+	text-decoration:none;
 }
 
 
 .tablaAgregar {
+	margin-top: 15px;
 	font-family: 'Raleway', sans-serif;
 	background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 }
