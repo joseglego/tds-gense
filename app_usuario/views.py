@@ -67,11 +67,10 @@ def usuario_solicitar(request):
             u_email            = pcd['email']
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
-            u_username         = pcd['nombres'] + '.' +pcd['apellidos']
             prueba = Usuario.objects.filter(cedula=u_cedula)
             prueba2 = (u_clave==u_clave0)
             if not prueba and prueba2:
-                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
                 u.is_active = False
                 u.set_password(u_clave)
                 if u_tipo == 1:
@@ -199,11 +198,10 @@ def usuario_crear(request):
             u_email            = pcd['email']
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
-            u_username         = pcd['nombres'] + '.' +pcd['apellidos']
             prueba = Usuario.objects.filter(cedula=u_cedula)
             prueba2 = (u_clave==u_clave0)
             if not prueba and prueba2:
-                u = Usuario(username=u_username,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+                u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
                 u.is_active = True
                 u.set_password(u_clave)
                 if u_tipo == 1:
