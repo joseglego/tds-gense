@@ -18,7 +18,11 @@
   	{% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
+<<<<<<< HEAD
 				<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
+=======
+	<td><span class="nombreLista"><a a href='/emergencia/atencion/{{ l.id }}'>{{l.paciente}}</a></span></td>
+>>>>>>> 954478e3964640e5570242c23fc571ff21b3d2a2
         <td>{{l.horaR}}</td>
         {% if l.triage != 0 %}
           <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/Estados/triage.png" title="Recalcular"/></a></td>
