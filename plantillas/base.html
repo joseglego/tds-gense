@@ -34,11 +34,11 @@
 	      <li><a href='/'>Inicio</a></li>
 	      <li><a href='/emergencia/agregar'>Ingreso</a></li>
 	      <li><a href='/emergencia/listar'>Estados</a></li>
-	      <li><a href='/paciente/listarPacientes'>Lista Pacientes</a></li>
 				<li><a href='/usuario/pendientes'>Usuarios Pendientes</a></li>
 				<li><a href='/usuario/listar'>Usuarios</a></li>
+	      <li><a href='/paciente/listarPacientes'>Lista Pacientes</a></li>
 				<li><a href='./'>Triage</a></li>
-	      <li><a href='./'>Otros</a></li>		  
+	      <li><a href='/usuario/crear'>Crear Usuario</a></li>		  
 	    </ul>
       </div>
     </div>
@@ -47,7 +47,7 @@
       <div class="row container">
         <div class="centrar alert alert-{{msj_tipo}}">
           {{msj_info}}
-      	</div>
+				</div>
       </div>
       {% endif %}
       {% block cuerpo %}

@@ -27,9 +27,12 @@
 						<td><span class="nombreLista">Si</span></td>
         	{% endif %}
 					<td>
-						<a href="/usuario/pendientes"><img src="/static/img/aprobar.png" title="Habilitar"/></a>
-						<a href="/usuario/pendientes"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
-						<a href="/usuario/pendientes"><img src="/static/img/lupa.png" title="Examinar"/></a>
+					{% if l.is_active != True %}
+						<a href="/usuario/listar/{{l.usuario.cedula}}/habilitar"><img src="/static/img/aprobar.png" title="Habilitar"/></a>
+        	{% else %}
+						<a href="/usuario/listar/{{l.usuario.cedula}}/deshabilitar"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
+        	{% endif %}
+						<a href="/usuario/listar/{{l.usuario.cedula}}/examinar"><img src="/static/img/lupa.png" title="Examinar"/></a>
 					</td>
 			  </tr>
 			{% endfor %}
