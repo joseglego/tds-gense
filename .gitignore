@@ -2,6 +2,7 @@
 *.pot
 *.pyc
 *~
+*.sqlite3
 #*#
 ./AM/settings.py
 ./BD/BD.sqlite3

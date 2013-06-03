@@ -8,7 +8,7 @@ SEXO = (
 
 # Create your models here.
 class Paciente(models.Model):
-    cedula           = models.CharField(max_length=9,default=0, unique=True)
+    cedula           = models.CharField(max_length=9,default=0)
     nombres          = models.CharField(max_length=64)
     apellidos        = models.CharField(max_length=64)
     sexo             = models.CharField(max_length=1,choices=SEXO)

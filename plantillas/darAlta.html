@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+<div class="centrar">
+  <div class="cuadroGrande">
+    <center>
+      <div class="titulo">Dar de Alta</div>
+      <form class= "tablaAgregar" method="post" action="/emergencia/{{emergencia.pk}}/daralta">
+	{% csrf_token %}
+	<table>
+	  <tr>
+	    <td>Paciente</td>
+	    <td>{{emergencia.paciente}}</td>
+	  </tr>
+	  <tr>
+	    <td>Destino</td>
+	    <td>{{form.destino}}</td>
+	  </tr>
+	  <tr>
+	    <td>Fecha de Alta</td>
+	    <td>{{form.darAlta}} <a href="#" onclick="buena();">Ahora</a></td>
+	  </tr>
+	  <tr>
+	    <td></td>
+	    <td><input class="btn btn-primary" type="submit" value="Ingresar" /></td>
+	  </tr>
+	</table>
+      </form>
+  </div>
+  </center>
+</div>
+</div>
+{% endblock %}

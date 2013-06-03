@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
     url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),   
-
+    url('^emergencia/(?P<idE>\d+)/daralta$','app_emergencia.views.emergencia_darAlta'),   
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),    
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           

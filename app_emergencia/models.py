@@ -60,6 +60,13 @@ RMOTORA = (
     (6,"Obedece Órdenes"),
 )
 
+AVPU = (
+    ("Z","---------------"),
+    ("A","Alert - Alerta y ubicado en espacio y tiempo"),
+    ("V","Verbal - Responde ante ordenes verbales"),
+    ("P","Pain - Responde a estimulos doloros"),
+    ("U","Unconscious - Inconciente"),
+)
 EDOLOR = (
     (-1,"---------------"),
     (0,"Sin Dolor"),
@@ -129,8 +136,8 @@ class ComentarioEmergencia(models.Model):
 class Admision(models.Model):
     emergencia       = models.ForeignKey(Emergencia)
     area             = models.ForeignKey(AreaAdmision)
-    hora_ingreso     = models.DateTimeField()
-    hora_ingresoReal = models.DateTimeField(auto_now_add=True)    
+    hora_ingreso     = models.DateTimeField(null=True,blank=True)
+    hora_ingresoReal = models.DateTimeField(null=True,blank=True)
 
 class Triage(models.Model):
     emergencia     = models.ForeignKey(Emergencia)
@@ -150,11 +157,12 @@ class Triage(models.Model):
     signos_tmp     = models.FloatField(default=0,blank=True)
     signos_fc      = models.FloatField(default=0,blank=True)
     signos_fr      = models.IntegerField(default=0,blank=True)
-    signos_ta      = models.IntegerField(default=0,blank=True)
+    signos_pa      = models.IntegerField(default=0,blank=True)
+    signos_pb      = models.IntegerField(default=0,blank=True)
     signos_saod    = models.FloatField(default=0,blank=True)
-    signos_rmotora = models.IntegerField(default=0,blank=True)
-    signos_rocular = models.IntegerField(default=0,blank=True)
-    signos_rverbal = models.IntegerField(default=0,blank=True)
+
+    # Otros Datos Importantes
+    signos_avpu    = models.CharField(max_length=1,blank=True)
     signos_dolor   = models.IntegerField(default=0,blank=True)
 
     # Resultado de Triage

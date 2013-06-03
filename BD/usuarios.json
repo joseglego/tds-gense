@@ -1,0 +1,1 @@
+[{"pk": 2, "model": "app_usuario.usuario", "fields": {"tlf_cel": "0", "habilitado": false, "tlf_casa": "0", "tipo": "1", "direccion": "0", "groups": [], "user_permissions": [], "sexo": "1", "cedula": 0}}]

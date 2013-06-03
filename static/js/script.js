@@ -10,6 +10,7 @@ function buena() {
 
   $("#id_ingreso").val(dia+"/"+mes+"/"+año+" "+horas+":"+minutos+":"+segundos)
   $("#id_fecha").val(dia+"/"+mes+"/"+año+" "+horas+":"+minutos+":"+segundos)
+  $("#id_darAlta").val(dia+"/"+mes+"/"+año+" "+horas+":"+minutos+":"+segundos)
 }
 
 $(document).ready( function() {

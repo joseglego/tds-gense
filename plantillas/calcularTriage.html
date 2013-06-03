@@ -11,19 +11,19 @@
 				{% csrf_token %}
 					<table>
 						<tr>
-							<td>Fecha</td>
+							<td>Fecha de Ingreso</td>
 							<td>{{form.fecha}}  <a href="#" onclick="buena()">Ahora</a></td>
 						</tr>
 						<tr>
-							<td>Atencion</td>
+							<td>&iquest;Requiere atenci&oacute;n inmediata?</td>
 							<td>{{form.atencion}}</td>
 						</tr>
 						<tr>
-							<td>Esperar</td>
+							<td>&iquest;Puede Esperar?</td>
 							<td>{{form.esperar}}</td>
 						</tr>
 						<tr>
-							<td>Recursos</td>
+							<td>&iquest;Cu&aacute;ntos Recursos necesita?</td>
 							<td>{{form.recursos}}</td>
 						</tr>
 						<tr>
@@ -31,7 +31,7 @@
 							<td>{{form.motivo}}</td>
 						</tr>
 						<tr>
-							<td>Area</td>
+							<td>&Aacute;rea</td>
 							<td>{{form.area}}</td>
 						</tr>
 						<tr>
@@ -51,25 +51,21 @@
 							<td>{{form.signos_fr}}</td>
 						</tr>
 						<tr>
-							<td>Tensión Arterial</td>
-							<td>{{form.signos_ta}}</td>
+							<td>Tensi&oacute;n Arterial Sist&oacute;lica</td>
+							<td>{{form.signos_pa}}</td>
+						</tr>
+						<tr>
+							<td>Tensión Arterial Diast&oacute;lica</td>
+							<td>{{form.signos_pb}}</td>
 						</tr>
 						<tr>
 							<td>Saturación de Oxigeno en la Sangre</td>
 							<td>{{form.signos_saod}}</td>
 						</tr>
 						<tr>
-							<td>Respuesta Motora</td>
-							<td>{{form.signos_motor}}</td>
-						</tr>
-						<tr>
-							<td>Apertura Ocular</td>
-							<td>{{form.signos_ocular}}</td>
-						</tr>
-						<tr>
-							<td>Respuesta Verbal</td>
-							<td>{{form.signos_verbal}}</td>
-						</tr>
+							<td>Escala AVPU</td>
+							<td>{{form.signos_avpu}}</td>
+
 						<tr>
 							<td>Dolor</td>
 							<td>{{form.signos_dolor}}</td>
