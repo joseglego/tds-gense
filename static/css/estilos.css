@@ -740,7 +740,8 @@ display:block;
   background: -moz-linear-gradient(top, #c6e1ec, #579bb8);
 }
 .button:hover {
-  background: #4975e3;
+  background: #C6E1EC;
+  /*background: #4975e3;*/
 }
 
 /*---------------Botones indicaciones Diagnosticas.........................*/			
@@ -778,8 +779,9 @@ display:block;
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#4a96a3), to(#05d5fa));
   background: -moz-linear-gradient(top, #4a96a3, #05d5fa);
 }
-.button:hover {
-  background: #305f61;
+.button2:hover {
+  /*background: #305f61;*/
+  background: #5EC4CD;
 }
 
 /*---------------Estilo para pdfHistMedica........................*/

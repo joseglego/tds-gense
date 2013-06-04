@@ -28,8 +28,4 @@ urlpatterns = patterns('app_emergencia.views',
     # Botones genericos de atencion:
     # Descargar historia medica 
     url('^emergencia/descarga/(?P<id_emergencia>.*)$','emergencia_descarga'),
-
-    # Funciones atencion Enfermedad Actual:
-    # Agregar narrativa de enfermedad
-    url('^emergencia/agregarCom$','emergencia_comentario'),				    
 )
