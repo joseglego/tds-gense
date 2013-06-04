@@ -20,39 +20,44 @@
     <div class="centrarA">
       <div class="contenedorA">
         <div id="leftcolumn">
-          <section class="ac-container">
+          <div class="ac-container">
                 <div>
-                  <input id="ac-1" name="accordion-1" type="radio" checked />
-                  <label for="ac-1">Información Paciente</label>
-                  <article class="ac-small">
-                    <p><b>Nombre Paciente:</b><br>{{ emergencia.paciente }}
-                    <br><b>Nombre Responsable:</b><br>{{ emergencia.responsable}}</p>
-                  </article>
-                </div>
-                <div>
-                  <input id="ac-2" name="accordion-1" type="radio" />
-                  <label for="ac-2">Motivo de Consulta</label>
+                  <input type="radio" checked/>
+                  <label> Paciente</label>
                   <article class="ac-medium">
-                    <p>Info Paciente! </p>
+                  <p>
+                    <b>Nombre:</b><br>{{ emergencia.paciente }}
+                    <br><b>Sexo:</b>&nbsp;&nbsp;{{ emergencia.paciente.sexoR}}
+                    <br><b>Responsable:</b><br>{{ emergencia.responsable}}
+                    <br><b>Hora de ingreso:</b><br>{{ emergencia.horaR}}
+                    <br><b>Motivo de conculta:</b><br>{{ triage.motivo.nombre}}
+                    
+                  </p>
                   </article>
                 </div>
+
                 <div>
-                  <input id="ac-3" name="accordion-1" type="radio" />
-                  <label for="ac-3">Signos Vitales</label>
+                  <input type="radio" checked/>
+                  <label style="height:30px;padding:0px;">Signos Vitales</label>
                   <article class="ac-large">
                     <p>
-                      <b>Signos vitales:</b>
-                      <br>Temperatura: {{ triage.signos_tmp }}
-                      <br>Frecuencia Cardiaca: {{ triage.signos_fc }}
-                      <br>Tension Arterial: {{ triage.signos_ta }}
-                      <br>Fr: {{ triage.signos_fr }}
-                      <br>Saod: {{ triage.signos_saod }}
-                      <br>glasgow: {{ triage.signos_glasgow }}
-                      <br>Dolor: {{ triage.signos_dolor }}
+                      <b>Temperatura:</b>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_tmp }}
+                      <br><b>Frecu. Cardiaca:</b> &nbsp;{{ triage.signos_fc }}
+                      <br><b>Tension Arterial:</b> &nbsp;&nbsp;&nbsp;{{ triage.signos_ta }}
+                      <br><b>Fr: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {{ triage.signos_fr }}
+                      <br><b>Saod:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {{ triage.signos_saod }}
+                      <br><b>rmotora:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rmotora }}
+                      <br><b>rocular:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rocular }}
+                      <br><b>rverbal:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rverbal }}
+                      <br><b>Dolor:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_dolor }}
+                      <p><button style="width:80px;height:30px">Actualizar</button></p>
                     </p>
                   </article>
-                </div>
-              </section>
+                </div> 
+
+            </div><!--ac-conteiner-->
             </div> <!--Fin columna izquierda-->
 
             <div id="main">

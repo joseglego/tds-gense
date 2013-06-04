@@ -1,5 +1,5 @@
 .boton-on, .boton-off:hover{
-	background: #ebebeb url(../img/Atencion/border.png) no-repeat;
+	background: #ebebeb;/* url(border.png) no-repeat;*/
 	color: #67a5cd;
 	padding: 7px 15px 7px 30px;
 	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
