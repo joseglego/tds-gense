@@ -1,14 +1,47 @@
 {% extends "atencion.html" %}
-  {% block cambia %}
-    <div id="cuerpito">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
-    <div id="info_cuerpito">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
-    <div id="form_plan">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
+{% block cambia %}
+{% if mensaje %}
+  {{ mensaje }}
+{% endif %}
 
-  {% endblock %}
+<!-- FORMULARIO PARA LLENAR DIAGNOSTICO-->
+<div class="cuadroGrande">
+<center>
+    <div class="titulo">Gestionar Egreso</div>
+        <form class= "tablaAgregar" method="post" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Diagnostico</td>
+                    <td>{{form.diagnostico}}</td>
+                </tr>
+                <tr>
+                    <td>Destino</td>
+                    <td>{{form.destino}}</td>
+                </tr>
+                <tr>
+                <!--Permaneceran ocultos, es para la opcion de Destino: Admision-->    
+                    <td>Area de Admisión</td>
+                    <td>{{form.area_admision}}</td>
+                </tr>
+                <tr><!--PREGUNTA: Podria ser la actual, sin necesidad de preguntarselo al usuario-->
+                    <td>Fecha y Hora de Traslado</td>
+                    <td>{{form.fecha_traslado}}</td>
+                </tr>
+                <!--Permaneceran ocultas-->
+
+                <tr><!--PREGUNTA: Podria ser la actual, sin necesidad de preguntarselo al usuario-->
+                    <td>Fecha y Hora de Indicacion</td>
+                    <td>{{form.fecha_indicacion}}</td>
+                </tr>
+                    <td></td>
+                    <td><input class="button-blue" type="submit" value="Ingresar" /></td>
+                </tr>
+            </table>
+        </form>
+</center>
+</div>
+    
+
+{% endblock %}
         

@@ -1,0 +1,42 @@
+{% extends "atencion.html" %}
+{% block cambia %}
+{% if mensaje %}
+  {{ mensaje }}
+{% endif %}
+
+<!-- FORMULARIO PARA LLENAR ANTECEDENTES y ENFERMEDAD ACTUAL -->
+<div class="cuadroGrande">
+<center>
+    <div class="titulo">Agregar Antecedentes</div>
+        <form class= "tablaAgregar" method="post" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Antecedentes Pertinentes</td>
+                    <td>{{form.nombreAnt}}</td>
+                    </tr>
+                <tr>
+                    <td>Alergias</td>
+                    <td>{{form.alergia}}</td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>Otros</td>
+                    <td>{{form.otro}}</td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>Narrativa</td>
+                    <td>{{form.narrativa}}</td>
+                </tr>
+                    <td></td>
+                    <td><input class="button-blue" type="submit" value="Ingresar" /></td>
+                </tr>
+            </table>
+        </form>
+</center>
+</div>
+    
+
+{% endblock %}
+        
