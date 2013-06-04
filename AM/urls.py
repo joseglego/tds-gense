@@ -21,15 +21,17 @@ urlpatterns = patterns('',
     url('^usuario/listar/(?P<cedulaU>\d+)/habilitar$','app_usuario.views.usuario_habilitar'),
     url('^usuario/listar/(?P<cedulaU>\d+)/deshabilitar$','app_usuario.views.usuario_deshabilitar'),
     url('^usuario/listar/(?P<cedulaU>\d+)/examinar$','app_usuario.views.usuario_examinar'),
-    url(r'^',include('app_atencion.urls')),
-
 
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
     url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
     url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),   
-    url('^emergencia/(?P<idE>\d+)/daralta$','app_emergencia.views.emergencia_darAlta'),   
+    url('^emergencia/(?P<idE>\d+)/daralta$','app_emergencia.views.emergencia_darAlta'),
+
+	# Atencion
+    url(r'^', include('app_emergencia.urls')),
+
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),    
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
