@@ -10,5 +10,6 @@ admin.site.register(AreaEmergencia)
 admin.site.register(AreaAdmision)
 admin.site.register(Cubiculo)
 admin.site.register(Destino)
+admin.site.register(Atencion)
 
 
