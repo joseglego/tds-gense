@@ -180,7 +180,8 @@ class Atencion(models.Model):
     fecha          = models.DateTimeField()
     fechaReal      = models.DateTimeField(auto_now_add=True)
     area_atencion  = models.CharField(max_length=1)
-    enfermedad     = models.CharField(max_length=256)   
+    #enfermedad     = models.CharField(max_length=256)
+    problema       = models.ForeignKey(Problema)
 
 class ComentarioAtencion(models.Model):
     atencion = models.ForeignKey(Atencion)
