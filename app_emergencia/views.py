@@ -544,14 +544,31 @@ def emergencia_diagnostico(request,id_emergencia):
         form = AgregarDiagnosticoForm(request.POST)
         if form.is_valid():
             pcd = form.cleaned_data
-            p_diagnostico      = pcd['diagnostico']
-            p_destino          = pcd['destino']
-            p_area_admision    = pcd['area_admision']
-            p_fecha_traslado   = pcd['fecha_traslado']
-            p_fecha_indicacion = pcd['fecha_indicacion']
+            p_diagnostico = pcd['diagnostico']
+            p_comentario  = pcd['comentario']
     form = AgregarDiagnosticoForm()
     info = {'form':form,'emergencia':emer,'triage':triage}
     return render_to_response('atencion_diag.html',info,context_instance=RequestContext(request))
             
 
 ########################################################HASTA AQUI CODIGO ATENCION
+
+@login_required(login_url='/')
+def emergencia_egreso(request,id_emergencia):
+    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+    triage = triage[0]
+    ###Codigo Form:
+    mensaje = ""
+    if request.method == 'POST':
+        form = AgregarEgresoForm(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            p_destino          = pcd['destino']
+            p_area_admision    = pcd['area_admision']
+            p_fecha_traslado   = pcd['fecha_traslado']
+            p_fecha_indicacion = pcd['fecha_indicacion']
+    form = AgregarEgresoForm()
+    info = {'form':form,'emergencia':emer,'triage':triage}
+    return render_to_response('atencion_egre.html',info,context_instance=RequestContext(request))
+            

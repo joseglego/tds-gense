@@ -24,6 +24,7 @@ urlpatterns = patterns('app_emergencia.views',
     # Ingreso a Diagnostico Definitivo
     url('^emergencia/diagnostico/(?P<id_emergencia>.*)$','emergencia_diagnostico'),
 
+    url('^emergencia/egreso/(?P<id_emergencia>.*)$','emergencia_egreso'),
 
     # Botones genericos de atencion:
     # Descargar historia medica 

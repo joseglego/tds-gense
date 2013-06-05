@@ -175,10 +175,13 @@ class AgregarIDEndosForm(forms.Form):
 
 
 class AgregarDiagnosticoForm(forms.Form):
-    diagnostico       = forms.ChoiceField(choices=TABLA_DIAG)
-    destino           = forms.ChoiceField(choices=TABLA_DEST)
-    area_admision     = forms.ChoiceField(choices=TABLA_AREADM)
-    fecha_traslado    = forms.DateTimeField()
-    fecha_indicacion  = forms.DateTimeField()
+    diagnostico = forms.ChoiceField(choices=TABLA_DIAG)
+    comentario  = forms.CharField(widget=forms.Textarea)
+    
+class AgregarEgresoForm(forms.Form):
+    destino          = forms.ChoiceField(choices=TABLA_DEST)
+    area_admision    = forms.ChoiceField(choices=TABLA_AREADM)
+    fecha_traslado   = forms.DateTimeField()
+    fecha_indicacion = forms.DateTimeField()
 
 ############################################################ Termina Forms Atencion
