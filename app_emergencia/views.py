@@ -280,10 +280,13 @@ def emergencia_descarga(request,id_emergencia):
 #---------------------------------Iniciara por default en la vista de antecedentes
 @login_required(login_url='/')
 def emergencia_atencion(request,id_emergencia):
+    print "si entrar"
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    print "paciente",paci
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    #ctx    = {'emergencia':emer,'triage':triage}
     mensaje = ""
     if request.method == 'POST':
         form = AgregarAntecedentesForm(request.POST)
@@ -294,31 +297,44 @@ def emergencia_atencion(request,id_emergencia):
             p_otro            = pcd['otro']
             # Agregar antecedente
             a = Antecedente.objects.filter(nombre=p_nombre)
+            
             if not a:
-                a = Antecedente(nombre=p_nombre)
-                a.save()
+                a1 = Antecedente(nombre=p_nombre)
+                a1.save()
+                perte1 = Pertenencia(paciente=paci,antecedente=a1)
+                perte1.save()
             else:
-                #Aqui falta agregar en la tabla pertenencia:
-                #Buscar por emergencia en paciente: a q paciente coresponde esa emergencia.
-                #creo objeto pertenencia y agrego en BD.
-                # Y tb guardo recomendacion en tabla Causa
-                mensaje = "Agregado exitosamente"
-                #return redirect('/')
-                info = {'form':form,'mensaje':mensaje}
-                return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
-    
+                ant = a[0]
+                perte = Pertenencia.objects.filter(paciente=paci,antecedente=ant)
+                if not perte:
+                    perte1 = Pertenencia(paciente=paci,antecedente=ant)
+                    perte1.save()
+                else:
+                    mensaje="Antecedente ya existente"
+                    info = {'form':form,'mensaje':mensaje}
+                    return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
+        else:
+            print "formulario invalido"
+            mensaje="Formulario invalido"
+            info = {'form':form,'mensaje':mensaje}
+            return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
+    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
+    print "antecedentes",antecedentes
     form = AgregarAntecedentesForm()
-    info = {'form':form,'emergencia':emer,'triage':triage}
+    info = {'form':form,'emergencia':emer,'triage':triage,'antecedentes':antecedentes}
     return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
 
 
 #----------------------------------Gestion de Antecedentes en area de Atencion
 @login_required(login_url='/')
 def emergencia_antecedentes(request,id_emergencia):
+    print "si entrar"
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    print "paciente",paci
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    #ctx    = {'emergencia':emer,'triage':triage}
     mensaje = ""
     if request.method == 'POST':
         form = AgregarAntecedentesForm(request.POST)
@@ -329,21 +345,33 @@ def emergencia_antecedentes(request,id_emergencia):
             p_otro            = pcd['otro']
             # Agregar antecedente
             a = Antecedente.objects.filter(nombre=p_nombre)
+            
             if not a:
-                a = Antecedente(nombre=p_nombre)
-                a.save()
+                a1 = Antecedente(nombre=p_nombre)
+                a1.save()
+                perte1 = Pertenencia(paciente=paci,antecedente=a1)
+                perte1.save()
             else:
-                #Aqui falta agregar en la tabla pertenencia:
-                #Buscar por emergencia en paciente: a q paciente coresponde esa emergencia.
-                #creo objeto pertenencia y agrego en BD.
-                # Y tb guardo recomendacion en tabla Causa
-                mensaje = "Agregado exitosamente"
-                #return redirect('/')
-                info = {'form':form,'mensaje':mensaje}
-                return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
-    
+                ant = a[0]
+                perte = Pertenencia.objects.filter(paciente=paci,antecedente=ant)
+                if not perte:
+                    perte1 = Pertenencia(paciente=paci,antecedente=ant)
+                    perte1.save()
+                else:
+                    mensaje="Antecedente ya existente"
+                    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
+                    info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'antecedentes':antecedentes}
+                    return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
+        else:
+            print "formulario invalido"
+            mensaje="Formulario invalido"
+            antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
+            info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'antecedentes':antecedentes}
+            return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
+    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
+    print "antecedentes",antecedentes
     form = AgregarAntecedentesForm()
-    info = {'form':form,'emergencia':emer,'triage':triage}
+    info = {'form':form,'emergencia':emer,'triage':triage,'antecedentes':antecedentes}
     return render_to_response('atencion_ant.html',info,context_instance=RequestContext(request))
 
 

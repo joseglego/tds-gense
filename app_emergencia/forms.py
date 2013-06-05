@@ -147,8 +147,8 @@ class calcularTriageForm(forms.Form):
 ##################################################### FORMS ATENCION
 class AgregarAntecedentesForm(forms.Form):
     nombreAnt = forms.ChoiceField(choices=TIPO_ANT)
-    alergia   = forms.CharField(max_length=64)
-    otro      = forms.CharField(max_length=64)
+    alergia   = forms.CharField(max_length=64,required=False)
+    otro      = forms.CharField(max_length=64,required=False)
     narrativa = forms.CharField(widget=forms.Textarea)
 
 # Agregar indicacion terapeutica
