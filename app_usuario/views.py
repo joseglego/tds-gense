@@ -8,7 +8,6 @@ from django.template import RequestContext
 
 # General HTML
 from django.shortcuts import render_to_response,redirect,get_object_or_404
-from django.shortcuts import render_to_response,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Manejo de Informacion de esta aplicacion
@@ -21,9 +20,8 @@ from django.core.mail import EmailMessage
 # Create your views here.
 def sesion_iniciar(request):
     if request.user.is_authenticated():
-        usuario = request.user
-        info = {'usuario':usuario}
-        return render_to_response('loged.html',info)
+        info = {}
+        return render_to_response('loged.html',info,context_instance=RequestContext(request))
     if request.method == 'POST':
         unombre = request.POST['unombre']
         uclave  = request.POST['uclave']
@@ -31,11 +29,8 @@ def sesion_iniciar(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                info = {'usuario':user}
-                siguiente = request.POST['next']
-                if siguiente:
-                    return redirect(siguiente)
-                return render_to_response('loged.html',info)
+                info = {}
+                return render_to_response('loged.html',info,context_instance=RequestContext(request))                
         msj_tipo = "error"
         msj_info = "Error en clave"
         form = IniciarSesionForm()
@@ -44,7 +39,6 @@ def sesion_iniciar(request):
     form = IniciarSesionForm()
     info = {'form':form}
     return render_to_response('index.html',info,context_instance=RequestContext(request))
-
 
 def sesion_cerrar(request):
     logout(request)
@@ -121,8 +115,9 @@ def usuario_aprobar(request,cedulaU):
 def pendiente_examinar(request,cedulaU):
     usuario = get_object_or_404(Usuario,cedula=cedulaU)
     info = {'usuario':usuario}
-    return render_to_response('pendienteExaminar.html',info)
+    return render_to_response('pendienteExaminar.html',info,context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def clave_cambiar(request):
     mensaje = ""
     if request.method == 'POST':
@@ -179,7 +174,6 @@ def clave_restablecer(request):
     form = restablecerClave()
     info = {'form':form,'mensaje':mensaje}
     return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
-
 
 def usuario_crear(request):
     mensaje = ""

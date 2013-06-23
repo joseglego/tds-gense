@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     ## APLICACIONES PROPIAS
     # Usuario
     url('^$','app_usuario.views.sesion_iniciar'),
+    url('^sesion/iniciar/$','app_usuario.views.sesion_iniciar'),
     url('^sesion/cerrar$','app_usuario.views.sesion_cerrar'),
     url('^usuario/solicitar$','app_usuario.views.usuario_solicitar'),
     url('^usuario/pendientes$','app_usuario.views.usario_listarPendientes'),
@@ -23,16 +24,22 @@ urlpatterns = patterns('',
     url('^usuario/listar/(?P<cedulaU>\d+)/examinar$','app_usuario.views.usuario_examinar'),
     url(r'^',include('app_atencion.urls')),
 
-
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),
-    url('^emergencia/listar$','app_emergencia.views.emergencia_listar'),
+    url('^emergencia/listar/todas$','app_emergencia.views.emergencia_listar_todas'),
+    url('^emergencia/listar/sinclasificar$','app_emergencia.views.emergencia_listar_sinclasificar'),
+    url('^emergencia/listar/clasificados$','app_emergencia.views.emergencia_listar_clasificados'),
+    url('^emergencia/listar/triage$','app_emergencia.views.emergencia_listar_triage'),
+    url('^emergencia/listar/atencion$','app_emergencia.views.emergencia_listar_atencion'),
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
     url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),   
     url('^emergencia/(?P<idE>\d+)/daralta$','app_emergencia.views.emergencia_darAlta'),   
+
     # Paciente
-    url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),    
+    url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
+    url('^paciente/(?P<idP>\w+)$','app_emergencia.views.paciente_perfil'),
+
     ## COSAS DJANGISTICAS
     # Admin
     url(r'^admin/', include(admin.site.urls)),

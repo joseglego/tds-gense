@@ -14,11 +14,50 @@ from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from models import *
 from forms import *
+from app_usuario.forms import *
 
-def emergencia_listar(request):    
+def emergencia_listar_todas(request):    
     lista = Emergencia.objects.filter(hora_egreso=None)
-    info = {'lista':lista}
-    return render_to_response('lista.html',info)
+    form = IniciarSesionForm()
+    info = {'lista':lista,'form':form}
+    return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+def emergencia_listar_triage(request):
+    lista = Emergencia.objects.filter(hora_egreso=None)
+    lista = [i for i in lista if i.atendido() == False]
+    form = IniciarSesionForm()
+    info = {'lista':lista,'form':form}
+    return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+def emergencia_listar_sinclasificar(request):    
+    lista = Emergencia.objects.filter(hora_egreso=None)
+    lista = [i for i in lista if i.triage() == 0]
+    form = IniciarSesionForm()
+    info = {'lista':lista,'form':form}
+    return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+def emergencia_listar_clasificados(request):    
+    lista = Emergencia.objects.filter(hora_egreso=None)
+    lista = [i for i in lista if i.triage() != 0 and i.atendido() == False]
+    form = IniciarSesionForm()
+    info = {'lista':lista,'form':form}
+    return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+def emergencia_listar_atencion(request):
+    lista = Emergencia.objects.filter(hora_egreso=None)
+    lista = [i for i in lista if i.atendido() == True]
+    form = IniciarSesionForm()
+    info = {'lista':lista,'form':form}
+    return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def paciente_perfil(request,idP):
+    p = get_object_or_404(Paciente,pk=idP)
+    ea = Emergencia.objects.filter(paciente=p)
+    ea = ea[0]
+    es = Emergencia.objects.filter(paciente=p)
+    info = {'p':p,'ea':ea,'es':es}
+    return render_to_response('perfil.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def emergencia_agregar(request):
@@ -32,16 +71,17 @@ def emergencia_agregar(request):
             p_apellidos        = pcd['apellidos']
             p_sexo             = pcd['sexo']
             p_fecha_nacimiento = pcd['fecha_nacimiento']
-            p_cel              = pcd['cod_cel'] + pcd['num_cel']
+            p_cel              = pcd['cel']
             p_email            = pcd['email']
             p_direccion        = pcd['direccion']
-            p_tlf_casa         = pcd['cod_tlf_casa'] + pcd['num_tlf_casa']
+            p_tlf_casa         = pcd['tlf_casa']
+            p_contacto_rel     = pcd['contacto_rel']
             p_contacto_nombre  = pcd['contacto_nombre']
-            p_contacto_tlf     = pcd['contacto_cod_tlf'] + pcd['contacto_num_tlf']
+            p_contacto_tlf     = pcd['contacto_tlf']
             prueba = Paciente.objects.filter(cedula=p_cedula,nombres=p_nombres,apellidos=p_apellidos)
 
             if len(prueba) == 0:
-                p = Paciente(cedula=p_cedula,nombres=p_nombres,apellidos=p_apellidos,sexo=p_sexo,fecha_nacimiento=p_fecha_nacimiento,tlf_cel=p_cel,email=p_email,direccion=p_direccion,tlf_casa=p_tlf_casa,contacto_nom=p_contacto_nombre,contacto_tlf=p_contacto_tlf)
+                p = Paciente(cedula=p_cedula,nombres=p_nombres,apellidos=p_apellidos,sexo=p_sexo,fecha_nacimiento=p_fecha_nacimiento,tlf_cel=p_cel,email=p_email,direccion=p_direccion,tlf_casa=p_tlf_casa,contacto_rel=p_contacto_rel,contacto_nom=p_contacto_nombre,contacto_tlf=p_contacto_tlf)
                 p.save()
             else:
                 p = prueba[0]
@@ -53,7 +93,7 @@ def emergencia_agregar(request):
                 e_horaIngresoReal = datetime.now()
                 e = Emergencia(paciente=p,responsable=e_responsable,ingreso=e_ingreso,hora_ingreso=e_horaIngreso,hora_ingresoReal=e_horaIngresoReal,hora_egreso=None)
                 e.save()
-                return redirect('/emergencia/listar')
+                return redirect('/emergencia/listar/todas')
             else:
                 msj_tipo = "error"
                 msj_info = "Ya este usuario esta en una emergencia. No puede ingresar a un usuario 2 veces a la emergencia"
@@ -88,7 +128,7 @@ def emergencia_darAlta(request,idE):
             form = darAlta()
             info = {'form':form,'emergencia':emergencia}
             return render_to_response('darAlta.html',info,context_instance=RequestContext(request))    
-    return redirect("/emergencia/listar")
+    return redirect("/emergencia/listar/todas")
 
 @login_required(login_url='/')
 def emergencia_aplicarTriage(request,idE,vTriage):
@@ -102,7 +142,7 @@ def emergencia_aplicarTriage(request,idE,vTriage):
             recursos = 0
             t = Triage(emergencia = emergencia,medico=medico,fechaReal=fechaReal,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=vTriage)
             t.save()
-            return redirect("/emergencia/listar")
+            return redirect("/emergencia/listar/todas")
     return redirect("/")
 
 @login_required(login_url='/')
@@ -116,7 +156,6 @@ def emergencia_calcularTriage(request,idE):
             pcd = form.cleaned_data
             f_fecha    = pcd['fecha']
             f_motivo   = pcd['motivo']
-            f_area     = pcd['area']
             f_atencion = pcd['atencion']
             f_ingreso  = pcd['ingreso']
             f_esperar  = pcd['esperar']
@@ -137,7 +176,7 @@ def emergencia_calcularTriage(request,idE):
                 t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=1)
                 t.save()
                 print "Caso 1"
-                return redirect("/emergencia/listar")
+                return redirect("/emergencia/listar/todos")
             elif (f_atencion == False) and (f_esperar == False):
                 motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
                 area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
@@ -145,7 +184,7 @@ def emergencia_calcularTriage(request,idE):
                 t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=2)
                 t.save()
                 print "Caso 2"
-                return redirect("/emergencia/listar")
+                return redirect("/emergencia/listar/todas")
             elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==1):
                 motivo = Motivo.objects.get(nombre__startswith=" Salida")
                 area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
@@ -153,7 +192,7 @@ def emergencia_calcularTriage(request,idE):
                 t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=5)
                 t.save()
                 print "Caso 3"
-                return redirect("/emergencia/listar")
+                return redirect("/emergencia/listar/todas")
             elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==2):
                 motivo = Motivo.objects.get(nombre__startswith=" Salida")
                 area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
@@ -161,7 +200,7 @@ def emergencia_calcularTriage(request,idE):
                 t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=4)
                 t.save()
                 print "Caso 4"
-                return redirect("/emergencia/listar")
+                return redirect("/emergencia/listar/todas")
             else:
                 print "Evaluar Todo"
                 # Base
@@ -233,9 +272,22 @@ def emergencia_calcularTriage(request,idE):
                     print "Dolor"
                     triage = min(triage,2)
                 
+                if (triage == 1) or (triage == 2):
+                  f_area = AreaEmergencia.objects.get(nombre__startswith="Sala de")
+                else:
+                  f_area = AreaEmergencia.objects.get(nombre__startswith="Atenci")     
+            
                 t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=f_motivo,areaAtencion=f_area,ingreso=f_ingreso,atencion=f_atencion,esperar=f_esperar,recursos=f_recursos,signos_tmp=f_temp,signos_fc=f_fc,signos_fr=f_fr,signos_pa=f_pb,signos_saod=f_saod,signos_avpu=f_avpu,signos_dolor=f_dolor,nivel=triage)
+                paciente = emergencia.paciente
+                paciente.signos_tmp = f_temp
+                paciente.signos_fc = f_fc
+                paciente.signos_fr = f_fr
+                paciente.signos_pa = f_pa
+                paciente.signos_pb = f_pb
+                paciente.signos_saod = f_saod
+                paciente.save()
                 t.save()
-                return redirect("/emergencia/listar")
+                return redirect("/emergencia/listar/todas")
         else:
             print "Error 2"
     form = calcularTriageForm()

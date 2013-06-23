@@ -11,8 +11,8 @@ COD_TELEFONICOS = (
   )
 
 class IniciarSesionForm(forms.Form):
-    unombre  = forms.CharField(max_length=64)
-    uclave   = forms.CharField(max_length=32,widget=forms.PasswordInput())
+    unombre  = forms.CharField(max_length=64,widget=forms.TextInput(attrs={'placeholder':'Nombre:','class':'span2'}))
+    uclave   = forms.CharField(max_length=32,widget=forms.PasswordInput(attrs={'placeholder':'Clave:','class':'span2'}))
 
 class SolicitarCuenta(forms.Form):
     cedula    = forms.IntegerField()

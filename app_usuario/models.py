@@ -7,11 +7,11 @@ SEXO = (
 )
 
 USUARIO = (
-    ('0','Administrador'),
     ('1','Medico'),
-    ('2','Enfermera'),
-    ('3','Secretaria'),
+    ('2','Enfermero/a'),
+    ('3','Secretario/a'),
 )
+
 # Create your models here.
 class Usuario(User):
     cedula      = models.IntegerField(default=0, unique=True)

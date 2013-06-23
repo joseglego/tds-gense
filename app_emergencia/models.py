@@ -27,59 +27,29 @@ AFIRMACION = (
 )
 
 RECURSOS = (
-    ("-1","--------"),
     (1,"Ninguno"),
     (2,"Uno"),
     (3,"Muchos"),
 )
 
-ROCULAR = (
-    (-1,"-------------------"),
-    (1,"Sin Apertura Ocular"),
-    (2,"Al Dolor"),
-    (3,"A la Voz"),
-    (4,"Espontánea"),
-)
-
-RVERBAL = (
-    (-1,"--------------------"),
-    (1,"Sin Respuesta Verbal"),
-    (2,"Sonidos"),
-    (3,"Palabras"),
-    (4,"Confuso"),
-    (5,"Orientado"),
-)
-
-RMOTORA = (
-    (-1,"----------------------"),
-    (1,"Sin Respuesta Motora"),
-    (2,"Respuesta en Extensión"),
-    (3,"Respuesta en Flexión"),
-    (4,"Retira Ante Estímulos"),
-    (5,"Localiza Estímulos"),
-    (6,"Obedece Órdenes"),
-)
-
 AVPU = (
-    ("Z","---------------"),
-    ("A","Alert - Alerta y ubicado en espacio y tiempo"),
-    ("V","Verbal - Responde ante ordenes verbales"),
-    ("P","Pain - Responde a estimulos doloros"),
-    ("U","Unconscious - Inconciente"),
+    ("A","A - Alerta y ubicado en espacio y tiempo"),
+    ("V","V - Responde ante ordenes verbales"),
+    ("P","P - Responde a estimulos doloros"),
+    ("U","U - Inconciente"),
 )
 EDOLOR = (
     (-1,"---------------"),
-    (0,"Sin Dolor"),
-    (1,"Apenas Duele"),
-    (2,"Leve"),
-    (3,"Un Poco Molesto"),
-    (4,"Moderado"),
-    (5,"Intenso"),
-    (6,"Severo"),
-    (7,"Fuerte"),
-    (8,"Muy Severo"),
-    (9,"Muy Fuerte"),
-    (10,"Intolerable"),
+    (1,"1"),
+    (2,"2"),
+    (3,"3"),
+    (4,"4"),
+    (5,"5"),
+    (6,"6"),
+    (7,"7"),
+    (8,"8"),
+    (9,"9"),
+    (10,"10"),
 )
 class AreaEmergencia(models.Model):
     tipo   = models.CharField(max_length=1,choices=AEMERGENCIA)
@@ -126,6 +96,18 @@ class Emergencia(models.Model):
         if triages:
             triage = triages[0].nivel
         return triage
+    def triages(self):
+        triages = Triage.objects.filter(emergencia=self.id).order_by("fechaReal")
+        return triages
+    def atendido(self):
+        atendido = False
+        atenciones = Atencion.objects.filter(emergencia=self.id)
+        if len(atenciones) > 0:
+            atendido = True
+        return atendido
+    def atenciones(self):
+        atenciones = Atencion.objects.filter(emergencia=self.id).order_by("fechaReal")
+        return atenciones
     def horaR(self):
         return self.hora_ingreso.strftime("%H:%M del %d/%m/%y")
 
