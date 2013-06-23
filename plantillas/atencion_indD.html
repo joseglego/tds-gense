@@ -1,0 +1,23 @@
+{% extends "atencion.html" %}
+{% block cambia %}
+{% if mensaje %}
+  {{ mensaje }}
+{% endif %}
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/estiloIcon.css" />
+<!--INDICACIONES Diagnosticas -->
+<div class="botonesDiag">
+    <table id="botoncitosD">
+        <tr>
+            <td class="iconos2"><a  href="/emergencia/descarga/{{emergencia.id}}" title="Laboratorio" class="button2" data-icon="&#xe001;"></a>
+            </td>
+            <td class="iconos2"><a  href="#" title="Microbiologia" class="button2" data-icon="&#xe006;"></a></td>
+        </tr>
+        <tr>
+            <td class="iconos2"><a  href="#" title="Imagenologia" class="button2" data-icon="&#xe005;"></a></td>
+            <td class="iconos2"><a  href="#" title="Estudios Endoscopicos" class="button2" data-icon="&#xe004;"></a></td>
+        </tr>
+    </table>
+
+</div>
+{% endblock %}
+        

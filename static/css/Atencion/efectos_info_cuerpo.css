@@ -1,0 +1,81 @@
+#elmapa{
+  position:absolute;
+  margin-top: 70px;
+  margin-left: 125px;
+
+}
+
+#elCuerpo{
+  position: absolute;
+  border:solid;
+  border-color:#fff;
+  width:350px;
+  height: 98%; 
+  margin-left: 5px;
+  margin-top: 0px;
+  OVERFLOW: auto;
+  background: #c6e1ec;
+}
+
+#cajon1{
+  position: absolute;
+  border:solid;
+  border-color:#fff;
+  width:150px;
+  height: 98%; 
+  margin-left: 365px;
+  margin-top: 0px;
+  OVERFLOW: auto;
+  background: #c6e1ec;
+}
+
+#cajon2{
+    position: absolute;
+  border:solid;
+  border-color:#fff;
+  width: 150px;
+  height:98%;
+  margin-top: 0px; 
+  margin-left: 525px;
+  OVERFLOW: auto;
+  background: #c6e1ec;
+}
+#cajon3{
+  position: absolute;
+  border:solid;
+  border-color:#fff;
+  width: 150px;
+  height: 98%; 
+  margin-top: 0px;
+  margin-left: 685px;
+  OVERFLOW: auto;
+  background: #c6e1ec;
+}
+
+#cuerpou{
+
+  position: absolute;
+  height: 100%;
+  width: 95%;
+  OVERFLOW: auto;
+  margin-left: 0px;
+  margin-top: 0px;
+  max-height: 500px;
+}
+
+
+/* efectos del scroll*/
+::-webkit-scrollbar {
+    width: 5px;
+
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}

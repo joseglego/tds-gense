@@ -1,14 +1,37 @@
 {% extends "atencion.html" %}
-  {% block cambia %}
-    <div id="cuerpito">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
-    <div id="info_cuerpito">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
-    <div id="form_plan">
-    	<h1> HOLAAAAAAAAAAAAAAAAA1</h1>
-    </div>
+{% block cambia %}
+{% if mensaje %}
+  {{ mensaje }}
+{% endif %}
 
-  {% endblock %}
+<!-- FORMULARIO PARA LLENAR DIAGNOSTICO-->
+<div class="cuadroGrande">
+<center>
+    <div class="titulo">Gestionar Egreso</div>
+        <form class= "tablaAgregar" method="post" action="">
+            {% csrf_token %}
+            <table>
+                <br></br>
+                <tr>
+                    <td>Diagnostico &nbsp;&nbsp;&nbsp;</td>
+                    <td>{{form.diagnostico}}</td>
+                </tr>
+                <tr>
+                    <td>Comentario</td>
+                    <td>{{form.comentario}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input class="button-blue" type="submit" value="Ingresar"/>
+                    </td>
+                </tr>
+            </table>
+            <br></br>
+        </form>
+</center>
+</div>
+    
+
+{% endblock %}
         

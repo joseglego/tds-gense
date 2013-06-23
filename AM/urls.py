@@ -6,6 +6,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     ## APLICACIONES PROPIAS
+    # Atencion
+  	# Atencion
+    url(r'^', include('app_emergencia.urls')),
+  
     # Usuario
     url('^$','app_usuario.views.sesion_iniciar'),
     url('^sesion/iniciar/$','app_usuario.views.sesion_iniciar'),
@@ -22,7 +26,6 @@ urlpatterns = patterns('',
     url('^usuario/listar/(?P<cedulaU>\d+)/habilitar$','app_usuario.views.usuario_habilitar'),
     url('^usuario/listar/(?P<cedulaU>\d+)/deshabilitar$','app_usuario.views.usuario_deshabilitar'),
     url('^usuario/listar/(?P<cedulaU>\d+)/examinar$','app_usuario.views.usuario_examinar'),
-    url(r'^',include('app_atencion.urls')),
 
     # Emergencias
     url('^emergencia/agregar$','app_emergencia.views.emergencia_agregar'),

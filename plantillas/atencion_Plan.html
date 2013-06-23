@@ -1,79 +1,91 @@
-
 {% extends "atencion.html" %}
   {% block cambia %}
-  <script>
-      $(document).ready(function() {
-          /*$('#ImageMap1').maphilight();*/
-          var logoHeight = $('#cuerpito #ImageMap1').height();
-          //alert("Hola"+logoHeight);
-          if (logoHeight < 73%) {
-            var margintop = (73% - logoHeight) / 2;
-            $('#cuerpito #ImageMap1').css('margin-top', margintop);
-          }
-          $('#ImageMap1').maphilight({fillColor: '0000ff',strokeColor: '0000ff',fillOpacity: 0.4});
-          $('#q1, #q2, #q3, #q4,.colorAzul').click(function(e) {
-            e.preventDefault();
-            var data = $(this).mouseout().data('maphilight') || {};
-            data.alwaysOn = !data.alwaysOn;
-            $(this).data('maphilight', data).trigger('alwaysOn.maphilight');
+    <script src ="/static/scripts/efectos_info_cuerpo.js"> </script> 
+    <script>
+      $(document).ready(function () {
+        /*Efecto Hover en el cuerpo*/
+        $('#ImageMap1').maphilight({fillColor: '63AFD0',strokeColor: 'ffffff',fillOpacity: 0.5});
+        $('.colorAzul').click(function(e) {
+          e.preventDefault();
+          var data = $(this).mouseout().data('maphilight') || {};
+          data.alwaysOn = !data.alwaysOn;
+          $(this).data('maphilight', data).trigger('alwaysOn.maphilight');
         });
-
       });
-
-     
     </script>
-    <div id="cuerpito">
-      <img id='ImageMap1' src="/static/img/cuerpoHombreNormal.png" usemap='#mapita'>
-  <map name="mapita">
-  <area class='colorAzul' shape="poly" title="piernaDer" coords="120,526,194,562,194,658,134,658,122,604,118,566,118,540" />
-  <area class='colorAzul' shape="poly" title="musloIzq" coords="196,562,276,528,272,572,266,612,262,642,256,658,200,660,196,596" />
-  <area class='colorAzul' shape="poly" title="piernaDer" coords="138,780,192,776,190,812,192,850,190,872,190,882,188,898,192,902,168,902,168,882,162,874,148,858,146,842,138,814,138,788" />
-  <area class='colorAzul' shape="poly" title="piernaIzq" coords="202,774,260,772,252,818,246,848,238,882,234,900,230,902,206,902,206,868,204,840,200,810,198,796,200,780" />
-  <area class='colorAzul' shape="poly" title="pieDer" coords="166,924,196,920,196,952,186,958,172,958,148,958,140,956,146,946,154,940,160,932" />
-  <area class='colorAzul' shape="poly" title="pieIzq" coords="200,916,200,932,202,950,204,964,222,960,236,960,260,954,246,944,238,932,240,926,238,928" />
-  <area class='colorAzul' shape="poly" title="rodillaDer" coords="146,688,168,692,194,696,196,710,192,738,188,754,176,758,160,760,152,756,142,752,146,736,152,712,148,702" />
-  <area class='colorAzul' shape="poly" title="rodillader" coords="204,694,230,686,246,696,254,734,246,752,224,758,212,752,204,744,198,720,202,700,198,700" />
-  <area class='colorAzul' shape="poly" title="genitales" coords="180,514,186,546,198,550,210,548,210,532,210,518,196,514" />
-  <area class='colorAzul' shape="poly" title="manoIzq" coords="360,510,326,512,324,542,328,572,338,596,350,606,358,608,370,602,368,568,368,552,370,548,382,556,390,556,386,546,380,532,368,520" />
-  <area class='colorAzul' shape="poly" title="brazoIzq" coords="270,384,314,362,328,394,332,434,348,486,352,494,320,498,280,432,272,410" />
-  <area class='colorAzul' shape="poly" title="anteBrazoIzq" coords="300,222,272,306,268,340,268,358,272,364,310,346,306,300,306,260,300,230" />
-  <area class='colorAzul' shape="poly" title="abdomen" coords="122,324,264,324,254,374,258,418,262,436,256,444,134,442,136,388,126,362" />
-  <area class='colorAzul' shape="poly" title="manoDer" coords="36,510,70,522,66,564,62,586,52,596,40,610,26,608,26,600,20,552,6,558,4,556,10,546,14,536,18,522,28,510" />
-  <area class='colorAzul' shape="poly" title="brazoDer" coords="76,360,118,380,112,424,92,464,78,496,72,504,44,488,66,390" />
-  <area class='colorAzul' shape="poly" title="antebrazoDer" coords="90,220,116,304,120,328,116,360,116,362,86,350,84,284,82,244" />
-  <area class='colorAzul' shape="poly" title="pecho" coords="150,186,110,198,92,210,100,224,100,236,102,250,108,266,112,284,120,296,122,300,132,304,136,304,172,310,264,306,274,290,290,258,292,226,292,216,294,210,296,208,272,198,256,190,240,184" />
-  <area class='colorAzul' shape="circle" coords="263,37,5" />
-  <area class='colorAzul' shape="circle" title="cabeza" coords="194,102,64" />
-</map>
-    </div>
-    <div id="info_cuerpito">
+  
+    <div id="cuerpou">
+        <div id='elCuerpo'>  
+          <div id='elmapa'>
+            <img id='ImageMap1' src="/static/img/Atencion/cuerpo.png" usemap='#mapita'>
+              <map class='pcuerpo' name="mapita">
+                <area id ="Pies" class='colorAzul' shape="poly" title="PieDerecho" alt="PieDerecho" href="#" coords="58,262,57,271,59,273,65,273,71,273,72,271,69,268,67,265,66,263,65,262,59,262" />
+                <area class='colorAzul'shape="poly" title="PieIzquierdo" alt="PieIzquierdo" href="#" coords="48,262,46,266,44,267,43,269,40,270,41,272,47,274,55,274,56,272,55,261,52,262,49,262" />
+                <area id='Piernas' class='colorAzul' shape="poly" title="PiernaDerecha" alt="PiernaDerecha" href="#" coords="56,158,59,157,62,157,64,156,76,156,78,155,78,168,78,171,77,177,76,180,75,183,75,185,74,188,73,191,71,197,71,202,71,205,72,211,73,213,74,215,74,218,74,224,74,229,74,231,74,233,73,236,72,239,71,242,70,245,69,248,68,251,67,254,67,258,67,261,65,262,59,262,58,235,58,230,58,206,57,204,57,159" />
+                <area id='Piernas' class='colorAzul' shape="poly" title="PiernaIzquierda" alt="PiernaIzquierda" href="#" coords="33,153,37,155,46,155,48,156,54,156,56,157,56,161,56,166,56,178,57,180,57,207,56,209,56,212,55,214,55,217,56,219,55,257,54,262,51,262,49,261,48,256,45,247,43,243,42,238,41,235,40,229,40,227,40,215,41,213,41,210,42,208,42,199,41,197,40,194,39,191,38,188,37,186,37,183,35,179,34,170,34,168,33,154" />
+                <area id='Manos' class='colorAzul' shape="poly" title="ManoDerecha" alt="ManoDerecha" href="#" coords="92,148,92,151,92,153,93,162,96,168,98,169,99,171,101,172,103,171,104,169,106,168,106,156,106,156,108,157,111,157,111,154,110,152,108,151,105,145,103,146,100,146,96,148,93,148" />
+                <area id='Manos' class='colorAzul'shape="poly" title="ManoIzquierda" alt="ManoIzquierda" href="#" coords="10,144,8,145,7,147,5,148,2,154,2,157,3,159,4,157,8,155,6,156,7,166,6,168,7,172,12,174,14,172,16,170,18,169,19,165,20,156,20,153,20,147,14,147,12,146,12,143" />
+                <area id='Pelvis' class='colorAzul' shape="poly" title="Pelvis" alt="Pelvis" href="#" coords="37,127,37,130,43,133,44,135,46,136,49,142,49,145,50,147,50,156,52,157,58,157,60,153,60,147,64,139,66,138,67,136,69,135,70,133,73,132,75,131,76,129,75,127,66,127,63,127,61,127,59,127,53,127,51,127,49,127,40,127,38,126,36,127" />
+                <area id='Cadera' class='colorAzul' shape="poly" title="CaderaDerecha" alt="CaderaDerecha" href="#" coords="60,156,60,150,61,145,62,143,63,141,65,138,67,136,69,134,71,133,74,131,76,131,77,134,77,136,78,139,79,142,79,146,79,150,79,154,76,156,64,156,62,156,60,156" />
+                <area id='Cadera' class='colorAzul' shape="poly" title="CaderaIzquierda" alt="CaderaIzquierda" href="#" coords="34,152,34,140,35,138,36,135,37,131,38,131,39,131,43,134,44,135,46,137,47,138,50,142,50,155,47,156,44,156,39,155,35,153" />
+                <area id='Brazos' class='colorAzul' shape="poly" title="BrazoDerecho" alt="BrazoDerecho" href="#" coords="77,84,79,83,81,82,85,80,86,78,87,80,88,80,88,97,89,100,90,102,91,104,94,113,94,116,95,118,95,121,96,123,97,126,98,130,99,133,103,143,102,145,98,147,92,147,90,140,82,123,81,120,80,118,79,115,78,109,78,103,77,100,77,85" />
+                <area id='Brazos' class='colorAzul' shape="poly" title="BrazoIzquierda" alt="BrazoIzquierda" href="#" coords="24,73,24,76,24,79,24,92,24,95,24,98,22,102,22,105,18,113,18,116,17,118,16,124,15,128,15,131,13,135,13,138,12,140,12,143,13,145,15,146,18,146,20,145,31,123,32,120,32,117,34,114,34,109,35,105,35,96,35,93,35,84,33,80,31,79,30,77,26,75,25,73" />
+                <area id='Abdomen' class='colorAzul' shape="poly" title="Abdomen" alt="Abdomen" href="#" coords="37,126,40,127,48,127,75,127,75,124,74,121,74,120,74,110,74,107,74,102,75,100,76,97,77,94,77,92,77,90,77,87,77,85,72,86,70,86,67,86,65,86,44,86,40,84,37,84,35,83,35,86,36,88,36,94,36,97,37,103,39,109,39,113,39,115,38,124" />
+                <area id='Pecho' class='colorAzul' shape="poly" title="Pecho" alt="Pecho" href="#" coords="31,75,32,73,34,72,35,70,37,69,38,67,40,65,42,61,46,59,52,59,54,59,56,59,68,59,73,67,75,69,77,70,79,72,87,75,87,79,79,83,76,84,73,85,70,85,68,86,66,86,45,86,42,85,38,84,34,82,33,80,31,79,31,76" />
+                <area id='Hombros' class='colorAzul' shape="poly" title="HombroDerecho" alt="HombroDerecho" href="#" coords="71,58,73,57,74,55,77,55,83,58,84,60,86,61,87,63,87,74,84,74,80,72,78,71,76,69,75,68,73,66,72,65,69,59,71,58" />
+                <area id='Hombros' class='colorAzul' shape="poly" title="HombroIzquierdo" alt="HombroIzquierdo" href="#" coords="24,72,24,66,26,62,27,59,28,57,34,55,35,56,39,58,42,59,45,59,43,60,42,62,40,64,39,66,37,68,35,71,34,72,32,74,28,76,26,75,25,73" />
+                <area id='Cuello' class='colorAzul' shape="poly" title="Cuello" alt="Cuello" href="#" coords="36,54,44,50,46,48,47,46,47,42,55,47,58,47,62,45,62,42,66,50,68,51,71,52,77,55,68,59,56,59,54,59,45,59,40,58,38,57,36,56,35,54" />
+                <area id ="Cabeza" class='colorAzul' shape="poly" title="cabeza" alt="cabeza" href="#" coords="48,41,43,31,43,22,47,14,50,12,53,12,56,12,60,12,63,13,65,15,67,17,67,19,68,22,67,33,61,47,59,48,53,48,52,46,50,45,48,41" />
+              </map>
+            </div>
+          </div>
+        <div id ="cajon1" >
+          <p style='margin-left: 8px;margin-top:8px'>Sintomas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button style="width: 30px" id="boton1">X</button></p>
+          <div>
+            <ul class="navDer1" style="position:absolute;list-style: none;margin-left:0px;padding: 30px 0 60px 0;
+  background: url(../img/shad2.png) no-repeat;
+  -webkit-background-size: 50% 100%;">
+
+              {% for pres in presente %}
+                <li id ="{{pres.sintoma.nombre}}" class='pc' zona="{{pres.zona.nombre}}" problem ="{{pres.sintoma.nombre}}">
+                  <a class='boton-off'>{{pres.sintoma.nombre}}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div id = "cajon2">
+          <p style='margin-left: 8px;margin-top:8px'>Causas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button style="width: 30px" id="boton2">X</button></p>
+         
+        <div>
+         <ul class="navDer1" style="position:absolute;list-style: none;margin-left:0px;padding: 30px 0 60px 0;
+  background: url(../img/shad2.png) no-repeat;
+  -webkit-background-size: 50% 100%;">
+
+            {% for ori in origen %}
+              <li id ="{{ori.causa.nombre}}" class='causa' problem ="{{ori.problema.nombre}}">
+                <a class='boton-off'>{{ori.causa.nombre}}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
       
-                <table id= tabMod>
-                      <tr>
-                      <th colspan=1 > SINTOMAS ASOCIADOS A <br> Cabeza</th>
-                    
-                      </tr>
-                      <td align='center'>  </td>
-
-                      
-                    </tr><tr>
-                      <td align='center'>  </td>
-
-                      
-                    </tr><tr>
-                      <td align='center'>  </td>
-
-                      
-                    </tr><tr>
-                      <td align='center'>  </td>
-
-                      
-                    </tr>
-    </table>
-    </div>
-    <div id="form_plan">
-      <!--h1> JEEEEEEEEEEEEEEEEE</h1-->
+      <div id = "cajon3">
+         <p style='margin-left: 8px;margin-top:8px'>Descripcion&nbsp; &nbsp; &nbsp; &nbsp;<button style="width: 30px" id="boton3">X</button></p>
+        <div>
+          <ul class="navDer1" style="position:absolute;list-style: none;margin-left:0px;padding: 30px 0 60px 0;
+  background: url(../img/shad2.png) no-repeat;
+  -webkit-background-size: 50% 100%;">
+            {% for ori in origen %}
+              <li id ="{{ori.causa.descripcion}}" class='pres' causa ="{{ori.causa.nombre}}">
+                <a class='boton-off'>{{ori.causa.descripcion}}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
 
   {% endblock %}
-        
+      
