@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 # Formularios
 from django.core.context_processors import csrf
 from django.template import RequestContext
+from django.forms.widgets import CheckboxSelectMultiple
 
 # General HTML
 from django.shortcuts import render_to_response,redirect,get_object_or_404
@@ -67,19 +68,26 @@ def usuario_solicitar(request):
             u_email            = pcd['email']
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
+            u_administrador    = pcd['administrador']
             prueba = Usuario.objects.filter(cedula=u_cedula)
             prueba2 = (u_clave==u_clave0)
-            if not prueba and prueba2:
-                u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
-                u.is_active = False
-                u.set_password(u_clave)
-                if u_tipo == 1:
-                    u.is_staff = True
-                u.save() 	
-                return redirect('/')
+            if not prueba:
+                if prueba2:
+		              u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,administrador=u_administrador,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+		              u.is_active = True
+		              u.set_password(u_clave)
+		              if u_administrador == True:
+		                  u.is_staff = True
+		              u.save() 	
+		              return redirect('/')
+                else:
+		                msj_info = "No hubo coincidencia con las claves ingresadas"     
             else:
-                mensaje = "Ya hay un usuario registrado con esa cedula o no hubo coincidencias en las contrasenas ingresadas"     
-        info = {'form':form,'mensaje':mensaje}
+		            msj_info = "Ya hay un usuario registrado con esa cedula"     
+        else:
+            msj_info = "Error con el formulario"
+        msj_tipo = "error"
+        info = {'msj_tipo':msj_tipo,'msj_info':msj_info,'form':form}
         return render_to_response('solicitar.html',info,context_instance=RequestContext(request))
     form = SolicitarCuenta()
     info = {'form':form}
@@ -88,7 +96,7 @@ def usuario_solicitar(request):
 @login_required(login_url='/')
 def usario_listarPendientes(request):    
     listaP = Usuario.objects.filter(habilitado=False)
-    info = {'listaP':listaP}
+    info = {'listaP':listaP} 
     return render_to_response('usuariosPendientes.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -181,6 +189,7 @@ def clave_restablecer(request):
     return render_to_response('restablecerClave.html',info,context_instance=RequestContext(request))
 
 
+
 def usuario_crear(request):
     mensaje = ""
     if request.method == 'POST':
@@ -198,24 +207,30 @@ def usuario_crear(request):
             u_email            = pcd['email']
             u_clave            = pcd['clave']
             u_clave0           = pcd['clave0']
+            u_administrador    = pcd['administrador']
             prueba = Usuario.objects.filter(cedula=u_cedula)
             prueba2 = (u_clave==u_clave0)
-            if not prueba and prueba2:
-                u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
-                u.is_active = True
-                u.set_password(u_clave)
-                if u_tipo == 1:
-                    u.is_staff = True
-                u.save() 	
-                return redirect('/')
+            if not prueba:
+                if prueba2:
+		              u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,administrador=u_administrador,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+		              u.is_active = True
+		              u.set_password(u_clave)
+		              if u_administrador == True:
+		                  u.is_staff = True
+		              u.save() 	
+		              return redirect('/')
+                else:
+		            	msj_info = "No hubo coincidencia con las claves ingresadas"     
             else:
-                mensaje = "Ya hay un usuario registrado con esa cedula o no hubo coincidencias en las contrasenas ingresadas"     
-        info = {'form':form,'mensaje':mensaje}
+		        	msj_info = "Ya hay un usuario registrado con esa cedula"     
+        else:
+        	msj_info = "Error con el formulario"
+        msj_tipo = "error"
+        info = {'msj_tipo':msj_tipo,'msj_info':msj_info,'form':form}
         return render_to_response('crearUsuario.html',info,context_instance=RequestContext(request))
     form = SolicitarCuenta()
     info = {'form':form}
     return render_to_response('crearUsuario.html',info,context_instance=RequestContext(request))
-
 
 @login_required(login_url='/')
 def usuario_deshabilitar(request,cedulaU):
