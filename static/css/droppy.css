@@ -16,7 +16,7 @@
 
 /* Everything else is theming */
  
-.droppy { background-color: #0099cc; height: 24px; }
+.droppy { background-color: #008ebc; height: 24px; }
 .droppy *:hover { background-color: none; }
 .droppy a { border-right: 1px solid white; color: white; font-size: 12px; font-family:Arial; padding: 6px; line-height: 1; text-decoration:none; font-weight:bold; }
   .droppy li.hover a { background-color: #5E5A5A; }

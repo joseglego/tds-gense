@@ -1,0 +1,38 @@
+body {
+  margin-top:65px;
+}
+
+#footer {
+  padding-top: 10px;
+  border-top: 2px solid #eee;
+  border-top:10px;
+}
+
+.navbar .nav>li>a {
+  padding: 15px;
+}
+
+.navbar-form input, .navbar-form select, .navbar-form .radio, .navbar-form .checkbox{
+  margin-top: 10px;
+}
+
+td img {
+  width:24px;
+}
+
+.usuario {
+  margin-top:15px;
+  color: #008ebc;
+  font-weight:bold;
+}
+
+.usuario a {
+  color: #08c;
+  text-decoration: none;
+  font-weight:normal;
+}
+
+.usuario a:hover, .usuario a:focus {
+  color: #005580;
+  text-decoration: underline;
+}

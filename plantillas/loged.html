@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 {% block cuerpo %}
-  <div class="centrar">
-  	<div class="cuadroGrande">
-  		<div class="titulo">Inicio de Sesión Exitoso</div>
-	  	<center>			
-		  	<div class="exito">					
-	 				<p>Ud ya inició sesión como {{ usuario }}.</p>
-					<p>Si desea puede <a href="/sesion/cerrar">Cerrar Sesión</a></p>
-				</div>	
-			</center>				
-		</div>
+<div class="row  text-center">
+  <div class="span4">
+    <a href="/emergencia/agregar"class="btn">  
+      <img src="/static/img/menus/agregar.png" />
+      <h3>Agregar Persona</h3>
+    </a>
   </div>
+  <div class="span4 color">
+    <a href="/emergencia/listar/triage" class="btn">
+      <img src="/static/img/menus/triage.png" />
+      <h3>Area de Clasificaci&oacute;n</h3>
+    </a>
+  </div>
+  <div class="span4 color">
+    <a href="/emergencia/listar/atencion"class="btn">
+      <img src="/static/img/menus/atencion.png" />
+      <h3>Area de Atenci&oacute;n</h3>
+    </a>
+  </div>
+</div>
 {% endblock %}

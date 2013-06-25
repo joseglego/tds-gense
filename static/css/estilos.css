@@ -3,21 +3,21 @@
   margin:0px;
 }
 
-body {
-  background-color: #EEE;	
-}
-
 #cabecera {
-	background-color:white;
-  /*background-image:url('./cabecera.png');*/
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 110px;
+  padding-top:5px;
+  height: 65px;
 }
 
+.row {
+  background-color:white;
+}
+body {
+  background-color: #008ebc;
+}
 #cuerpo{
 	background-color:white;
 	padding: 10px 0px 0px 0px;
+	min-height:525px;
 }
 
 
@@ -25,11 +25,11 @@ body {
   font-family: 'Raleway', sans-serif;
   font-size: 12px;
   font-weight: bold;
-  padding: 2px;
-  border-top-width: 2px;
-  border-top-style: solid;
-  border-top-color: #BBB;
-  background-color: #EEE;
+  background-image:url('./bg-pie.jpg');
+  background-repeat: repeat-x;
+  padding-top:20px;
+  background-color: #008ebc;
+  color: white;
 }
 
 .centrado {
@@ -37,34 +37,34 @@ body {
 }
 
 .centrar {
-	width: 924px;
-	margin: 0px auto 0px auto;
+  float: none;
+  margin: 0px auto;
 }
 
 .separador {
   height:6px;
-  background-color: #0099CC;  
+  background-color: #008ebc;  
 }
 
 .menu {
-  background-color:#0099cc;	
+  background-color:#008ebc;	
 }
 #navBar {
   width: 650px;
   margin: 0px auto 0px auto;  
 }
 
+form {
+  margin: 0px;
+  padding: 0 0 10px;
+}
 .cuadro {
   font-family: 'Raleway', sans-serif;
   float: left;
-  width: 248px;
   margin: 10px;
   padding: 10px 20px;
 }
-.span3 {
-
-
-}.cuadro.span3 a {
+.cuadro.span3 a {
 	font-family: 'Raleway', sans-serif;
 	text-align: center;
 	font-weight: bold;
@@ -104,14 +104,13 @@ body {
 .infoPrincipal {
   font-family: 'Raleway', sans-serif;
   float: left;
-  width: 500px;
   margin: 5px 10px;
   padding: 5px 10px;
 }
 
 .info1 {
 	font-weight: bold;
-	color: #0099cc;  
+	color: #008ebc;  
 }
 
 .info2 {
@@ -130,11 +129,11 @@ body {
 
 .tablaEstados {
 	font-family: 'Raleway', sans-serif;
-	border-color: #0099cc;
+	border-color: #008ebc;
 	background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 	width: 95%; 
 	margin: 5px;
-	border: 1px solid #0099cc;
+	border: 1px solid #008ebc;
 	padding:3px 7px 2px 7px;
 	border-collapse:collapse;
 	text-align:left;
@@ -143,7 +142,7 @@ body {
 .tablaEstados th{
 	border-color: #007aa1;
 	color: white;
-	background-color: #0099cc;
+	background-color: #008ebc;
 	padding:3px 7px 2px 7px;
 }
 
@@ -155,22 +154,14 @@ body {
   position: relative;
 }
 
-.cuadro.span3  {
+.cuadro  {
 	border: 2px solid #ddd;
   background: -webkit-linear-gradient(top,#fff 0,#ddd 100%);
 	border-radius: 6px;
 }
 
 .cuadro.span3 a {
-	margin: 20px !important;
-}
-
-#noticias{
-  overflow: hidden;
-}
-
-#cabecera {
-  height: 90px !important;
+	margin: 10px 5px !important;
 }
 
 .campoCI {
@@ -221,72 +212,6 @@ input {
   padding:2px;
   margin:5px;
 }
-/*
-
-#cabecera {
-  height: 150px !important;
-}
-
-.menu {
-  background-color: #FFFFFF;
-  display: inline;
-}
-
-.barraMenu {
-	font-family: 'Raleway', sans-serif;
-	padding: 10px;
-	color: #3c3e4d;
-}
-
-.barraMenu a {
-	color: #3c3e4d;
-	margin-bottom: 10px;
-	text-decoration: none;
-}
-
-.barraMenu ul {
-	font-size:20px;
-	margin:15px;
-	padding:5;
-	list-style:none;
-}
-
-#navBar li {
-	display: inline;
-}
-
-
-.imagenLogo {
-	float: left;	
-	margin-top: 20px;
-}
-
-#navBar {
-  width: auto;
-  margin: 5px;  
-}
-
-
-#pacientesMenu {
-	font-size:14px;
-}
-
-
-#pacientesMenu a {
-	text-transform: none;
-}
-
-#pacientesMenu li{
-	display:list-item;
-}
-
-#separacion {
-	height: 5px;
-  background-color:#EEE;	
-}
-
-
-*/
 
 .exito {
 	font-family: 'Raleway', sans-serif;
@@ -372,6 +297,10 @@ td ul {
 .msj-error-titulo {
 	font-weight:bold;
 }
+
+td ul,td ol {
+  list-style-type: none;
+  float: left;
 /**********************************************************************
 *																	  *
 * 				Estilo para vistas del area de atencion 			  *
