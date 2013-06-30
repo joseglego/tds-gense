@@ -128,7 +128,13 @@ class darAlta(forms.Form):
     area     = forms.ModelChoiceField(required=False,queryset=AreaAdmision.objects.all())
     darAlta  = forms.DateTimeField()
     traslado = forms.DateTimeField(required=False)
-    
+
+class BuscarEmergenciaForm(forms.Form):
+    cedula = forms.CharField(max_length=11,required=False)
+    nombres = forms.CharField(max_length=32,required=False)
+    apellidos = forms.CharField(max_length=32,required=False)
+
+
 class calcularTriageForm(forms.Form):
     fecha         = forms.DateTimeField()
     motivo        = forms.ModelChoiceField(required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))

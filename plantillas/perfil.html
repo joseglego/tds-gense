@@ -26,6 +26,7 @@
 
   <div class="span3">
     <h4>Signos Vitales</h4>
+    (Ultima Actualizacion: {{ea.fecha_triage}})<br/>
     <strong>Temperatura:</strong> {{p.signos_tmp}}<br/>
     <strong>Frecuencia Cardiaca:</strong> {{p.signos_fc}}<br/>
     <strong>Frecuencia Respiratoria:</strong> {{p.signos_fr}}<br/>
@@ -45,7 +46,7 @@
 
 {% endif %}
   <div class="span12">
-  <h3>Historia</h3>
+  <h3>Historia M&eacute;dica Completa</h3>
     {% for e in es %}
       <h4> Emergencia ID:{{ e.id }} </h4>
         <strong>Inicio:</strong> {{ e.hora_ingreso }}

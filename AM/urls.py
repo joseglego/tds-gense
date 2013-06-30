@@ -37,11 +37,16 @@ urlpatterns = patterns('',
     url('^emergencia/(?P<idE>\d+)/t(?P<vTriage>\d+)$','app_emergencia.views.emergencia_aplicarTriage'),
     url('^emergencia/(?P<idE>\d+)/triage/calcular$','app_emergencia.views.emergencia_calcularTriage'),   
     url('^emergencia/(?P<idE>\d+)/daralta$','app_emergencia.views.emergencia_darAlta'),   
+    url('^emergencia/buscar$','app_emergencia.views.emergencia_buscar'),   
 
+    # Estadisticas
+    url('^estadisticas/$','app_emergencia.views.estadisticas'),
+    url('^estadisticas/mes/(?P<ano>\d+)-(?P<mes>\d+)$','app_emergencia.views.estadisticas_mes'),
+                       
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
-    url('^paciente/(?P<idP>\w+)$','app_emergencia.views.paciente_perfil'),
+    url('^paciente/(?P<idP>\w+)$','app_perfil.views.paciente_perfil'),
 
     ## COSAS DJANGISTICAS
     # Admin
