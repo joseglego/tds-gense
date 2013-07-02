@@ -3,8 +3,8 @@
 {% if mensaje %}
   {{ mensaje }}
 {% endif %}
-<div class="centrar">
-  <div class="cuadroGrande">
+<div class="container row">
+  <div class="span12">
     <h4>{{titulo}}</h4>
     <form class= "tablaAgregar" method="post">
       {% csrf_token %}
@@ -18,7 +18,7 @@
 	    {% endfor %}
 	<tr>
 	  <td></td>
-	  <td><input class="button-blue" type="submit" value="{{boton}}" /></td>
+	  <td><input class="btn btn-primary" type="submit" value="{{boton}}" /></td>
 	</tr>
       </table>
     </form>

@@ -3,9 +3,9 @@
 {% if mensaje %}
   {{ mensaje }}
 {% endif %}
-<div class="centrar">
-  <div class="cuadroGrande">
-    <div class="titulo">Solicitar Cuenta</div>
+<div class="container row">
+  <div class="span12">
+    <h4>Restablecer Clave</h4>
     <form class= "tablaAgregar" method="post" action="/usuario/restablecer">
       {% csrf_token %}
       <table>
@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 	  <td></td>
-	  <td><input class="button-blue" type="submit" value="Enviar Solicitud" /></td>
+	  <td><input class="btn btn-primary" type="submit" value="Enviar Solicitud" /></td>
 	</tr>
       </table>
     </form>

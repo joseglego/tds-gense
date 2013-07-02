@@ -67,7 +67,7 @@ def usuario_solicitar(request):
             prueba2 = (u_clave==u_clave0)
             if not prueba:
                 if prueba2:
-		              u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=True,last_name=u_apellidos,tipo=u_tipo,administrador=u_administrador,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
+		              u = Usuario(username=u_cedula,cedula=u_cedula,first_name=u_nombres,habilitado=False,last_name=u_apellidos,tipo=u_tipo,administrador=u_administrador,sexo=u_sexo,tlf_cel=u_cel,direccion=u_direccion,tlf_casa=u_tlf_casa,email=u_email,password=u_clave)
 		              u.is_active = True
 		              u.set_password(u_clave)
 		              if u_administrador == True:
@@ -117,6 +117,8 @@ def usuario_aprobar(request,cedulaU):
 	usuario.habilitado = True
 	usuario.is_active = True
 	usuario.save()
+	email = EmailMessage('[GenSE] Admin - Activacion de Cuenta','Estimado/a '+usuario.first_name+' '+usuario.last_name+'\n\nSe aprobo su solicitud de activacion de cuenta\n\nSaludos,\nAdministrador del Sistema', to=[usuario.email]) 
+	email.send()
 	return redirect("/usuario/pendientes")
 
 @login_required(login_url='/')
@@ -169,7 +171,7 @@ def clave_restablecer(request):
             else:
                 usuario = usuario[0]
                 clave = User.objects.make_random_password()
-                email = EmailMessage('[GenSE] Admin - Cambio de Clave','Estimado '+usuario.first_name+' '+usuario.last_name+'\n\nSe recibio una solicitud de cambiar su clave, la nueva clave es: '+clave+'\n\nSaludos\nAdministrador del Sistema', to=[f_correo]) 
+                email = EmailMessage('[GenSE] Admin - Cambio de Clave','Estimado/a '+usuario.first_name+' '+usuario.last_name+'\n\nSe recibio una solicitud de cambiar su clave, la nueva clave es: '+clave+'\n\nSaludos,\nAdministrador del Sistema', to=[f_correo]) 
                 email.send()
                 usuario.set_password(clave)
                 usuario.save()

@@ -8,11 +8,11 @@
     <h4>Lista  de Pacientes {{titulo}}</h4>
     <div class="text-right">
       <a href="/emergencia/buscar">Buscar Paciente</a> | 
-      <a href="/emergencia/listar/todas">Area de Emergencias</a> | 
-      <a href="/emergencia/listar/triage">Area de Triage</a> | 
+      <a href="/emergencia/listar/todas">&Aacute;rea de Emergencias</a> | 
+      <a href="/emergencia/listar/triage">&Aacute;rea de Triage</a> | 
       <a href="/emergencia/listar/sinclasificar">Pacientes por Clasificar</a> |
       <a href="/emergencia/listar/clasificados">Pacientes Clasificados</a> |
-      <a href="/emergencia/listar/atencion">Area de Atenci&oacute;n</a> 
+      <a href="/emergencia/listar/atencion">&Aacute;rea de Atenci&oacute;n</a> 
     </div>
 
     {% if lista %}
@@ -39,7 +39,7 @@
           <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/estados/triage.png" title="Realizar Triage"/></a>
         </td>
         {% endif %}
-	<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" />{% endif %}</td>
+	<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
 	<td><img src="/static/img/estados/alarmaVerde.png" /></td>
       </tr>	
       {% endfor %}

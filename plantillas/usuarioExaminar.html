@@ -22,11 +22,11 @@
 	    <p> {{usuario.tlf_cel}}  /  {{usuario.tlf_casa}}</p>
 			<div class="iconos">
 			{% if usuario.is_active != True %}
-				<a href="/usuario/listar/{{usuario.cedula}}/habilitar"><img src="/static/img/aprobar.png" title="Habilitar"/></a>
+				<a href="/usuario/listar/{{usuario.cedula}}/habilitar"><img src="/static/img/usuarios/aprobar.png" title="Habilitar"/></a>
      	{% else %}
-				<a href="/usuario/listar/{{usuario.cedula}}/deshabilitar"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
+				<a href="/usuario/listar/{{usuario.cedula}}/deshabilitar"><img src="/static/img/usuarios/negar.png" title="Deshabilitar"/></a>
      	{% endif %}
-				<a href="/usuario/listar"><img src="/static/img/lista.png" title="Regresar a Lista de Usuarios"/></a>
+				<a href="/usuario/listar"><img src="/static/img/usuarios/lista.png" title="Regresar a Lista de Usuarios"/></a>
 		</table>	
   </div>
 </div>
