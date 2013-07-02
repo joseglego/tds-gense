@@ -3,12 +3,11 @@
 {% if mensaje %}
 {{mensaje}}
 {% endif %}
-<div class="centrar">
-  <div class="cuadroGrande">
-  	<div class="titulo">Examinar Usuario</div>
-  	<div class="exito">					
-			<p class ="categoria"> C&eacute;dula de Identidad:</p> 
-			<p> {{usuario.cedula}}</p></br>
+<div class="row">
+  <div class="cuadroGrande span12 centrar">
+  	<h4>Examinar Usuario</h4>
+		<table class="table table-bordered table-striped">
+			<p class ="categoria"> C&eacute;dula de Identidad:</p> 			<p> {{usuario.cedula}}</p></br>
 	    <p class ="categoria"> Nombre: </p>
 	    <p> {{usuario.first_name}} {{usuario.last_name}}</p></br>
 			<p class ="categoria"> Sexo: </p>
@@ -28,8 +27,7 @@
 				<a href="/usuario/listar/{{usuario.cedula}}/deshabilitar"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
      	{% endif %}
 				<a href="/usuario/listar"><img src="/static/img/lista.png" title="Regresar a Lista de Usuarios"/></a>
-			</div>	
-		</div>				
+		</table>	
   </div>
 </div>
 {% endblock %}

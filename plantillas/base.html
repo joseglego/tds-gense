@@ -2,26 +2,7 @@
 <html lang="es">
   <head>
     <title> Atenci&oacute;n M&eacute;dica </title>
-    <link rel="stylesheet" type="text/css" href="/static/css/estilos.css" />
-	
-  <!-- Bootstrap --> 
-    <script src="/static/libs/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
-    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
 
-
-    <link rel="stylesheet" href="/static/css/estilos.css" type="text/css" />
-    <script type="text/javascript" src="/static/libs/js/jquery.min.js"></script>   
-    <script type="text/javascript" src="/static/js/script.js"></script>  
-    <link rel="stylesheet" href="/static/css/droppy.css">
-    <script type="text/javascript" src="/static/libs/js/jquery.droppy.js"></script>
-    
-    <script type='text/javascript'>
-      $(function() {
-      $('#nav').droppy();
-      });
-    </script>
-    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css">
@@ -78,6 +59,16 @@
                   <li><a href="/emergencia/listar/clasificados">Pacientes por Atencion</a></li>
                 </ul>
               </li>
+      {% if user.is_staff %}
+	      <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+                  <li><a href="/usuario/crear">Crear</a></li>
+                  <li><a href="/usuario/listar">Listar</a></li>
+                  <li><a href="/usuario/pendientes">Pendientes</a></li>
+                </ul>
+              </li>
+      {% endif %}
       {% else %}
         <li><a href="/emergencia/buscar/">Buscar</a></li>
 	      <li class="dropdown">
@@ -115,8 +106,6 @@
     </div>
     <div class="container">
       {% if msj_info %}
-      <div class="container">
-        <div class="alert alert-{{msj_tipo}}">
       <div class="row">
         <div class="span12 alert alert-{{msj_tipo}}">
           {{msj_info}}
