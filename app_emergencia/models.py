@@ -12,7 +12,7 @@ AEMERGENCIA = (
 )
 
 ICAUSA = (
-    ('0','-------------------'),
+    ('0','No Violento'),
     ('1','Colision de Vehiculos'),
     ('2','Arrollamiento'),
     ('3','Herido por Arma Blanca'),

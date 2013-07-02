@@ -55,7 +55,7 @@ def emergencia_buscar(request):
                 print "nombres:"+p_nombres+"y apellidos "+p_apellidos
                 if len(p_nombres) > 0 and len(p_apellidos) > 0:
                     print "Se busco por Nombre y Apellido"
-                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres,apllidos__icontains=p_apellidos)
+                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres,apellidos__icontains=p_apellidos)
                     if len(pacientes) > 0:
                         for p in pacientes:
                             resultados.append(p)
