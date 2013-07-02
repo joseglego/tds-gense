@@ -41,6 +41,7 @@ AVPU = (
 )
 EDOLOR = (
     (-1,"---------------"),
+    (0,"No hay dolor"),
     (1,"1"),
     (2,"2"),
     (3,"3"),
@@ -91,15 +92,26 @@ class Emergencia(models.Model):
     destino          = models.ForeignKey(Destino,blank=True,null=True)
     def __unicode__(self):
         return "%s - %s" % (self.id,self.paciente)
-    def triage(self):
-        triage = 0
-        triages = Triage.objects.filter(emergencia=self.id).order_by("-fechaReal")
-        if triages:
-            triage = triages[0].nivel
-        return triage
+
     def triages(self):
         triages = Triage.objects.filter(emergencia=self.id).order_by("fechaReal")
         return triages
+
+    def triage(self):
+        triage = 0
+        triages = self.triages()
+        if triages:
+            triage = triages[0].nivel
+        return triage
+
+    def fecha_triage(self):
+        triages = self.triages()
+        fecha = "No se ha tomado signos vitales aún"
+        if triages:
+            if triages[0].fecha:
+                fecha = triages[0].fecha.strftime("%H:%M del %d/%m/%y")
+        return fecha
+
     def atendido(self):
         atendido = False
         atenciones = Atencion.objects.filter(emergencia=self.id)
@@ -152,6 +164,9 @@ class Triage(models.Model):
     nivel          = models.IntegerField()
     def __unicode___(self):
         return "Triaje %s" % self.id
+
+    def fechaR(self):
+        self.fecha.strftime("%H:%M del %d/%m/%y")
 
 class ComentarioTriage(models.Model):
     triage = models.ForeignKey(Triage)

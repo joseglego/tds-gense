@@ -5,21 +5,20 @@
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-  	<div class="titulo">Solicitar Cuenta</div>
-			<form class= "tablaAgregar" method="post" action="/usuario/restablecer">
-			{% csrf_token %}
-				<table>
-					<tr>
-						<td>Cuenta de Correo</td>
-						<td>{{form.correo}}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input class="button-blue" type="submit" value="Enviar Solicitud" /></td>
-					</tr>
-				</table>
-			</form>
-		</div>
+    <div class="titulo">Solicitar Cuenta</div>
+    <form class= "tablaAgregar" method="post" action="/usuario/restablecer">
+      {% csrf_token %}
+      <table>
+	<tr>
+	  <td>Cuenta de Correo</td>
+	  <td>{{form.correo}}</td>
+	</tr>
+	<tr>
+	  <td></td>
+	  <td><input class="button-blue" type="submit" value="Enviar Solicitud" /></td>
+	</tr>
+      </table>
+    </form>
   </div>
 </div>
 {% endblock %}

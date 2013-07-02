@@ -5,7 +5,17 @@
 {% endif %}
 <div class="container row">
   <div class="span12">
-    <div class="titulo">Estado de Pacientes en &Aacute;rea de Emergencia</div>
+    <h4>Lista  de Pacientes {{titulo}}</h4>
+    <div class="text-right">
+      <a href="/emergencia/buscar">Buscar Paciente</a> | 
+      <a href="/emergencia/listar/todas">Area de Emergencias</a> | 
+      <a href="/emergencia/listar/triage">Area de Triage</a> | 
+      <a href="/emergencia/listar/sinclasificar">Pacientes por Clasificar</a> |
+      <a href="/emergencia/listar/clasificados">Pacientes Clasificados</a> |
+      <a href="/emergencia/listar/atencion">Area de Atenci&oacute;n</a> 
+    </div>
+
+    {% if lista %}
     <table class="table table-bordered table-striped">
       <tr>
 	<th>N&uacute;mero</th>
@@ -34,6 +44,9 @@
       </tr>	
       {% endfor %}
     </table>
+    {% else %}
+      No hay pacientes en esta area
+    {% endif %}
   </div>
 </div>
 {% endblock %}

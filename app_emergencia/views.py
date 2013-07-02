@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Manejo de Sesion
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -16,6 +17,8 @@ from models import *
 from forms import *
 from app_usuario.forms import *
 
+# Estadisticas
+from django.db.models import Count
 #####################################################
 #Imports Atencion
 import ho.pisa as pisa
@@ -25,48 +28,101 @@ from django.template.loader import render_to_string
 from app_enfermedad.models import *
 ######################################################
 
+def emergencia_buscar(request):
+    mensaje = ""
+    titulo = "Busqueda de Pacientes"
+    boton = "Buscar"
+    info = {}
+    form = IniciarSesionForm()
+    if request.method == 'POST':
+        busqueda = BuscarEmergenciaForm(request.POST)
+        resultados = []
+        if busqueda.is_valid():
+            pcd = busqueda.cleaned_data
+            p_cedula = pcd['cedula']
+            p_nombres = pcd['nombres']
+            p_apellidos = pcd['apellidos']
+
+            if len(p_cedula) > 0:
+                print "Se busco por cedula"
+                print p_cedula
+                pacientes = Paciente.objects.filter(cedula__startswith=p_cedula)
+                if len(pacientes) > 0:
+                    for p in pacientes:
+                        resultados.append(p)
+            else:
+                print "Se busco por NO cedula"
+                print "nombres:"+p_nombres+"y apellidos "+p_apellidos
+                if len(p_nombres) > 0 and len(p_apellidos) > 0:
+                    print "Se busco por Nombre y Apellido"
+                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres,apllidos__icontains=p_apellidos)
+                    if len(pacientes) > 0:
+                        for p in pacientes:
+                            resultados.append(p)
+                elif len(p_apellidos) == 0:
+                    print "Se busco por Nombre"
+                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres)
+                    if pacientes:
+                        for p in pacientes:
+                            resultados.append(p)
+                elif len(p_nombres) == 0:
+                    print "Se busco por Apellido"
+                    pacientes = Paciente.objects.filter(apellidos__icontains=p_apellidos)
+                    if pacientes:
+                        for p in pacientes:
+                            resultados.append(p)
+            lista = []
+            for p in resultados:
+                emergencias = Emergencia.objects.filter(paciente=p)
+                for e in emergencias:
+                    lista.append(e)
+                    
+        info = {'form':form,'lista':lista,'titulo':titulo}
+        return render_to_response('lista.html',info,context_instance=RequestContext(request))
+    else:
+        busqueda = BuscarEmergenciaForm()
+    
+    info = {'form':form,'busqueda':busqueda,'titulo':titulo,'boton':boton}
+    return render_to_response('busqueda.html',info,context_instance=RequestContext(request))
+
 def emergencia_listar_todas(request):   
     lista = Emergencia.objects.filter(hora_egreso=None)
     form = IniciarSesionForm()
-    info = {'lista':lista,'form':form}
+    titulo = "Área de Emergencias"
+    info = {'lista':lista,'form':form,'titulo':titulo}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_triage(request):
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.atendido() == False]
     form = IniciarSesionForm()
-    info = {'lista':lista,'form':form}
+    titulo = "Área de Triage"
+    info = {'lista':lista,'form':form,'titulo':titulo}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_sinclasificar(request):    
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.triage() == 0]
     form = IniciarSesionForm()
-    info = {'lista':lista,'form':form}
+    titulo = "Sin Clasificar"
+    info = {'lista':lista,'form':form,'titulo':titulo}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_clasificados(request):    
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.triage() != 0 and i.atendido() == False]
     form = IniciarSesionForm()
-    info = {'lista':lista,'form':form}
+    titulo = "Clasificados"
+    info = {'lista':lista,'form':form,'titulo':titulo}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_atencion(request):
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.atendido() == True]
     form = IniciarSesionForm()
-    info = {'lista':lista,'form':form}
+    titulo = "Área de Atención"
+    info = {'lista':lista,'form':form,'titulo':titulo}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
-
-@login_required(login_url='/')
-def paciente_perfil(request,idP):
-    p = get_object_or_404(Paciente,pk=idP)
-    ea = Emergencia.objects.filter(paciente=p)
-    ea = ea[0]
-    es = Emergencia.objects.filter(paciente=p)
-    info = {'p':p,'ea':ea,'es':es}
-    return render_to_response('perfil.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def emergencia_agregar(request):
@@ -149,7 +205,7 @@ def emergencia_aplicarTriage(request,idE,vTriage):
             motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
             area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
             recursos = 0
-            t = Triage(emergencia = emergencia,medico=medico,fechaReal=fechaReal,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=vTriage)
+            t = Triage(emergencia = emergencia,medico=medico,fecha=fechaReal,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=vTriage)
             t.save()
             return redirect("/emergencia/listar/todas")
     return redirect("/")
@@ -303,6 +359,16 @@ def emergencia_calcularTriage(request,idE):
     info = {'form':form,'idE':idE}
     return render_to_response('calcularTriage.html',info,context_instance=RequestContext(request))
 
+def estadisticas_mes(request,ano,mes):
+    triages = Triage.objects.filter(fecha__year=ano).filter(fecha__month=mes).values('nivel').annotate(Count('nivel')).order_by('nivel')
+    triages = [[i['nivel'],i['nivel__count']] for i in triages]
+    return triages
+
+def estadisticas(request):
+    triages = Triage.objects.all().values('nivel').annotate(Count('nivel')).order_by('nivel')
+    triages = [[i['nivel'],i['nivel__count']] for i in triages]
+    info = {'triages':triages}
+    return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 #########################################################
 #                                                       #
 #          Views para Casos de Uso de Atencion          #
