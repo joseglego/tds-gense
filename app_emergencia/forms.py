@@ -4,14 +4,6 @@ from django import forms
 from models import *
 from django.contrib.admin.widgets import AdminDateWidget, AdminSplitDateTime
 from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
-COD_TELEFONICOS = (
-  ('0212','0212'),
-  ('0412','0412'),
-  ('0414','0414'),
-  ('0424','0424'),
-  ('0416','0416'),
-  ('0426','0426'),
-  )
 
 ATENCION = (
   (True,'Si'),
@@ -107,51 +99,51 @@ TABLA_AREADM = (
   )
 
 class AgregarEmergenciaForm(forms.Form):
-    ingreso          = forms.DateTimeField()
-    cedula           = forms.CharField(max_length=9)
-    nombres          = forms.CharField(max_length=64)
-    apellidos        = forms.CharField(max_length=64)
-    sexo             = forms.ChoiceField(choices=SEXO,required=False)
-    fecha_nacimiento = forms.DateField(required=False)
-    cel              = forms.CharField(max_length=11,required=False)
-    email            = forms.EmailField(max_length=64,required=False)
-    direccion        = forms.CharField(max_length=128,required=False)
-    tlf_casa         = forms.CharField(max_length=11,required=False)    
-    contacto_rel     = forms.ChoiceField(choices=RELACION,required=False)
-    contacto_nombre  = forms.CharField(max_length=64,required=False)
-    contacto_tlf     = forms.CharField(max_length=11,required=False)
-    foto             = forms.ImageField(required=False)
+    ingreso          = forms.DateTimeField(label="Hora y Fecha de Ingreso")
+    cedula           = forms.CharField(label="Número de Cédula",max_length=9)
+    nombres          = forms.CharField(label="Nombres", max_length=64)
+    apellidos        = forms.CharField(label="Apellidos", max_length=64)
+    sexo             = forms.ChoiceField(label="Sexo", choices=SEXO,required=False)
+    fecha_nacimiento = forms.DateField(label="Fecha de Nacimiento",required=False)
+    cel              = forms.CharField(label="Número de Teléfono Celular",max_length=11,required=False)
+    email            = forms.EmailField(label="Correo Electrónico",max_length=64,required=False)
+    direccion        = forms.CharField(label="Dirección",max_length=128,required=False)
+    tlf_casa         = forms.CharField(label="Número de Teleéfono de Habitación",max_length=11,required=False)    
+    contacto_nombre  = forms.CharField(label="Nombre de la Persona de Contacto",max_length=64,required=False)
+    contacto_rel     = forms.ChoiceField(label="Vínculo entre El Conacto y el Paciente",choices=RELACION,required=False)
+    contacto_tlf     = forms.CharField(label="Número de Teléfono del Contacto",max_length=11,required=False)
+    foto             = forms.ImageField(label="Foto",required=False)
     
 
 class darAlta(forms.Form):
-    destino  = forms.ModelChoiceField(queryset=Destino.objects.all())
-    area     = forms.ModelChoiceField(required=False,queryset=AreaAdmision.objects.all())
-    darAlta  = forms.DateTimeField()
+    destino  = forms.ModelChoiceField(label="Destino",queryset=Destino.objects.all())
+    area     = forms.ModelChoiceField(label="Área de la Clínica a la que va",required=False,queryset=AreaAdmision.objects.all())
+    darAlta  = forms.DateTimeField(label="Fecha y Hora en que se da De Alta")
     traslado = forms.DateTimeField(required=False)
 
 class BuscarEmergenciaForm(forms.Form):
-    cedula = forms.CharField(max_length=11,required=False)
-    nombres = forms.CharField(max_length=32,required=False)
-    apellidos = forms.CharField(max_length=32,required=False)
+    cedula = forms.CharField(label="Número de Cédula",max_length=11,required=False)
+    nombres = forms.CharField(label="Nombres",max_length=32,required=False)
+    apellidos = forms.CharField(label="Apellidos",max_length=32,required=False)
 
 
 class calcularTriageForm(forms.Form):
-    fecha         = forms.DateTimeField()
-    motivo        = forms.ModelChoiceField(required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
-    ingreso       = forms.CharField(required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
+    fecha         = forms.DateTimeField(label="Fecha y hora a la que se realiza la Evaluación")
+    motivo        = forms.ModelChoiceField(label="Motivo de Ingreso (Escala de Manchester)",required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
+    ingreso       = forms.CharField(label="Tipo de Ingreso",required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
     
-    atencion      = forms.NullBooleanField(widget=forms.RadioSelect(choices=ATENCION))
-    esperar       = forms.NullBooleanField(widget=forms.RadioSelect(choices=ATENCION))
-    recursos      = forms.IntegerField(required=False,widget=forms.RadioSelect(choices=RECURSOS))
+    atencion      = forms.NullBooleanField(label="¿Requiere Atención Inmediata?",widget=forms.RadioSelect(choices=ATENCION))
+    esperar       = forms.NullBooleanField(label="¿Puede Esperar?",widget=forms.RadioSelect(choices=ATENCION))
+    recursos      = forms.IntegerField(label="¿Cuántos Recursos Necesita?",required=False,widget=forms.RadioSelect(choices=RECURSOS))
     
-    signos_tmp    = forms.FloatField(required=False)
-    signos_fc     = forms.FloatField(required=False)
-    signos_fr     = forms.IntegerField(required=False)
-    signos_pa     = forms.IntegerField(required=False)
-    signos_pb     = forms.IntegerField(required=False)
-    signos_saod   = forms.FloatField(required=False)
-    signos_avpu   = forms.CharField(required=False,widget=forms.RadioSelect(choices=AVPU))
-    signos_dolor  = forms.IntegerField(required=False,widget=forms.Select(choices=EDOLOR))
+    signos_tmp    = forms.FloatField(label="Temperatura",required=False)
+    signos_fc     = forms.FloatField(label="Pulsaciones",required=False)
+    signos_fr     = forms.IntegerField(label="Ventilaciones",required=False)
+    signos_pa     = forms.IntegerField(label="Presión Sistólica/Alta",required=False)
+    signos_pb     = forms.IntegerField(label="Presión Diastólica",required=False)
+    signos_saod   = forms.FloatField(label="Saturación de Oxígeno",required=False)
+    signos_avpu   = forms.CharField(label="Valor Obtenido en Escala AVPU",required=False,widget=forms.RadioSelect(choices=AVPU))
+    signos_dolor  = forms.IntegerField(label="Intensidad del Dolor",required=False,widget=forms.Select(choices=EDOLOR))
 
 
 ##################################################### FORMS ATENCION

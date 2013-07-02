@@ -1,83 +1,114 @@
 {% extends "base.html" %}
 {% block cuerpo %}
 {% if mensaje %}
-  {{ mensaje }}
+{{ mensaje }}
 {% endif %}
 <div class="centrar">
   <div class="cuadroGrande">
-		<center>
-			<div class="titulo">Calcular Triage</div>
-				<form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
-				{% csrf_token %}
-					<table>
-						<tr>
-							<td>Fecha de Ingreso</td>
-							<td>{{form.fecha}}  <a href="#" onclick="buena()">Ahora</a></td>
-						</tr>
-						<tr>
-							<td>&iquest;Requiere atenci&oacute;n inmediata?</td>
-							<td>{{form.atencion}}</td>
-						</tr>
-						<tr>
-							<td>&iquest;Puede Esperar?</td>
-							<td>{{form.esperar}}</td>
-						</tr>
-						<tr>
-							<td>&iquest;Cu&aacute;ntos Recursos necesita?</td>
-							<td>{{form.recursos}}</td>
-						</tr>
-						<tr>
-							<td>Motivo</td>
-							<td>{{form.motivo}}</td>
-						</tr>
-						<tr>
-							<td>&Aacute;rea</td>
-							<td>{{form.area}}</td>
-						</tr>
-						<tr>
-							<td>Ingreso</td>
-							<td>{{form.ingreso}}</td>
-						</tr>            
-						<tr>
-							<td>Temperatura</td>
-							<td>{{form.signos_tmp}}</td>
-						</tr>
-						<tr>
-							<td>Frecuencia Cardiaca</td>
-							<td>{{form.signos_fc}}</td>
-						</tr>
-						<tr>
-							<td>Frecuencia Respiratoria</td>
-							<td>{{form.signos_fr}}</td>
-						</tr>
-						<tr>
-							<td>Tensi&oacute;n Arterial Sist&oacute;lica</td>
-							<td>{{form.signos_pa}}</td>
-						</tr>
-						<tr>
-							<td>Tensión Arterial Diast&oacute;lica</td>
-							<td>{{form.signos_pb}}</td>
-						</tr>
-						<tr>
-							<td>Saturación de Oxigeno en la Sangre</td>
-							<td>{{form.signos_saod}}</td>
-						</tr>
-						<tr>
-							<td>Escala AVPU</td>
-							<td>{{form.signos_avpu}}</td>
+    <center>
+      <div class="titulo">Calcular Triage</div>
+      <form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
+	{% csrf_token %}
+	<table>
+	  <tr>
+	    <td> {{form.fecha.label}} </td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_tmp}}
+		<span class="btn">Ahora</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.atencion.label}}</td>
+	    <td>{{form.atencion}}</td>
+	  </tr>
+	  <tr>
+	    <td>{{form.esperar.label}}</td>
+	    <td>{{form.esperar}}</td>
+	  </tr>
+	  <tr>
+	    <td>{{form.recursos.label}}</td>
+	    <td>{{form.recursos}}</td>
+	  </tr>
+	  <tr>
+	    <td>{{form.motivo.label}}</td>
+	    <td>{{form.motivo}}</td>
+	  </tr>
+	  <tr>
+	    <td>{{form.ingreso.label}}</td>
+	    <td>{{form.ingreso}}</td>
+	  </tr>            
+	  <tr>
+	    <td>{{form.signos_tmp.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_tmp}}
+		<span class="add-on">&deg; Centigrados</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.signos_fc.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_fc}}
+		<span class="add-on">por minuto</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.signos_fr.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_fr}}
+		<span class="add-on">por minuto</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.signos_pa.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_pa}}
+		<span class="add-on">mmHg</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.signos_pb.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_pb}}
+		<span class="add-on">mmHg</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>{{form.signos_saod.label}}</td>
+	    <td>
+	      <div class="input-append">
+		{{form.signos_saod}}
+		<span class="add-on">%</span>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>Escala AVPU</td>
+	    <td>{{form.signos_avpu}}</td>
 
-						<tr>
-							<td>Dolor</td>
-							<td>{{form.signos_dolor}}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><input class="button-blue" type="submit" value="Ingresar" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		</center>
-	</div>
+	  <tr>
+	    <td>Dolor</td>
+	    <td>{{form.signos_dolor}}</td>
+	  </tr>
+	  <tr>
+	    <td></td>
+	    <td><input class="button-blue" type="submit" value="Ingresar" /></td>
+	  </tr>
+	</table>
+      </form>
+  </div>
+  </center>
+</div>
 </div>
 {% endblock %}
