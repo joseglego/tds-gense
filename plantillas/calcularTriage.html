@@ -4,78 +4,80 @@
   {{ mensaje }}
 {% endif %}
 <div class="row">
-  <div class="cuadroGrande span12 centrar">
+  <div class="cuadroGrande span6 centrar">
 		<h4>Calcular Triage</h4>
-			<form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
-			{% csrf_token %}
-				<table>
-					<tr>
-						<td>Fecha de Ingreso</td>
-						<td>{{form.fecha}}  <a href="#" onclick="buena()">Ahora</a></td>
-					</tr>
-					<tr>
-						<td>&iquest;Requiere atenci&oacute;n inmediata?</td>
-						<td>{{form.atencion}}</td>
-					</tr>
-					<tr>
-						<td>&iquest;Puede Esperar?</td>
-						<td>{{form.esperar}}</td>
-					</tr>
-					<tr>
-						<td>&iquest;Cu&aacute;ntos Recursos necesita?</td>
-						<td>{{form.recursos}}</td>
-					</tr>
-					<tr>
-						<td>Motivo</td>
-						<td>{{form.motivo}}</td>
-					</tr>
-					<tr>
-						<td>&Aacute;rea</td>
-						<td>{{form.area}}</td>
-					</tr>
-					<tr>
-						<td>Ingreso</td>
-						<td>{{form.ingreso}}</td>
-					</tr>            
-					<tr>
-						<td>Temperatura</td>
-						<td>{{form.signos_tmp}}</td>
-					</tr>
-					<tr>
-						<td>Frecuencia Cardiaca</td>
-						<td>{{form.signos_fc}}</td>
-					</tr>
-					<tr>
-						<td>Frecuencia Respiratoria</td>
-						<td>{{form.signos_fr}}</td>
-					</tr>
-					<tr>
-						<td>Tensi&oacute;n Arterial Sist&oacute;lica</td>
-						<td>{{form.signos_pa}}</td>
-					</tr>
-					<tr>
-						<td>Tensión Arterial Diast&oacute;lica</td>
-						<td>{{form.signos_pb}}</td>
-					</tr>
-					<tr>
-						<td>Saturación de Oxigeno en la Sangre</td>
-						<td>{{form.signos_saod}}</td>
-					</tr>
-					<tr>
-						<td>Escala AVPU</td>
-						<td>{{form.signos_avpu}}</td>
+		<form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
+		{% csrf_token %}
+			<table>
+				<tr>
+					<td>Fecha de Ingreso</td>
+					<td>{{form.fecha}}  <a href="#" onclick="buena()">Ahora</a></td>
+				</tr>
+				<tr>
+					<td>&iquest;Requiere atenci&oacute;n inmediata?</td>
+					<td>{{form.atencion}}</td>
+				</tr>
+				<tr>
+					<td>&iquest;Puede Esperar?</td>
+					<td>{{form.esperar}}</td>
+				</tr>
+				<tr>
+					<td>&iquest;Cu&aacute;ntos Recursos necesita?</td>
+					<td>{{form.recursos}}</td>
+				</tr>
+				<tr>
+					<td>Motivo</td>
+					<td>{{form.motivo}}</td>
+				</tr>
+				<tr>
+					<td>&Aacute;rea</td>
+					<td>{{form.area}}</td>
+				</tr>
+				<tr>
+					<td>Ingreso</td>
+					<td>{{form.ingreso}}</td>
+				</tr>            
+				<tr>
+					<td>Temperatura</td>
+					<td>{{form.signos_tmp}}</td>
+				</tr>
+				<tr>
+					<td>Frecuencia Cardiaca</td>
+					<td>{{form.signos_fc}}</td>
+				</tr>
+				<tr>
+					<td>Frecuencia Respiratoria</td>
+					<td>{{form.signos_fr}}</td>
+				</tr>
+				<tr>
+					<td>Tensi&oacute;n Arterial Sist&oacute;lica</td>
+					<td>{{form.signos_pa}}</td>
+				</tr>
+				<tr>
+					<td>Tensión Arterial Diast&oacute;lica</td>
+					<td>{{form.signos_pb}}</td>
+				</tr>
+				<tr>
+					<td>Saturación de Oxigeno en la Sangre</td>
+					<td>{{form.signos_saod}}</td>
+				</tr>
+				<tr>
+					<td>Escala AVPU</td>
+					<td>{{form.signos_avpu}}</td>
 
-					<tr>
-						<td>Dolor</td>
-						<td>{{form.signos_dolor}}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input class="button-blue" type="submit" value="Ingresar" /></td>
-					</tr>
-				</table>
-			</form>
-		</div>
+				<tr>
+					<td>Dolor</td>
+					<td>{{form.signos_dolor}}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input class="button-blue" type="submit" value="Ingresar" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+  <div class="cuadroGrande span4 centrar">
+	  <img src="/static/img/triage.jpg" />
 	</div>
 </div>
 {% endblock %}
