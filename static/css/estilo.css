@@ -37,3 +37,11 @@ td img {
   color: #005580;
   text-decoration: underline;
 }
+
+.categoria {
+	font-weight: bold;
+}
+
+.botones {
+	margin-top: 20px;
+}

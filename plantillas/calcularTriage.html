@@ -3,112 +3,109 @@
 {% if mensaje %}
 {{ mensaje }}
 {% endif %}
-<div class="centrar">
-  <div class="cuadroGrande">
-    <center>
-      <div class="titulo">Calcular Triage</div>
-      <form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
-	{% csrf_token %}
-	<table>
-	  <tr>
-	    <td> {{form.fecha.label}} </td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_tmp}}
-		<span class="btn">Ahora</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.atencion.label}}</td>
-	    <td>{{form.atencion}}</td>
-	  </tr>
-	  <tr>
-	    <td>{{form.esperar.label}}</td>
-	    <td>{{form.esperar}}</td>
-	  </tr>
-	  <tr>
-	    <td>{{form.recursos.label}}</td>
-	    <td>{{form.recursos}}</td>
-	  </tr>
-	  <tr>
-	    <td>{{form.motivo.label}}</td>
-	    <td>{{form.motivo}}</td>
-	  </tr>
-	  <tr>
-	    <td>{{form.ingreso.label}}</td>
-	    <td>{{form.ingreso}}</td>
-	  </tr>            
-	  <tr>
-	    <td>{{form.signos_tmp.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_tmp}}
-		<span class="add-on">&deg; Centigrados</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.signos_fc.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_fc}}
-		<span class="add-on">por minuto</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.signos_fr.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_fr}}
-		<span class="add-on">por minuto</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.signos_pa.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_pa}}
-		<span class="add-on">mmHg</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.signos_pb.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_pb}}
-		<span class="add-on">mmHg</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>{{form.signos_saod.label}}</td>
-	    <td>
-	      <div class="input-append">
-		{{form.signos_saod}}
-		<span class="add-on">%</span>
-	      </div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>Escala AVPU</td>
-	    <td>{{form.signos_avpu}}</td>
+<div class="row">
+  <div class="cuadroGrande span12 centrar">
+    <h4>Calcular Triage</h4>
+    <form name="calcularTriage" class="tablaAgregar" method="post" action="/emergencia/{{idE}}/triage/calcular">
+      {% csrf_token %}
+      <table>
+	<tr>
+	  <td> {{form.fecha.label}} </td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_tmp}}
+	      <span class="btn">Ahora</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.atencion.label}}</td>
+	  <td>{{form.atencion}}</td>
+	</tr>
+	<tr>
+	  <td>{{form.esperar.label}}</td>
+	  <td>{{form.esperar}}</td>
+	</tr>
+	<tr>
+	  <td>{{form.recursos.label}}</td>
+	  <td>{{form.recursos}}</td>
+	</tr>
+	<tr>
+	  <td>{{form.motivo.label}}</td>
+	  <td>{{form.motivo}}</td>
+	</tr>
+	<tr>
+	  <td>{{form.ingreso.label}}</td>
+	  <td>{{form.ingreso}}</td>
+	</tr>            
+	<tr>
+	  <td>{{form.signos_tmp.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_tmp}}
+	      <span class="add-on">&deg; Centigrados</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.signos_fc.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_fc}}
+	      <span class="add-on">por minuto</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.signos_fr.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_fr}}
+	      <span class="add-on">por minuto</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.signos_pa.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_pa}}
+	      <span class="add-on">mmHg</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.signos_pb.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_pb}}
+	      <span class="add-on">mmHg</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>{{form.signos_saod.label}}</td>
+	  <td>
+	    <div class="input-append">
+	      {{form.signos_saod}}
+	      <span class="add-on">%</span>
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Escala AVPU</td>
+	  <td>{{form.signos_avpu}}</td>
 
-	  <tr>
-	    <td>Dolor</td>
-	    <td>{{form.signos_dolor}}</td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td><input class="button-blue" type="submit" value="Ingresar" /></td>
-	  </tr>
-	</table>
-      </form>
+	<tr>
+	  <td>Dolor</td>
+	  <td>{{form.signos_dolor}}</td>
+	</tr>
+	<tr>
+	  <td></td>
+	  <td><input class="btn btn-primary" type="submit" value="Ingresar" /></td>
+	</tr>
+      </table>
+    </form>
   </div>
-  </center>
-</div>
 </div>
 {% endblock %}

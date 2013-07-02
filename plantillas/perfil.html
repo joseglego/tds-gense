@@ -12,36 +12,36 @@
   </div>
   <div class="span4">
     <h4> {{p.apellidos}}, {{p.nombres}}</h4>
-    <strong>Cedula:</strong> {{p.cedula}} <br/>
+    <strong>C&eacute;dula:</strong> {{p.cedula}} <br/>
     <strong>Nombre:</strong> {{p.nombres}} <br/>
     <strong>Apellido:</strong> {{p.apellidos}}<br/>
     <strong>Sexo:</strong> {{p.sexoR}}<br/>
     <strong>Edad:</strong> {{p.edad}}<br/>
 
     <h4> Contacto </h4>
-    <strong>Tipo de Relacion:</strong> {{p.relacion}} <br/>
+    <strong>V&iacute;nculo:</strong> {{p.relacion}} <br/>
     <strong>Nombre:</strong> {{p.contacto_nom}} <br/>
-    <strong>Telefono:</strong> {{p.contacto_tlf}}<br/>
+    <strong>Tel&eacute;fono:</strong> {{p.contacto_tlf}}<br/>
   </div>
 
   <div class="span3">
     <h4>Signos Vitales</h4>
-    (Ultima Actualizacion: {{ea.fecha_triage}})<br/>
+    (Ultima Actualizaci&oacute;n: {{ea.fecha_triage}})<br/>
     <strong>Temperatura:</strong> {{p.signos_tmp}}<br/>
-    <strong>Frecuencia Cardiaca:</strong> {{p.signos_fc}}<br/>
+    <strong>Frecuencia Card&iacute;aca:</strong> {{p.signos_fc}}<br/>
     <strong>Frecuencia Respiratoria:</strong> {{p.signos_fr}}<br/>
-    <strong>Presion Sistolica:</strong> {{p.signos_pa}}<br/>
-    <strong>Presion Diastolica:</strong> {{p.signos_pb}}<br/>    
-    <strong>Saturacion de Oxigeno:</strong> {{p.signos_saod}}<br/>    
+    <strong>Presi&oacute;n Sist&oacute;lica:</strong> {{p.signos_pa}}<br/>
+    <strong>Presi&oacute;n Diast&oacute;lica:</strong> {{p.signos_pb}}<br/>    
+    <strong>Saturaci&oacute;n de Ox&iacute;geno:</strong> {{p.signos_saod}}<br/>    
   </div>
 
   {% if ea.hora_egreso == None %}
   <div class="span12">  
   <h3>Acciones</h3>
-    {% if ea.triage == 0 %}<a href="#" class="btn">Aplicar Triage</a>{% endif %}
-    <a href="#" class="btn"> Atencion Medica </a> 
-    <a href="#" class="btn"> Generar Informe </a> 
-    <a href="#" class="btn"> Dar de Alta </a> 
+    {% if ea.triage == 0 %}<a href="#" class="btn btn-primary">Aplicar Triage</a>{% endif %}
+    <a href="#" class="btn btn-primary"> Atenci&oacute;n M&eacute;dica </a> 
+    <a href="#" class="btn btn-primary"> Generar Informe </a> 
+    <a href="#" class="btn btn-primary"> Dar de Alta </a> 
   </div>
 
 {% endif %}

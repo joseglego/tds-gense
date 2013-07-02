@@ -2,26 +2,7 @@
 <html lang="es">
   <head>
     <title> Atenci&oacute;n M&eacute;dica </title>
-    <link rel="stylesheet" type="text/css" href="/static/css/estilos.css" />
-	
-  <!-- Bootstrap --> 
-    <script src="/static/libs/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
-    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
 
-
-    <link rel="stylesheet" href="/static/css/estilos.css" type="text/css" />
-    <script type="text/javascript" src="/static/libs/js/jquery.min.js"></script>   
-    <script type="text/javascript" src="/static/js/script.js"></script>  
-    <link rel="stylesheet" href="/static/css/droppy.css">
-    <script type="text/javascript" src="/static/libs/js/jquery.droppy.js"></script>
-    
-    <script type='text/javascript'>
-      $(function() {
-      $('#nav').droppy();
-      });
-    </script>
-    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css">
@@ -74,23 +55,33 @@
                   <li><a href="/emergencia/listar/clasificados">Pacientes por Atencion</a></li>
                 </ul>
               </li>
+      {% if user.is_staff %}
+	      <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+                  <li><a href="/usuario/crear">Crear</a></li>
+                  <li><a href="/usuario/listar">Listar</a></li>
+                  <li><a href="/usuario/pendientes">Pendientes</a></li>
+                </ul>
+              </li>
+      {% endif %}
       {% else %}
 	      
       <li><a href="/emergencia/buscar">Paciente</a></li>
       <li><a href="/emergencia/listar/todas">Ver Emergencias</a></li>
 	
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Listas Por Categoria<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Listas Por Categor&iacute;a<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="/emergencia/listar/todas">Pacientes en Emergencia</a></li>
 	  <li class="divider"></li>
-	  <li class="nav-header">Por Area</li>
+	  <li class="nav-header">Por &Aacute;rea</li>
           <li><a href="/emergencia/listar/triage">Pacientes en Triage</a></li>
           <li><a href="/emergencia/listar/atencion">Pacientes en Atención</a></li>
 	  <li class="divider"></li>
-	  <li class="nav-header">Sub Areas de Triage</li>
+	  <li class="nav-header">Sub &Aacute;reas de Triage</li>
           <li><a href="/emergencia/listar/sinclasificar">Pacientes por Clasificar</a></li>
-          <li><a href="/emergencia/listar/clasificados">Pacientes por Atencion</a></li>
+          <li><a href="/emergencia/listar/clasificados">Pacientes por Atenci&oacute;n</a></li>
         </ul>
       </li>
       {% endif %}
@@ -107,8 +98,8 @@
 	    {{ form.unombre }}
 	    {{ form.uclave }}
 	    <input class="btn btn-primary" type="submit" value="Iniciar Sesi&oacute;n" /><br>
-	    <a href="">Recuperar Clave</a> | 
-	    <a href="">Crear Usuario</a>
+	    <a href="/usuario/restablecer">Recuperar Clave</a> | 
+	    <a href="/usuario/solicitar">Solicitar Cuenta</a>
 	    
 	    
           </form>
@@ -118,8 +109,6 @@
     </div>
     <div class="container">
       {% if msj_info %}
-      <div class="container">
-        <div class="alert alert-{{msj_tipo}}">
       <div class="row">
         <div class="span12 alert alert-{{msj_tipo}}">
           {{msj_info}}
@@ -133,7 +122,7 @@
     </div>
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&reg;Pagina desarrollada en la <a href="http://www.usb.ve/">Universidad Sim&oacute;n Bol&iacute;var</a> para el <a href="http://www.centromedicodecaracas.com.ve/">Centro M&eacute;dico de Caracas</a>.</p>
+        <p class="muted credit">&reg;P&aacute;gina desarrollada en la <a href="http://www.usb.ve/">Universidad Sim&oacute;n Bol&iacute;var</a> para el <a href="http://www.centromedicodecaracas.com.ve/">Centro M&eacute;dico de Caracas</a>.</p>
       </div>
     </div>
     <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap-dropdown.js"></script>

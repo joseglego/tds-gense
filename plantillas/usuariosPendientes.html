@@ -3,11 +3,11 @@
 {% if mensaje %}
 {{mensaje}}
 {% endif %}
-<div class="centrar row">
+<div class="row">
   <div class="cuadroGrande span12 centrar">
   	<div class="titulo">Lista de Solicitudes de Usuarios Pendientes</div>
-		<table class="tablaEstados">
-			<tr>
+  	<table class="table table-bordered table-striped">
+    	<tr>
 			  <th>C&eacute;dula</th>
 			  <th>Nombre</th>
 				<th>Sexo</th>
@@ -21,9 +21,9 @@
 					<td><span class="nombreLista">{{l.sexoR}}</span></td>
 					<td><span class="nombreLista">{{l.tipoR}}</span></td>
 					<td>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/aprobar" ><img src="/static/img/aprobar.png" title="Autorizar"/></a>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/rechazar"><img src="/static/img/negar.png" title="Rechazar"/></a>
-						<a href="/usuario/pendientes/{{l.usuario.cedula}}/examinar"><img src="/static/img/lupa.png" title="Examinar"/></a>
+						<a href="/usuario/pendientes/{{l.usuario.cedula}}/aprobar" ><img src="/static/img/usuarios/aprobar.png" title="Autorizar"/></a>
+						<a href="/usuario/pendientes/{{l.usuario.cedula}}/rechazar"><img src="/static/img/usuarios/negar.png" title="Rechazar"/></a>
+						<a href="/usuario/pendientes/{{l.usuario.cedula}}/examinar"><img src="/static/img/usuarios/lupa.png" title="Examinar"/></a>
 					</td>
 			  </tr>
 			{% endfor %}

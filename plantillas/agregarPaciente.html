@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 {% block cuerpo %}
-<div class="titulo">Agregar Paciente</div>
-<form class= "tablaAgregar" method="post" action="/emergencia/agregar">
-  {% csrf_token %}
-  <table>
-    {% for e in form %}
-    <tr>
-      <td>{{e.label}}</td>
-      <td>{{e}}</td>
-      <td>{{e.errors}}</td>
-    </tr>	  
-    {% endfor %}
-    <tr>
-      <td></td>
-      <td><input class="button-blue" type="submit" value="Ingresar" /></td>
-      <td></td>
-    </tr>
-  </table>
-</form>
+<div class="row">
+  <div class="cuadroGrande span12 centrar">
+		<h4>Agregar Paciente</h4>
+		<form class= "tablaAgregar" method="post" action="/emergencia/agregar">
+			{% csrf_token %}
+			<table>
+				{% for e in form %}
+				<tr>
+				  <td>{{e.label}}</td>
+				  <td>{{e}}</td>
+				  <td>{{e.errors}}</td>
+				</tr>	  
+				{% endfor %}
+				<tr>
+				  <td></td>
+				  <td><input class="btn btn-primary" type="submit" value="Ingresar" /></td>
+				  <td></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
 {% endblock %}

@@ -6,7 +6,7 @@
 <div class="row">
   <div class="cuadroGrande span12 centrar">
   	<div class="titulo">Lista de usuarios</div>
-		<table class="tablaEstados">
+		<table class="table table-bordered table-striped">
 			<tr>
 			  <th>C&eacute;dula</th>
 			  <th>Nombre</th>
@@ -34,11 +34,11 @@
         	{% endif %}
 					<td>
 					{% if l.is_active != True %}
-						<a href="/usuario/listar/{{l.usuario.cedula}}/habilitar"><img src="/static/img/aprobar.png" title="Habilitar"/></a>
+						<a href="/usuario/listar/{{l.usuario.cedula}}/habilitar"><img src="/static/img/usuarios/aprobar.png" title="Habilitar"/></a>
         	{% else %}
-						<a href="/usuario/listar/{{l.usuario.cedula}}/deshabilitar"><img src="/static/img/negar.png" title="Deshabilitar"/></a>
+						<a href="/usuario/listar/{{l.usuario.cedula}}/deshabilitar"><img src="/static/img/usuarios/negar.png" title="Deshabilitar"/></a>
         	{% endif %}
-						<a href="/usuario/listar/{{l.usuario.cedula}}/examinar"><img src="/static/img/lupa.png" title="Examinar"/></a>
+						<a href="/usuario/listar/{{l.usuario.cedula}}/examinar"><img src="/static/img/usuarios/lupa.png" title="Examinar"/></a>
 					</td>
 			  </tr>
 			{% endfor %}
