@@ -1,86 +1,35 @@
-{% extends "atencion.html" %}
-{% block cambia %}
+<!--script type="text/javascript" src="/static/libs/js/jquery.min.js"></script-->
 {% if mensaje %}
    <center style="color:red">{{mensaje}}</center>
 {% endif %}
     <script>
-      $(document).ready(function () {
-        $("#inputOtros").hide();
-        $('#inputAlert').hide();
-//$(this).css( "color", "red" );
-        $("textarea").css("height","54px");
-        $("#id_nombreAnt").change(function(){
-            var opcion = $(this).find("option:selected").val();
-            if (opcion == "alergia"){
-             $('#inputAlert').show();   
-            }else{$('#inputAlert').hide();}
-            
-            if (opcion == "otros"){
-             $("#inputOtros").show();   
-            }else{$("#inputOtros").hide();}
-        });      
-      });
+
+    function envia2(pag){
+      //Fspin('Dant');
+      $('#Dant').load(pag);
+    }
+
+    
+
+    $(document).ready(function () {
+
+    });
     </script>
-<!-- FORMULARIO PARA LLENAR ANTECEDENTES y ENFERMEDAD ACTUAL -->
-<div class="cuadroGrande">
-<center>
-    <div class="titulo">Agregar Antecedentes</div>
-        <form class= "tablaAgregar" method="post" action="">
-            {% csrf_token %}
-                  
-            <table>  
-                <tr>
-                    <td>Antecedente Pertinente&nbsp;</td>
-                    <td>{{form.nombreAnt}}</td>
-                </tr>
-                <tr id="inputAlert">
-                    <td>Alergia</td>
-                    <td>{{form.alergia}}</td>
-                </tr>
-                <tr id="inputOtros">
-                    <td>Otros</td>
-                    <td>{{form.otro}}</td>
-                </tr>
-                <tr>
-                    <td>Narrativa</td>
-                    <td>{{form.narrativa}}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input class="button-blue" type="submit" value="Ingresar" /></td>
-                </tr>
-            </table>
-        </form> 
-
-</center>
-
+    <span3>
+<div class="btn-group btn-group-vertical">
+    <div style='padding:2px'>    
+        <input class="btn btn-info" style="width:100px" type="button" value="Medicos" 
+          onClick="envia2('/emergencia/antecedentes/{{emergencia.id}}/medica')" />
+    </div>
+    <div style='padding:2px'>
+        <input class="btn btn-info" type="button" style="width:100px" value="Quirurgicos" 
+          onClick="envia2('/emergencia/antecedentes/{{emergencia.id}}/quirurgica')"/>
+    </div>
+    <div style='padding:2px'>
+        <input class="btn btn-info" style="width:100px" type="button" value="Alergicos" 
+          onClick="envia2('/emergencia/antecedentes/{{emergencia.id}}/alergia')"/>
+    </div>
 </div>
+</span3>
 
-<div id= "tablaInd">
-<table class="tablaEstados">
-    <tbody class="scrollTabla">
-        <thead class="fixedHeader">
-            <tr>
-            <th>Tipo</th>
-            <th>Nombre</th>
-            </tr>
-        </thead>
-      {% for i in antecedentes %}
-      <tr>
-            <!--hora indicacion: buscarla de asignar-->
-            <td><span class="nombreLista"><strong>{{ i.nombre }}</strong></span></td>
-            <td>{{i.nombre}}</td>
-            <!--nombre indicacion:Pensar estrategia al darle click editarla-->
-            
-            <!--estatus indicacion:sugerir añadir este atributo a la BD-->
-        </tr>
-    </tbody>
-    {% endfor %}
-</table>
-</div>
-
-
-
-
-{% endblock %}
         

@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
     url('^paciente/(?P<idP>\w+)$','app_perfil.views.paciente_perfil'),
+    url('^paciente/(?P<idP>\w+)/triage$','app_perfil.views.reporte_triage'),
 
     ## COSAS DJANGISTICAS
     # Admin

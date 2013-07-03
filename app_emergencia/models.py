@@ -178,22 +178,29 @@ class Atencion(models.Model):
     fecha          = models.DateTimeField()
     fechaReal      = models.DateTimeField(auto_now_add=True)
     area_atencion  = models.CharField(max_length=1)
-    problema       = models.ForeignKey(Problema)
-
+ 
 class ComentarioAtencion(models.Model):
     atencion = models.ForeignKey(Atencion)
     comentario = models.CharField(max_length=512)
 
-class CategoriaDeIndicacion(models.Model):
-    nombre = models.CharField(max_length=128)
+#_------------------------------------ Cambios Requerimientos 29_6
+#----------------------------------Diagnostico Definitivo
+class Diagnostico(models.Model):
+    nombreD = models.CharField(max_length=512)
+    def __unicode__(self):
+        return "%s" % (self.nombreD)
+
+class EstablecerDiag(models.Model):
+    atencion = models.ForeignKey(Atencion)
+    diagnostico = models.ForeignKey(Diagnostico)
+    valoracion_esp = models.CharField(max_length=50)
 
 class Indicacion(models.Model):
-    nombre = models.CharField(max_length=128)
-    tipo   = models.CharField(max_length=1)
-
-class IndicacionEsp(models.Model):
-    indicacion = models.ForeignKey(Indicacion)
-    categoria  = models.ForeignKey(CategoriaDeIndicacion)
+    nombre = models.CharField(max_length=128, blank=False)
+    tipo   = models.CharField(max_length=40, blank=False)
+    def __unicode__(self):
+        # return "TIPO:%s- NOMBRE:%s" % (self.tipo,self.nombre)
+        return "%s" % (self.nombre)
 
 class Asignar(models.Model):
     emergencia = models.ForeignKey(Emergencia)
@@ -201,7 +208,68 @@ class Asignar(models.Model):
     persona    = models.ForeignKey(Usuario)
     fecha      = models.DateTimeField()
     fechaReal  = models.DateTimeField()
-    
-class ComentarioAsignar(models.Model):
+    def __unicode__(self):
+        return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.nombres,self.indicacion.nombre,self.indicacion.tipo)
+    def dosisA(self):
+        result = DosisAsignar.objects.filter(asignacion=self)
+        #print "RESULTADO OBJETOS DOSIS ASIGNAR",result
+        if result:
+            return "%s" %(result[0].dosis)
+        else: 
+            return "%s" % ("no hay dosis")
+
+    def horaA(self):
+        return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
+
+# Especificaciones para las indicaciones de Dietas
+class EspDieta(models.Model):
+    asignacion       = models.ForeignKey(Asignar)
+    observacion      = models.CharField(max_length=512,blank=True)
+    def __unicode__(self):
+        return "Paciente:%s- Dosis:%s" % (self.asignacion.emergencia.paciente.nombres,self.observacion)
+
+# Especificaciones para las indicaciones de Hidratacion
+class EspHidrata(models.Model):
+    asignacion   = models.ForeignKey(Asignar)
+    volumen      = models.IntegerField(default=0,blank=True)
+    vel_infusion = models.CharField(max_length=512,blank=True)
+    complementos = models.CharField(max_length=512,blank=True)
+    def __unicode__(self):
+        return "Paciente:%s- Dosis:%s" % (self.asignacion.emergencia.paciente.nombres,self.volumen)
+
+class CombinarHidrata(models.Model):
+    hidratacion1 = models.ForeignKey(EspHidrata)
+    hidratacion2 = models.ForeignKey(Indicacion)
+
+# Especificaciones para las indicaciones de Medicamentos
+class EspMedics(models.Model):
     asignacion = models.ForeignKey(Asignar)
-    comentario = models.CharField(max_length=512)
+    dosis    = models.FloatField(default=0,blank=True)
+    tipo_conc = models.CharField(max_length=2,blank=True)
+    # mg
+    # gr
+    # u
+    # cc
+    frecuencia = models.CharField(max_length=25,blank=True)
+    tipo_frec = models.CharField(max_length=4,blank=True)
+
+    # fijo
+    # SOS
+    via_admin = models.CharField(max_length=20,blank=True)
+
+    # via endovenosa
+    # via subcutanea
+    # nebulizacion
+    # transdermico
+    # via rectal
+
+# Agrega los detalles extras para el tipo de frecuencia de SOS
+class tieneSOS(models.Model):
+    espMed      = models.ForeignKey(EspMedics)
+    situacion   = models.CharField(max_length=200,blank=True)
+    comentario  = models.CharField(max_length=200,blank=True)
+
+# Especificaciones para las indicaciones de Imagenologia
+class EspImg(models.Model):
+    asignacion      = models.ForeignKey(Asignar)
+    parte_cuerpo    = models.CharField(max_length=20,blank=True)
