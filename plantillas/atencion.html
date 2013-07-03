@@ -1,101 +1,135 @@
 {% extends "base.html" %}
 {% block cuerpo %}
-    <!--HOJAS DE ESTILOS-->
-    <link rel="stylesheet" type="text/css" href="/static/css/Atencion/js-image-slider.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/droppy.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/Atencion/menuDer.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/Atencion/estiloIcon.css" />
-     <link rel="stylesheet" type="text/css" href="/static/css/Atencion/efectos_info_cuerpo.css" />
-    
-    
-    <!--Javascript-->
-    <script type="text/javascript" src="/static/scripts/js-image-slider.js" ></script>
-    <script type="text/javascript" src="/static/scripts/jquery.min.js"></script>   
-    <script type="text/javascript" src="/static/scripts/script.js"></script>  
-    <script type="text/javascript" src ="/static/scripts/over_click.js" > </script>
-    <script type="text/javascript" src="/static/scripts/jquery.droppy.js"></script>
-    <script src ="/static/scripts/map-hover.js"> </script>
-    <script src ="/static/scripts/efectos_info_cuerpo.js"> </script> 
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/tabla_report.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/estiloIcon.css" />
+<script src ="/static/css/Atencion/spin.min.js"> </script>
+<script>
+  function Fspin(div_spin){
+    var opts = {lines: 7,length: 6,width: 7, radius: 7, corners: 1,
+      rotate: 0,
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      color: '#2f96b4', // #rgb or #rrggbb
+      speed: 1, trail: 160, shadow: false, hwaccel: true,className: 'spinner',
+      zIndex: 2e9,top: 'auto', left: 'auto'
+    };
+    var target = document.getElementById(div_spin);
+    var spinner = new Spinner(opts).spin(target);
+    $('#'+div_spin).data('spinner', spinner);
+  }
+  $(document).ready(function () {
+    var emer = '{{emergencia.id}}';
+    $('#aInd').click(function(){
+      $('#Ind').load('/emergencia/atencion/indicacion/'+emer);
+    });
+    $('#Ant2').load('/emergencia/antecedente/'+emer );
+    $('#aEfis').click(function(){
+      Fspin('cuerpou');
+      $('#Efis').load('/emergencia/enfermedad/'+emer);
+    });
+  });
+</script>
+<div class="container row">
+  <!-- <div class="span12"> -->
+    <div class="span3">
+      <div class="well well-small">
+        <h4>Paciente</h4>
+        <!-- <dl class="dl-horizontal"> -->
+        <dl>
+          <dt><b>Nombre:</b></dt>
+          <dd>{{ emergencia.paciente }}</dd>
+          <dt><b>Sexo:</b></dt>
+          <dd>{{ emergencia.paciente.sexoR}}</dd>
+          <dt><b>Responsable:</b></dt>
+          <dd>{{ emergencia.responsable}}</dd>
+          <dt><b>Hora de ingreso:</b></dt>
+          <dd>{{ emergencia.horaR}}</dd>
+          <dt><b>Motivo de consulta:</b></dt>
+          <dd>{{ triage.motivo.nombre}}</dd>
+        </dl>
+          <!-- <dt><b>Motivo de consulta:</b></dt>
+          <dd>{{ triage.motivo.nombre}}</dd> -->
+          
+        <hr>
+        <h4 class="info"> Signos Vitales</h4>
+        <dl>
+        <dt>Temperatura:&nbsp&nbsp<span style='font-weight:normal;'>{{ triage.signos_tmp }}</span></dt>
+        <dt>Frecu. Cardiaca:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fc }}</span></dt>
+        <dt>Tension Arterial:&nbsp&nbsp<span style='font-weight:normal;'{{ triage.signos_ta }}</span></dt>
+        <dt>Fr:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fr }}</span></dt>
+        <dt>Saod:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_saod }}</em></dt>
+       <dt>rmotora:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rmotora }}</span></dt>
+       <dt>rocular:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rocular }}</span></dt>
+       <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
+       <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
 
-    <div class="centrarA">
-      <div class="contenedorA">
-        <div id="leftcolumn">
-          <div class="ac-container">
-                <div>
-                  <input type="radio" checked/>
-                  <label> Paciente</label>
-                  <article class="ac-medium">
-                  <p>
-                    <b>Nombre:</b><br>{{ emergencia.paciente }}
-                    <br><b>Sexo:</b>&nbsp;&nbsp;{{ emergencia.paciente.sexoR}}
-                    <br><b>Responsable:</b><br>{{ emergencia.responsable}}
-                    <br><b>Hora de ingreso:</b><br>{{ emergencia.horaR}}
-                    <br><b>Motivo de conculta:</b><br>{{ triage.motivo.nombre}}
-                    
-                  </p>
-                  </article>
-                </div>
 
-                <div>
-                  <input type="radio" checked/>
-                  <label style="height:30px;padding:0px;">Signos Vitales</label>
-                  <article class="ac-large">
-                    <p>
-                      <b>Temperatura:</b>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_tmp }}
-                      <br><b>Frecu. Cardiaca:</b> &nbsp;{{ triage.signos_fc }}
-                      <br><b>Tension Arterial:</b> &nbsp;&nbsp;&nbsp;{{ triage.signos_ta }}
-                      <br><b>Fr: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {{ triage.signos_fr }}
-                      <br><b>Saod:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {{ triage.signos_saod }}
-                      <br><b>rmotora:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rmotora }}
-                      <br><b>rocular:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rocular }}
-                      <br><b>rverbal:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_rverbal }}
-                      <br><b>Dolor:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ triage.signos_dolor }}
-                      <p><button style="width:80px;height:30px">Actualizar</button></p>
-                    </p>
-                  </article>
-                </div> 
+       
+        </dl>
+        
+        <button style='margin-top:0px;margin-left:0px'class="btn btn-info btn-mini" > Actualizar</button>
 
-            </div><!--ac-conteiner-->
-            </div> <!--Fin columna izquierda-->
+       
+      </div><!--Cierra info-alert-->
+      <center>
+      <div class="btn-group">
+      <button class="btn button">
+        <a  href="/emergencia/descarga/{{emergencia.id}}" title="Historia Médica" data-icon="&#xe007;"></a>
+      </button>
+      <button class="btn button">
+        <a  href="#" title="Reporte Atencion"  data-icon="&#xe008;"></a>
+      </button>
+      <button class="btn button">
+        <a  href="#" title="Calcular Signos Vitales" data-icon="&#xe009;"></a>
+      </button>
+    </div><!-- Cierra botones -->
+    </center>
 
-            <div id="main">
-                <div id="cambia">
-                  {% block cambia %}
-                  {% endblock %}
-                </div>
-            </div><!--Fin main-->
+    </div><!-- Cierra span3-->
+    <div class="span8">
+      <!-- <div class="span8" style="background:red;"> -->
+      <div class="tabbable">
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="active">
+            <a id='aAnt' href="#Ant" data-toggle="tab">Antecedentes</a>
+          </li>
+          <li>
+            <a id ='aEfis' href="#Efis" data-toggle="tab">F&iacute;sico</a>
+          </li>
+          <li id="Ind_a">
+            <a id='aInd' href="#Ind" data-toggle="tab">Indicaciones</a>
+          </li>
+          <li>
+            <a href="#Diag" data-toggle="tab">Diagn&oacute;stico</a>
+          </li>
+          <li>
+            <a href="#Egre" data-toggle="tab">Egreso</a>
+          </li>
+        </ul>
 
-            <div id="rightcolumn">
-                <ul class="navDer" style="margin-left:0px;">
-                    <!-- Id de emergencia para los datos asociados a ese paciente -->
-                  <li><a class='boton-off' href="/emergencia/antecedentes/{{emergencia.id}}">Antecedentes</a></li>
-                  <li><a class='boton-off' href="/emergencia/enfermedad/{{emergencia.id}}">E. F&iacute;sico</a></li>
-                  <!--Nuevas funcionalidades-->
-                  <li><a class='boton-off' href="/emergencia/indicacionesT/{{emergencia.id}}">I. Terap&eacute;ticas</a></li>
-                  <li><a class='boton-off' href="/emergencia/indicacionesD/{{emergencia.id}}">I. Diagn&oacute;sticas</a></li>
-                  <li><a class='boton-off' href="/emergencia/diagnostico/{{emergencia.id}}">Diagn&oacute;stico</a></li>
-                  <li><a class='boton-off' href="/emergencia/egreso/{{emergencia.id}}">Egreso</a></li>
-                </ul><!--Cierra navDer-->
+        <div class="tab-content">
+          <div  class="tab-pane active" id="Ant" >
+            <div id='Ant2' class='span2' ></div>
+            <div id="Dant" class='span5'>
+            </div> 
+          </div>
+          
+          <div class="tab-pane" id="Efis">
+            <p>Howdy, I'm in Section 2.</p>
+          </div>
+          <div class="tab-pane" id="Ind">                      
+          </div>
+          <div class="tab-pane" id="Diag">
+            <p>Howdy, I'm in Section 3.</p>
+          </div>
+          <div class="tab-pane" id="Egre">
+            <p>Howdy, I'm in Section 4.</p>
+          </div>
+        </div>
 
-                <div id="botones_cont">
-                  <ul id="botoncitos">
-                    <li class="iconos">
-                          <a  href="/emergencia/descarga/{{emergencia.id}}" title="Historia Médica" class="button" data-icon="&#xe007;"></a>
-                          
-                    </li>
-                    <li class="iconos">
-                          <a  href="#" title="Reporte Atencion" class="button" data-icon="&#xe008;"></a>
-
-                    </li>
-                    <li class="iconos">
-                          <a  href="#" title="Calcular Signos Vitales" class="button" data-icon="&#xe009;"></a>
-
-                    </li>
-                  </ul> <!--Cierra botoncitos-->
-                </div><!--Cierra botones_cont-->
-            </div><!--Cierra rightcolumn-->
-      </div><!-- Termina contenedorA-->
-    </div> <!-- Termina centrarA-->
+      </div>
+    </div>  
+</div>
 {% endblock %}

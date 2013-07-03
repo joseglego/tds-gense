@@ -90,14 +90,49 @@ class Paciente(models.Model):
         return resp
                 
 class Antecedente(models.Model):
+    tipo   = models.CharField(max_length=64)
     nombre = models.CharField(max_length=64)
+    def __unicode__(self):
+        return "%s" % (self.nombre)
 
 class Pertenencia(models.Model):
     paciente    = models.ForeignKey(Paciente)
     antecedente = models.ForeignKey(Antecedente)
+    def __unicode__(self):
+        return "%s-%s" % (self.paciente.nombres,self.antecedente.nombre)
+    def fechaR(self):
+        result = Fecha.objects.filter(pertenencia=self)
+        if result:
+            return "%s" %(result[0].fecha)
+        else: 
+            return "%s" % ("no hay fecha")
+    def lugarR(self):
+        result = Lugar.objects.filter(lugarpertenencia__pertenencia=self)
+        if result:
+            return "%s" %(result[0].nombre)
+        else: 
+            return "%s" % ("no hay lugar")
+    def tratamientoR(self):
+        result = Tratamiento.objects.filter(tratamientopertenencia__pertenencia=self)
+        if result:
+            return "%s" %(result[0].nombre)
+        else: 
+            return "%s" % ("no hay tratamiento")
+        
+class Lugar(models.Model):
+    nombre = models.CharField(max_length=64)
 
-
-class ComentarioPertenencia(models.Model):
+class LugarPertenencia(models.Model):
     pertenencia = models.ForeignKey(Pertenencia)
-    informacion = models.CharField(max_length=512)
+    lugar       = models.ForeignKey(Lugar)
 
+class Tratamiento(models.Model):
+    nombre = models.CharField(max_length=64)
+    
+class TratamientoPertenencia(models.Model):
+    pertenencia = models.ForeignKey(Pertenencia)
+    tratamiento = models.ForeignKey(Tratamiento)
+
+class Fecha(models.Model):
+    fecha       = models.DateField()
+    pertenencia = models.ForeignKey(Pertenencia)
