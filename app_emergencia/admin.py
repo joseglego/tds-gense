@@ -11,5 +11,8 @@ admin.site.register(AreaAdmision)
 admin.site.register(Cubiculo)
 admin.site.register(Destino)
 admin.site.register(Atencion)
+admin.site.register(Indicacion)
+admin.site.register(Asignar)
+admin.site.register(EspDieta)
 
 
