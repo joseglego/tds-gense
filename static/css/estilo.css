@@ -45,3 +45,7 @@ td img {
 .botones {
 	margin-top: 20px;
 }
+
+td li {
+  list-style:none;
+}

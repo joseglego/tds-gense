@@ -132,15 +132,11 @@ class calcularTriageForm(forms.Form):
     motivo        = forms.ModelChoiceField(label="Motivo de Ingreso (Escala de Manchester)",required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
     ingreso       = forms.CharField(label="Tipo de Ingreso",required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
     
-    atencion      = forms.NullBooleanField(label="¿Requiere Atención Inmediata?",widget=forms.RadioSelect(choices=ATENCION))
-    esperar       = forms.NullBooleanField(label="¿Puede Esperar?",widget=forms.RadioSelect(choices=ATENCION))
-    recursos      = forms.IntegerField(label="¿Cuántos Recursos Necesita?",required=False,widget=forms.RadioSelect(choices=RECURSOS))
-    
     signos_tmp    = forms.FloatField(label="Temperatura",required=False)
     signos_fc     = forms.FloatField(label="Pulsaciones",required=False)
     signos_fr     = forms.IntegerField(label="Ventilaciones",required=False)
-    signos_pa     = forms.IntegerField(label="Presión Sistólica/Alta",required=False)
-    signos_pb     = forms.IntegerField(label="Presión Diastólica",required=False)
+    signos_pa     = forms.IntegerField(label="Presión Sistólica / Alta",required=False)
+    signos_pb     = forms.IntegerField(label="Presión Diastólica / Baja",required=False)
     signos_saod   = forms.FloatField(label="Saturación de Oxígeno",required=False)
     signos_avpu   = forms.CharField(label="Valor Obtenido en Escala AVPU",required=False,widget=forms.RadioSelect(choices=AVPU))
     signos_dolor  = forms.IntegerField(label="Intensidad del Dolor",required=False,widget=forms.Select(choices=EDOLOR))
