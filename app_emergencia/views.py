@@ -219,7 +219,7 @@ def emergencia_aplicarTriage(request,idE,vTriage):
                 esperar = True
             t = Triage(emergencia = emergencia,medico=medico,fecha=fechaReal,motivo=motivo,atencion=atencion,esperar=esperar,areaAtencion=area,recursos=recursos,nivel=vTriage)
             t.save()
-            return redirect("/emergencia/listar/todas")
+            return redirect("/paciente/"+str(emergencia.paciente.id))
     return redirect("/")
 
 @login_required(login_url='/')
@@ -330,7 +330,7 @@ def emergencia_calcularTriage(request,idE):
             paciente.signos_saod = f_saod
             paciente.save()
             t.save()
-            return redirect("/emergencia/listar/todas")
+            return redirect("/paciente/"+str(emergencia.paciente.id))
         else:
             print "Error 2"
     form = calcularTriageForm()
