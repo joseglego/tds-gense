@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 # Manejo de Sesion
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,8 +16,6 @@ from models import *
 from forms import *
 from app_usuario.forms import *
 
-# Estadisticas
-from django.db.models import Count
 #####################################################
 #Imports Atencion
 import ho.pisa as pisa
@@ -28,101 +25,48 @@ from django.template.loader import render_to_string
 from app_enfermedad.models import *
 ######################################################
 
-def emergencia_buscar(request):
-    mensaje = ""
-    titulo = "Busqueda de Pacientes"
-    boton = "Buscar"
-    info = {}
-    form = IniciarSesionForm()
-    if request.method == 'POST':
-        busqueda = BuscarEmergenciaForm(request.POST)
-        resultados = []
-        if busqueda.is_valid():
-            pcd = busqueda.cleaned_data
-            p_cedula = pcd['cedula']
-            p_nombres = pcd['nombres']
-            p_apellidos = pcd['apellidos']
-
-            if len(p_cedula) > 0:
-                print "Se busco por cedula"
-                print p_cedula
-                pacientes = Paciente.objects.filter(cedula__startswith=p_cedula)
-                if len(pacientes) > 0:
-                    for p in pacientes:
-                        resultados.append(p)
-            else:
-                print "Se busco por NO cedula"
-                print "nombres:"+p_nombres+"y apellidos "+p_apellidos
-                if len(p_nombres) > 0 and len(p_apellidos) > 0:
-                    print "Se busco por Nombre y Apellido"
-                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres,apellidos__icontains=p_apellidos)
-                    if len(pacientes) > 0:
-                        for p in pacientes:
-                            resultados.append(p)
-                elif len(p_apellidos) == 0:
-                    print "Se busco por Nombre"
-                    pacientes = Paciente.objects.filter(nombres__icontains=p_nombres)
-                    if pacientes:
-                        for p in pacientes:
-                            resultados.append(p)
-                elif len(p_nombres) == 0:
-                    print "Se busco por Apellido"
-                    pacientes = Paciente.objects.filter(apellidos__icontains=p_apellidos)
-                    if pacientes:
-                        for p in pacientes:
-                            resultados.append(p)
-            lista = []
-            for p in resultados:
-                emergencias = Emergencia.objects.filter(paciente=p)
-                for e in emergencias:
-                    lista.append(e)
-                    
-        info = {'form':form,'lista':lista,'titulo':titulo}
-        return render_to_response('lista.html',info,context_instance=RequestContext(request))
-    else:
-        busqueda = BuscarEmergenciaForm()
-    
-    info = {'form':form,'busqueda':busqueda,'titulo':titulo,'boton':boton}
-    return render_to_response('busqueda.html',info,context_instance=RequestContext(request))
-
 def emergencia_listar_todas(request):   
     lista = Emergencia.objects.filter(hora_egreso=None)
     form = IniciarSesionForm()
-    titulo = "Área de Emergencias"
-    info = {'lista':lista,'form':form,'titulo':titulo}
+    info = {'lista':lista,'form':form}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_triage(request):
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.atendido() == False]
     form = IniciarSesionForm()
-    titulo = "Área de Triage"
-    info = {'lista':lista,'form':form,'titulo':titulo}
+    info = {'lista':lista,'form':form}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_sinclasificar(request):    
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.triage() == 0]
     form = IniciarSesionForm()
-    titulo = "Sin Clasificar"
-    info = {'lista':lista,'form':form,'titulo':titulo}
+    info = {'lista':lista,'form':form}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_clasificados(request):    
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.triage() != 0 and i.atendido() == False]
     form = IniciarSesionForm()
-    titulo = "Clasificados"
-    info = {'lista':lista,'form':form,'titulo':titulo}
+    info = {'lista':lista,'form':form}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
 
 def emergencia_listar_atencion(request):
     lista = Emergencia.objects.filter(hora_egreso=None)
     lista = [i for i in lista if i.atendido() == True]
     form = IniciarSesionForm()
-    titulo = "Área de Atención"
-    info = {'lista':lista,'form':form,'titulo':titulo}
+    info = {'lista':lista,'form':form}
     return render_to_response('lista.html',info,context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def paciente_perfil(request,idP):
+    p = get_object_or_404(Paciente,pk=idP)
+    ea = Emergencia.objects.filter(paciente=p)
+    ea = ea[0]
+    es = Emergencia.objects.filter(paciente=p)
+    info = {'p':p,'ea':ea,'es':es}
+    return render_to_response('perfil.html',info,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def emergencia_agregar(request):
@@ -204,22 +148,10 @@ def emergencia_aplicarTriage(request,idE,vTriage):
         if ((int(vTriage) >= 1) and (int(vTriage) <= 5)):
             motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
             area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
-            recursos = 2
-            if (vTriage == 1):
-                atencion = True
-            elif (vTriage == 2):
-                atencion = False
-                esperar = False
-            else:
-                if (vTriage == 4):
-                    recursos = 1
-                elif (vTriage == 5):
-                    recursos = 0
-                atencion = False
-                esperar = True
-            t = Triage(emergencia = emergencia,medico=medico,fecha=fechaReal,motivo=motivo,atencion=atencion,esperar=esperar,areaAtencion=area,recursos=recursos,nivel=vTriage)
+            recursos = 0
+            t = Triage(emergencia = emergencia,medico=medico,fechaReal=fechaReal,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=vTriage)
             t.save()
-            return redirect("/paciente/"+str(emergencia.paciente.id))
+            return redirect("/emergencia/listar/todas")
     return redirect("/")
 
 @login_required(login_url='/')
@@ -233,7 +165,10 @@ def emergencia_calcularTriage(request,idE):
             pcd = form.cleaned_data
             f_fecha    = pcd['fecha']
             f_motivo   = pcd['motivo']
+            f_atencion = pcd['atencion']
             f_ingreso  = pcd['ingreso']
+            f_esperar  = pcd['esperar']
+            f_recursos = pcd['recursos']
             f_temp     = pcd['signos_tmp']
             f_fc       = pcd['signos_fc']
             f_fr       = pcd['signos_fr']
@@ -243,110 +178,131 @@ def emergencia_calcularTriage(request,idE):
             f_avpu     = pcd['signos_avpu']
 
             f_dolor    = pcd['signos_dolor']
-            f_recursos = 2
+            if (f_atencion == True):
+                motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
+                area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
+                recursos = 0                
+                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=1)
+                t.save()
+                print "Caso 1"
+                return redirect("/emergencia/listar/todos")
+            elif (f_atencion == False) and (f_esperar == False):
+                motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
+                area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
+                recursos = 0               
+                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=2)
+                t.save()
+                print "Caso 2"
+                return redirect("/emergencia/listar/todas")
+            elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==1):
+                motivo = Motivo.objects.get(nombre__startswith=" Salida")
+                area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
+                recursos = f_recursos
+                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=5)
+                t.save()
+                print "Caso 3"
+                return redirect("/emergencia/listar/todas")
+            elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==2):
+                motivo = Motivo.objects.get(nombre__startswith=" Salida")
+                area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
+                recursos = f_recursos
+                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=4)
+                t.save()
+                print "Caso 4"
+                return redirect("/emergencia/listar/todas")
+            else:
+                print "Evaluar Todo"
+                # Base
+                p = emergencia.paciente
+                fcAlta  = 100
+                frAlta  = 20
+                soBaja  = 92
+                soMBaj  = 90
+                tmpAlta = 40
+                tmpMAlt = 41
+                triage  = 5
+                
+                # Calculo de la edad - limites
+                if (p.edad() < 3):
+                    if ((p.edad() == 0) and (p.meses() < 3)):
+                        fcAlta  = 180
+                        frAlta  = 50
+                        tmpAlta = 37
+                        tmpMAlt = 38
+                    else:
+                        fcAlta  = 160
+                        frAlta  = 40
+                        tmpAlta = 39
+                        tmpMAlt = 40
+                elif ((p.edad() >= 3) and (p.edad() <= 8)):
+                    fcAlta = 140
+                    frAlta = 30
 
-            print "Evaluar Todo"
-            # Base
-            p = emergencia.paciente
-            fcAlta  = 100
-            frAlta  = 20
-            soBaja  = 92
-            soMBaj  = 90
-            tmpAlta = 40
-            tmpMAlt = 41
-            triage  = 5
-            
-            # Calculo de la edad - limites
-            if (p.edad() < 3):
-                if ((p.edad() == 0) and (p.meses() < 3)):
-                    fcAlta  = 180
-                    frAlta  = 50
-                    tmpAlta = 37
-                    tmpMAlt = 38
+                # Evaluacion de Frecuencia Cardiaca
+                if (f_fc > fcAlta):
+                    triage = min(triage,2)
+                    print "FC"
                 else:
-                    fcAlta  = 160
-                    frAlta  = 40
-                    tmpAlta = 39
-                    tmpMAlt = 40
-            elif ((p.edad() >= 3) and (p.edad() <= 8)):
-                fcAlta = 140
-                frAlta = 30
+                    triage = min(triage,3)
 
-            # Evaluacion de Frecuencia Cardiaca
-            if (f_fc > fcAlta):
-                triage = min(triage,2)
-                print "FC"
-            else:
-                triage = min(triage,3)
+                # Evaluacion de Frecuencia Respiratoria
+                if (f_fr > frAlta):
+                    triage = min(triage,2)
+                    print "FR"
+                else:
+                    triage = min(triage,3)
 
-            # Evaluacion de Frecuencia Respiratoria
-            if (f_fr > frAlta):
-                triage = min(triage,2)
-                print "FR"
-            else:
-                triage = min(triage,3)
+                # Evaluacion de Saturacion de Oxigeno
+                if (f_saod < soBaja):
+                    triage = min(triage,2)
+                    print "SAOD"
 
-            # Evaluacion de Saturacion de Oxigeno
-            if (f_saod < soBaja):
-                triage = min(triage,2)
-                print "SAOD"
+                # Condicion A, Lectura
+                elif (f_saod < soMBaj):
+                    triage = min(triage,1)
+                else:
+                    triage = min(triage,3)
 
-            # Condicion A, Lectura
-            elif (f_saod < soMBaj):
-                triage = min(triage,1)
-            else:
-                triage = min(triage,3)
-
-            # Evaluacion de Temperatura
-            if (f_temp == tmpAlta):
-                triage = min(triage,3)
-            elif (f_temp == tmpMAlt):
-                print "TMP"
-                triage = min(triage,2)
-            elif (f_temp > tmpMAlt):
-                triage = min(triage,1)
+                # Evaluacion de Temperatura
+                if (f_temp == tmpAlta):
+                    triage = min(triage,3)
+                elif (f_temp == tmpMAlt):
+                    print "TMP"
+                    triage = min(triage,2)
+                elif (f_temp > tmpMAlt):
+                    triage = min(triage,1)
                 
-            # Condicion A, Lectura
-            if ((f_avpu == 'U') or (f_avpu == 'P')):
-                triage = min(triage,1)
+                # Condicion A, Lectura
+                if ((f_avpu == 'U') or (f_avpu == 'P')):
+                    triage = min(triage,1)
                 
-            # Condicion B, Lectura
-            if (f_dolor > 7):
-                print "Dolor"
-                triage = min(triage,2)
+                # Condicion B, Lectura
+                if (f_dolor > 7):
+                    print "Dolor"
+                    triage = min(triage,2)
                 
-            if (triage == 1) or (triage == 2):
-                f_area = AreaEmergencia.objects.get(nombre__startswith="Sala de")
-            else:
-                f_area = AreaEmergencia.objects.get(nombre__startswith="Atenci")
- 
-            t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=f_motivo,areaAtencion=f_area,ingreso=f_ingreso,atencion=f_atencion,esperar=f_esperar,recursos=f_recursos,signos_tmp=f_temp,signos_fc=f_fc,signos_fr=f_fr,signos_pa=f_pb,signos_saod=f_saod,signos_avpu=f_avpu,signos_dolor=f_dolor,nivel=triage)
-            paciente = emergencia.paciente
-            paciente.signos_tmp = f_temp
-            paciente.signos_fc = f_fc
-            paciente.signos_fr = f_fr
-            paciente.signos_pa = f_pa
-            paciente.signos_pb = f_pb
-            paciente.signos_saod = f_saod
-            paciente.save()
-            t.save()
-            return redirect("/paciente/"+str(emergencia.paciente.id))
+                if (triage == 1) or (triage == 2):
+                  f_area = AreaEmergencia.objects.get(nombre__startswith="Sala de")
+                else:
+                  f_area = AreaEmergencia.objects.get(nombre__startswith="Atenci")     
+            
+                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=f_motivo,areaAtencion=f_area,ingreso=f_ingreso,atencion=f_atencion,esperar=f_esperar,recursos=f_recursos,signos_tmp=f_temp,signos_fc=f_fc,signos_fr=f_fr,signos_pa=f_pb,signos_saod=f_saod,signos_avpu=f_avpu,signos_dolor=f_dolor,nivel=triage)
+                paciente = emergencia.paciente
+                paciente.signos_tmp = f_temp
+                paciente.signos_fc = f_fc
+                paciente.signos_fr = f_fr
+                paciente.signos_pa = f_pa
+                paciente.signos_pb = f_pb
+                paciente.signos_saod = f_saod
+                paciente.save()
+                t.save()
+                return redirect("/emergencia/listar/todas")
         else:
             print "Error 2"
     form = calcularTriageForm()
     info = {'form':form,'idE':idE}
     return render_to_response('calcularTriage.html',info,context_instance=RequestContext(request))
 
-def estadisticas_mes(request,ano,mes):
-    triages = Triage.objects.filter(fecha__year=ano).filter(fecha__month=mes).values('nivel').annotate(Count('nivel')).order_by('nivel')
-    triages = [[i['nivel'],i['nivel__count']] for i in triages]
-    return triages
-
-def estadisticas(request):
-    triages = Triage.objects.all().values('nivel').annotate(Count('nivel')).order_by('nivel')
-    triages = [[i['nivel'],i['nivel__count']] for i in triages]
-    info = {'triages':triages}
-    return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 #########################################################
 #                                                       #
 #          Views para Casos de Uso de Atencion          #
@@ -373,6 +329,7 @@ def emergencia_descarga(request,id_emergencia):
     html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
     return generar_pdf(html)
 
+
 @login_required(login_url='/')
 def emergencia_indi(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
@@ -398,7 +355,6 @@ def emergencia_atencion(request,id_emergencia):
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     mensaje = ""
-    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
     ctx = {'emergencia':emer,'triage':triage}
     return render_to_response('atencion.html',ctx,context_instance=RequestContext(request))
 
@@ -409,7 +365,6 @@ def emergencia_antecedentes_agregar(request,id_emergencia,tipo_ant):
     triage  = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage  = triage[0]
     mensaje = ""
-    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
     if request.method == 'POST':
         nombres  = request.POST.getlist('nuevoNombre')
         fechas   = request.POST.getlist('nuevoFecha')
@@ -447,7 +402,6 @@ def emergencia_antecedentes_modificar(request,id_emergencia,tipo_ant):
     antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
     print "modificar"
     for ant in antecedentes:
-        #print "informacion",request.POST[str(ant.id)+"nombre"],request.POST[str(ant.id)+"fecha"],request.POST[str(ant.id)+"atributo3"]
         ant.nombre        = request.POST[str(ant.id)+"nombre"]
         if tipo_ant == 'medica' or tipo_ant == 'quirurgica':
             pertenece   = Pertenencia.objects.filter(paciente=paci,antecedente=ant)
@@ -509,11 +463,8 @@ def emergencia_antecedentes(request,id_emergencia):
     paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    mensaje = ""
-
     ctx = {'emergencia':emer,'triage':triage}
     return render_to_response('atencion_ant.html',ctx,context_instance=RequestContext(request))
-
 
 #----------------------------------Gestion de Antecedentes en area de Atencion
 @login_required(login_url='/')
@@ -523,13 +474,10 @@ def emergencia_antecedentes_tipo(request,id_emergencia,tipo_ant):
     paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    mensaje = ""
     pertenece = Pertenencia.objects.filter(paciente=paci,antecedente__tipo=tipo_ant)
     antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
-    print 'pertenece = ',len(pertenece)
     ctx = {'emergencia':emer,'triage':triage,'antecedentes':antecedentes,'pertenece':pertenece,'tipo_ant':tipo_ant}
     return render_to_response('atencion_ant_medica.html',ctx,context_instance=RequestContext(request))
-
 
 @login_required(login_url='/')
 def emergencia_enfermedad(request,id_emergencia):
@@ -550,12 +498,12 @@ def emergencia_enfermedad(request,id_emergencia):
 
 #--------------------------------Gestion de Enfermedad (Examen Fisico)
 @login_required(login_url='/')
-def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):#enfermedad
+def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
-    atencion     = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion     = Atencion.objects.filter(emergencia=id_emergencia,aspectoatencion__aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     partecuerpo  = ParteCuerpo.objects.filter(zonaparte__zonacuerpo__nombre=zona_cuerpo)
     parteaspecto = ParteAspecto.objects.filter(partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
@@ -568,7 +516,8 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
-    atencion    = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion = atencion[0]
     '''aspectoAten = AspectoAtencion.objects.filter(atencion=atencion)'''
     aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     partecuerpo = 0
@@ -579,7 +528,8 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             if anomalia:
                 anomalia.delete()
-        if input1 == 'anormal':
+            aspAten.save()
+        elif input1 == 'anormal':
             aspAten.revisado = '1'
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             descripcion = request.POST['A'+str(aspAten.aspecto.id)]
@@ -589,18 +539,18 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
             else:
                 anomalia = Anomalia(descripcion=descripcion,aspectoatencion=aspAten)
                 anomalia.save()
-        if input1 == 'no':
+            aspAten.save()
+        elif input1 == 'no':
             aspAten.revisado = '0'
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             if anomalia:
                 anomalia.delete()
-        aspAten.save()
+            aspAten.save()
+        
     return HttpResponse()
 
 
 # --- RGV
-
-
 
 #--------------------------------Gestion de Indicaciones Terapeuticas
 @login_required(login_url='/')
@@ -745,6 +695,7 @@ def emergencia_diagnostico(request,id_emergencia):
 
 ########################################################HASTA AQUI CODIGO ATENCION
 
+@login_required(login_url='/')
 def emergencia_egreso(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
@@ -762,4 +713,3 @@ def emergencia_egreso(request,id_emergencia):
     form = AgregarEgresoForm()
     info = {'form':form,'emergencia':emer,'triage':triage}
     return render_to_response('atencion_egre.html',info,context_instance=RequestContext(request))
-    

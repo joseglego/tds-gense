@@ -10,6 +10,7 @@
      
   }
 
+
   $(document).ready(function () {
     $('#'+'ejemplo').hide();
     $('.hide').hide();
@@ -17,9 +18,9 @@
     $('input[type="hidden"]').each(function(index,valor){
       var estado = $(valor).attr('value');
       var nombre = $(valor).attr('id');
-      if (estado=='normal'){
+      if (estado=='normalN'){
         $('#p'+nombre+'1').addClass('On');
-      }else if(estado=='anormal'){
+      }else if(estado=='anormalN'){
         $('#p'+nombre+'2').addClass('On');
         $('#A'+nombre).show();
       }
@@ -65,7 +66,7 @@
             {{asp_ante.aspecto.nombre}}
         </td>
         <td>
-          <input type="hidden" id="{{asp_ante.aspecto.id}}" name="{{asp_ante.aspecto.id}}" value='{{asp_ante.estadoR}}'>
+          <input type="hidden" id="{{asp_ante.aspecto.id}}" name="{{asp_ante.aspecto.id}}" value='{{asp_ante.estadoR}}N'>
           <center>
             <button id='p{{asp_ante.aspecto.id}}1' 
                 class='NAD' style="width:40px;" input='{{asp_ante.aspecto.id}}' >NAD</button>
