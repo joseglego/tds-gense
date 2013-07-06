@@ -204,10 +204,22 @@ def emergencia_aplicarTriage(request,idE,vTriage):
         if ((int(vTriage) >= 1) and (int(vTriage) <= 5)):
             motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
             area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
-            recursos = 0
-            t = Triage(emergencia = emergencia,medico=medico,fecha=fechaReal,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=vTriage)
+            recursos = 2
+            if (vTriage == 1):
+                atencion = True
+            elif (vTriage == 2):
+                atencion = False
+                esperar = False
+            else:
+                if (vTriage == 4):
+                    recursos = 1
+                elif (vTriage == 5):
+                    recursos = 0
+                atencion = False
+                esperar = True
+            t = Triage(emergencia = emergencia,medico=medico,fecha=fechaReal,motivo=motivo,atencion=atencion,esperar=esperar,areaAtencion=area,recursos=recursos,nivel=vTriage)
             t.save()
-            return redirect("/emergencia/listar/todas")
+            return redirect("/paciente/"+str(emergencia.paciente.id))
     return redirect("/")
 
 @login_required(login_url='/')
@@ -221,10 +233,7 @@ def emergencia_calcularTriage(request,idE):
             pcd = form.cleaned_data
             f_fecha    = pcd['fecha']
             f_motivo   = pcd['motivo']
-            f_atencion = pcd['atencion']
             f_ingreso  = pcd['ingreso']
-            f_esperar  = pcd['esperar']
-            f_recursos = pcd['recursos']
             f_temp     = pcd['signos_tmp']
             f_fc       = pcd['signos_fc']
             f_fr       = pcd['signos_fr']
@@ -234,125 +243,94 @@ def emergencia_calcularTriage(request,idE):
             f_avpu     = pcd['signos_avpu']
 
             f_dolor    = pcd['signos_dolor']
-            if (f_atencion == True):
-                motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
-                area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
-                recursos = 0                
-                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=1)
-                t.save()
-                print "Caso 1"
-                return redirect("/emergencia/listar/todos")
-            elif (f_atencion == False) and (f_esperar == False):
-                motivo = Motivo.objects.get(nombre__startswith=" Ingreso")
-                area = AreaEmergencia.objects.get(nombre__startswith=" Ingreso")
-                recursos = 0               
-                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=2)
-                t.save()
-                print "Caso 2"
-                return redirect("/emergencia/listar/todas")
-            elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==1):
-                motivo = Motivo.objects.get(nombre__startswith=" Salida")
-                area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
-                recursos = f_recursos
-                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=5)
-                t.save()
-                print "Caso 3"
-                return redirect("/emergencia/listar/todas")
-            elif (f_atencion == False) and (f_esperar == True) and (f_recursos ==2):
-                motivo = Motivo.objects.get(nombre__startswith=" Salida")
-                area = AreaEmergencia.objects.get(nombre__startswith=" Salida")
-                recursos = f_recursos
-                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=motivo,areaAtencion=area,recursos=recursos,nivel=4)
-                t.save()
-                print "Caso 4"
-                return redirect("/emergencia/listar/todas")
-            else:
-                print "Evaluar Todo"
-                # Base
-                p = emergencia.paciente
-                fcAlta  = 100
-                frAlta  = 20
-                soBaja  = 92
-                soMBaj  = 90
-                tmpAlta = 40
-                tmpMAlt = 41
-                triage  = 5
-                
-                # Calculo de la edad - limites
-                if (p.edad() < 3):
-                    if ((p.edad() == 0) and (p.meses() < 3)):
-                        fcAlta  = 180
-                        frAlta  = 50
-                        tmpAlta = 37
-                        tmpMAlt = 38
-                    else:
-                        fcAlta  = 160
-                        frAlta  = 40
-                        tmpAlta = 39
-                        tmpMAlt = 40
-                elif ((p.edad() >= 3) and (p.edad() <= 8)):
-                    fcAlta = 140
-                    frAlta = 30
+            f_recursos = 2
 
-                # Evaluacion de Frecuencia Cardiaca
-                if (f_fc > fcAlta):
-                    triage = min(triage,2)
-                    print "FC"
-                else:
-                    triage = min(triage,3)
-
-                # Evaluacion de Frecuencia Respiratoria
-                if (f_fr > frAlta):
-                    triage = min(triage,2)
-                    print "FR"
-                else:
-                    triage = min(triage,3)
-
-                # Evaluacion de Saturacion de Oxigeno
-                if (f_saod < soBaja):
-                    triage = min(triage,2)
-                    print "SAOD"
-
-                # Condicion A, Lectura
-                elif (f_saod < soMBaj):
-                    triage = min(triage,1)
-                else:
-                    triage = min(triage,3)
-
-                # Evaluacion de Temperatura
-                if (f_temp == tmpAlta):
-                    triage = min(triage,3)
-                elif (f_temp == tmpMAlt):
-                    print "TMP"
-                    triage = min(triage,2)
-                elif (f_temp > tmpMAlt):
-                    triage = min(triage,1)
-                
-                # Condicion A, Lectura
-                if ((f_avpu == 'U') or (f_avpu == 'P')):
-                    triage = min(triage,1)
-                
-                # Condicion B, Lectura
-                if (f_dolor > 7):
-                    print "Dolor"
-                    triage = min(triage,2)
-                
-                if (triage == 1) or (triage == 2):
-                  f_area = AreaEmergencia.objects.get(nombre__startswith="Sala de")
-                else:
-                  f_area = AreaEmergencia.objects.get(nombre__startswith="Atenci")     
+            print "Evaluar Todo"
+            # Base
+            p = emergencia.paciente
+            fcAlta  = 100
+            frAlta  = 20
+            soBaja  = 92
+            soMBaj  = 90
+            tmpAlta = 40
+            tmpMAlt = 41
+            triage  = 5
             
-                t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=f_motivo,areaAtencion=f_area,ingreso=f_ingreso,atencion=f_atencion,esperar=f_esperar,recursos=f_recursos,signos_tmp=f_temp,signos_fc=f_fc,signos_fr=f_fr,signos_pa=f_pb,signos_saod=f_saod,signos_avpu=f_avpu,signos_dolor=f_dolor,nivel=triage)
-                paciente = emergencia.paciente
-                paciente.signos_tmp = f_temp
-                paciente.signos_fc = f_fc
-                paciente.signos_fr = f_fr
-                paciente.signos_pa = f_pa
-                paciente.signos_pb = f_pb
-                paciente.signos_saod = f_saod
-                paciente.save()
-                t.save()
-                return redirect("/emergencia/listar/todas")
+            # Calculo de la edad - limites
+            if (p.edad() < 3):
+                if ((p.edad() == 0) and (p.meses() < 3)):
+                    fcAlta  = 180
+                    frAlta  = 50
+                    tmpAlta = 37
+                    tmpMAlt = 38
+                else:
+                    fcAlta  = 160
+                    frAlta  = 40
+                    tmpAlta = 39
+                    tmpMAlt = 40
+            elif ((p.edad() >= 3) and (p.edad() <= 8)):
+                fcAlta = 140
+                frAlta = 30
+
+            # Evaluacion de Frecuencia Cardiaca
+            if (f_fc > fcAlta):
+                triage = min(triage,2)
+                print "FC"
+            else:
+                triage = min(triage,3)
+
+            # Evaluacion de Frecuencia Respiratoria
+            if (f_fr > frAlta):
+                triage = min(triage,2)
+                print "FR"
+            else:
+                triage = min(triage,3)
+
+            # Evaluacion de Saturacion de Oxigeno
+            if (f_saod < soBaja):
+                triage = min(triage,2)
+                print "SAOD"
+
+            # Condicion A, Lectura
+            elif (f_saod < soMBaj):
+                triage = min(triage,1)
+            else:
+                triage = min(triage,3)
+
+            # Evaluacion de Temperatura
+            if (f_temp == tmpAlta):
+                triage = min(triage,3)
+            elif (f_temp == tmpMAlt):
+                print "TMP"
+                triage = min(triage,2)
+            elif (f_temp > tmpMAlt):
+                triage = min(triage,1)
+                
+            # Condicion A, Lectura
+            if ((f_avpu == 'U') or (f_avpu == 'P')):
+                triage = min(triage,1)
+                
+            # Condicion B, Lectura
+            if (f_dolor > 7):
+                print "Dolor"
+                triage = min(triage,2)
+                
+            if (triage == 1) or (triage == 2):
+                f_area = AreaEmergencia.objects.get(nombre__startswith="Sala de")
+            else:
+                f_area = AreaEmergencia.objects.get(nombre__startswith="Atenci")
+ 
+            t = Triage(emergencia = emergencia,medico=medico,fecha=f_fecha,motivo=f_motivo,areaAtencion=f_area,ingreso=f_ingreso,atencion=f_atencion,esperar=f_esperar,recursos=f_recursos,signos_tmp=f_temp,signos_fc=f_fc,signos_fr=f_fr,signos_pa=f_pb,signos_saod=f_saod,signos_avpu=f_avpu,signos_dolor=f_dolor,nivel=triage)
+            paciente = emergencia.paciente
+            paciente.signos_tmp = f_temp
+            paciente.signos_fc = f_fc
+            paciente.signos_fr = f_fr
+            paciente.signos_pa = f_pa
+            paciente.signos_pb = f_pb
+            paciente.signos_saod = f_saod
+            paciente.save()
+            t.save()
+            return redirect("/paciente/"+str(emergencia.paciente.id))
         else:
             print "Error 2"
     form = calcularTriageForm()
@@ -767,7 +745,6 @@ def emergencia_diagnostico(request,id_emergencia):
 
 ########################################################HASTA AQUI CODIGO ATENCION
 
-@login_required(login_url='/')
 def emergencia_egreso(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")

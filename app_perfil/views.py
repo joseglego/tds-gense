@@ -22,3 +22,12 @@ def paciente_perfil(request,idP):
     info = {'p':p,'ea':ea,'es':es}
     return render_to_response('perfil.html',info,context_instance=RequestContext(request))
 
+@login_required(login_url='/')
+def reporte_triage(request,idP):
+    p = get_object_or_404(Paciente,pk=idP)
+    ea = Emergencia.objects.filter(paciente=p)
+    ea = ea[0]
+    es = Emergencia.objects.filter(paciente=p)
+    info = {'p':p,'ea':ea,'es':es}
+    return render_to_response('reporteTriage.html',info,context_instance=RequestContext(request))
+

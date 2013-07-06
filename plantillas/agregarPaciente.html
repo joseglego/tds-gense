@@ -8,9 +8,22 @@
 			<table>
 				{% for e in form %}
 				<tr>
+          {% if e.label == "Hora y Fecha de Ingreso" %}
+				  <td>{{e.label}}</td>
+				  <td>
+
+
+	    <div class="input-append">
+        {{e}}
+	      <span id="ahora" class="btn">Ahora</span>
+	    </div>
+          </td>
+				  <td>{{e.errors}}</td>
+          {% else %}
 				  <td>{{e.label}}</td>
 				  <td>{{e}}</td>
 				  <td>{{e.errors}}</td>
+          {% endif %}
 				</tr>	  
 				{% endfor %}
 				<tr>
@@ -22,4 +35,22 @@
 		</form>
 	</div>
 </div>
+{% endblock %}
+
+{% block scripts2 %}
+  <script>
+$(document).ready(function() {
+    $("#ahora").click(function() {
+  var currentTime = new Date()
+  var mes = currentTime.getMonth() + 1;
+  var dia = currentTime.getDate();
+  var año = currentTime.getFullYear();
+  
+  var horas    = currentTime.getHours()
+  var minutos  = currentTime.getMinutes()
+  var segundos = currentTime.getSeconds()
+  $("#id_ingreso").val(dia+"/"+mes+"/"+año+" "+horas+":"+minutos+":"+segundos)
+    });
+});
+  </script>
 {% endblock %}

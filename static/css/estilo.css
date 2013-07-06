@@ -45,3 +45,14 @@ td img {
 .botones {
 	margin-top: 20px;
 }
+
+
+td li {
+  list-style:none;
+}
+
+.separador {
+	height: 3px;
+	width: auto;
+	background-color: grey;
+}

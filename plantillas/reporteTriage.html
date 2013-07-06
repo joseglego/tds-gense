@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <title> Reporte Triage </title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css">
+    <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/static/libs/js/jquery.min.js"></script>
+
+    <!-- Propios -->
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    <link type="image/x-icon" href="/static/img/icono.ico" rel="icon" />
+		<div class ="separador"></div>
+		<img src="/static/img/logo.png"/><h2 class= "text-center">Reporte Triage</h2>
+		<div class ="separador"></div>
+	</head>  
+	<body>  
+		<div class="container row">
+			<div class="span12">
+				<p class = "pull-right"> Fecha y hora de la evaluaci&oacute;n: {{ea.fecha_triage}}</p><br/>
+				<div class="span5 offset2">
+					<br/><h3>Paciente</h3>
+					<strong> Nombres:</strong> {{p.nombres}}<br/>
+					<strong> Apellidos:</strong>  {{p.apellidos}}<br/>
+					<strong> Sexo:</strong>  {{p.sexoR}}<br/>
+					<strong> Edad:</strong>  {{p.edad}}<br/><br/>
+					<h3> Médico</h3> <br/>
+					{% for e in es %}
+				    {% for t in e.triages %}
+							<strong> Nombres: </strong> {{t.medico.first_name}}<br/>
+							<strong> Apellidos: </strong> {{t.medico.last_name}}<br/><br/>
+				      <h3> RESULTADO: </h3><h2 >{{t.nivel}}</h2>
+				    {% endfor %}
+		      {% endfor %}
+				</div>
+				<div class="span4">
+					<h3>Respuestas</h3>
+					{% for e in es %}
+				    {% for t in e.triages %}
+							<p>
+								<strong>El paciente requiere Atenci&oacute;n Inmediata: </strong>
+      					{% if t.atencion %}
+									Si
+					      {% else %}
+									No
+				      {% endif %}
+							</p>
+							<p>
+								<strong>El paciente puede esperar: </strong>
+      					{% if t.esperar %}
+									Si
+					      {% else %}
+									No
+				      {% endif %}
+							</p>
+							<p><strong>Recursos que necesita: </strong>{{t.recursos}}</p>
+							<p><strong>Motivo de Ingreso: </strong>{{t.motivo}}</p>
+							<p><strong>Temperatura: </strong>{{t.signos_tmp}} &deg; Centigrados<br/></p>
+							<p><strong>Frecuencia Card&iacute;aca: </strong>{{t.signos_fc}} por minuto<br/></p>
+							<p><strong>Frecuencia Respiratoria: </strong>{{t.signos_fr}} por  minuto<br/></p>
+							<p><strong>Presi&oacute;n Sist&oacute;lica: </strong>{{t.signos_pa}} mmHg <br/></p>
+							<p><strong>Presi&oacute;n Diast&oacute;lica: </strong>{{t.signos_pb}} mmHg<br/></p>
+							<p><strong>Saturaci&oacute;n de Ox&iacute;geno: </strong>{{t.signos_saod}} %<br/></p>
+							<p><strong>Escala AVPU: </strong>{{t.signos_avpu}}</p>
+							<p><strong>Dolor: </strong>{{t.signos_dolor}}</p>
+				    {% endfor %}
+		      {% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+

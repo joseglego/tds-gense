@@ -28,9 +28,9 @@ AFIRMACION = (
 )
 
 RECURSOS = (
-    (1,"Ninguno"),
-    (2,"Uno"),
-    (3,"Muchos"),
+    (0,"Ninguno"),
+    (1,"Uno"),
+    (2,"Muchos"),
 )
 
 AVPU = (
