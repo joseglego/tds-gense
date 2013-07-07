@@ -347,6 +347,8 @@ def estadisticas(request):
     triages = [[i['nivel'],i['nivel__count']] for i in triages]
     info = {'triages':triages}
     return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
+
+
 #########################################################
 #                                                       #
 #          Views para Casos de Uso de Atencion          #
@@ -373,6 +375,7 @@ def emergencia_descarga(request,id_emergencia):
     html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
     return generar_pdf(html)
 
+
 @login_required(login_url='/')
 def emergencia_indi(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
@@ -398,7 +401,6 @@ def emergencia_atencion(request,id_emergencia):
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     mensaje = ""
-    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci)
     ctx = {'emergencia':emer,'triage':triage}
     return render_to_response('atencion.html',ctx,context_instance=RequestContext(request))
 
@@ -409,7 +411,6 @@ def emergencia_antecedentes_agregar(request,id_emergencia,tipo_ant):
     triage  = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage  = triage[0]
     mensaje = ""
-    antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
     if request.method == 'POST':
         nombres  = request.POST.getlist('nuevoNombre')
         fechas   = request.POST.getlist('nuevoFecha')
@@ -447,7 +448,6 @@ def emergencia_antecedentes_modificar(request,id_emergencia,tipo_ant):
     antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
     print "modificar"
     for ant in antecedentes:
-        #print "informacion",request.POST[str(ant.id)+"nombre"],request.POST[str(ant.id)+"fecha"],request.POST[str(ant.id)+"atributo3"]
         ant.nombre        = request.POST[str(ant.id)+"nombre"]
         if tipo_ant == 'medica' or tipo_ant == 'quirurgica':
             pertenece   = Pertenencia.objects.filter(paciente=paci,antecedente=ant)
@@ -509,11 +509,8 @@ def emergencia_antecedentes(request,id_emergencia):
     paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    mensaje = ""
-
     ctx = {'emergencia':emer,'triage':triage}
     return render_to_response('atencion_ant.html',ctx,context_instance=RequestContext(request))
-
 
 #----------------------------------Gestion de Antecedentes en area de Atencion
 @login_required(login_url='/')
@@ -523,13 +520,10 @@ def emergencia_antecedentes_tipo(request,id_emergencia,tipo_ant):
     paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    mensaje = ""
     pertenece = Pertenencia.objects.filter(paciente=paci,antecedente__tipo=tipo_ant)
     antecedentes = Antecedente.objects.filter(pertenencia__paciente=paci,tipo=tipo_ant)
-    print 'pertenece = ',len(pertenece)
     ctx = {'emergencia':emer,'triage':triage,'antecedentes':antecedentes,'pertenece':pertenece,'tipo_ant':tipo_ant}
     return render_to_response('atencion_ant_medica.html',ctx,context_instance=RequestContext(request))
-
 
 @login_required(login_url='/')
 def emergencia_enfermedad(request,id_emergencia):
@@ -550,12 +544,12 @@ def emergencia_enfermedad(request,id_emergencia):
 
 #--------------------------------Gestion de Enfermedad (Examen Fisico)
 @login_required(login_url='/')
-def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):#enfermedad
+def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
-    atencion     = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion     = Atencion.objects.filter(emergencia=id_emergencia,aspectoatencion__aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     partecuerpo  = ParteCuerpo.objects.filter(zonaparte__zonacuerpo__nombre=zona_cuerpo)
     parteaspecto = ParteAspecto.objects.filter(partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
@@ -568,7 +562,8 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
-    atencion    = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion = atencion[0]
     '''aspectoAten = AspectoAtencion.objects.filter(atencion=atencion)'''
     aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
     partecuerpo = 0
@@ -579,7 +574,8 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             if anomalia:
                 anomalia.delete()
-        if input1 == 'anormal':
+            aspAten.save()
+        elif input1 == 'anormal':
             aspAten.revisado = '1'
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             descripcion = request.POST['A'+str(aspAten.aspecto.id)]
@@ -589,18 +585,18 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
             else:
                 anomalia = Anomalia(descripcion=descripcion,aspectoatencion=aspAten)
                 anomalia.save()
-        if input1 == 'no':
+            aspAten.save()
+        elif input1 == 'no':
             aspAten.revisado = '0'
             anomalia = Anomalia.objects.filter(aspectoatencion=aspAten)
             if anomalia:
                 anomalia.delete()
-        aspAten.save()
+            aspAten.save()
+        
     return HttpResponse()
 
 
 # --- RGV
-
-
 
 #--------------------------------Gestion de Indicaciones Terapeuticas
 @login_required(login_url='/')
@@ -745,6 +741,7 @@ def emergencia_diagnostico(request,id_emergencia):
 
 ########################################################HASTA AQUI CODIGO ATENCION
 
+@login_required(login_url='/')
 def emergencia_egreso(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
@@ -762,4 +759,3 @@ def emergencia_egreso(request,id_emergencia):
     form = AgregarEgresoForm()
     info = {'form':form,'emergencia':emer,'triage':triage}
     return render_to_response('atencion_egre.html',info,context_instance=RequestContext(request))
-    
