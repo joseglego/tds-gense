@@ -375,20 +375,31 @@ def emergencia_descarga(request,id_emergencia):
     html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
     return generar_pdf(html)
 
-
+#----------------------------------Gestion de Enfermedad Actual
 @login_required(login_url='/')
-def emergencia_indi(request,id_emergencia):
-    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+def emergencia_enfermedad_actual(request,id_emergencia):
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
     paci = Paciente.objects.filter(emergencia__id=id_emergencia)
     paci = paci[0]
-    print "paciente",paci
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
+    # at = Atencion.objects.filter(emergencia=id_emergencia)
     mensaje = ""
-    info = {'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
-    return render_to_response('prueba.html',info,context_instance=RequestContext(request))
-
+    atencion = Atencion.objects.get(emergencia=id_emergencia)
+    if not(atencion):
+        atencion = Atencion(emergencia=emer,medico=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),area_atencion=triage.areaAtencion)
+        atencion.save()
+    if request.method == 'POST':
+        form = AgregarEnfActual(request.POST)
+        if form.is_valid():
+            pcd = form.cleaned_data
+            narrativa          = pcd['narrativa']
+            enfA = EnfermedadActual(atencion=atencion,narrativa=narrativa)
+            enfA.save()
+            mensaje = " Agregado exitosamente"
+    form = AgregarEnfActual()
+    info = {'form':form,'emergencia':emer,'triage':triage, 'mensaje':mensaje}
+    return render_to_response('atencion_enfA.html',info,context_instance=RequestContext(request))
 
 # --- RGV
 
@@ -525,6 +536,8 @@ def emergencia_antecedentes_tipo(request,id_emergencia,tipo_ant):
     ctx = {'emergencia':emer,'triage':triage,'antecedentes':antecedentes,'pertenece':pertenece,'tipo_ant':tipo_ant}
     return render_to_response('atencion_ant_medica.html',ctx,context_instance=RequestContext(request))
 
+
+#--------------------------------Gestion de Enfermedad (Examen Fisico)
 @login_required(login_url='/')
 def emergencia_enfermedad(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
@@ -532,17 +545,14 @@ def emergencia_enfermedad(request,id_emergencia):
     triage = triage[0]
     causa  = 0
     atencion = Atencion.objects.filter(emergencia=id_emergencia)
-    if not(atencion):
-        atencion = Atencion(emergencia=emer,medico=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),area_atencion=triage.areaAtencion)
-        atencion.save()
-        aspectos = Aspecto.objects.filter()
-        for aspe in aspectos:
-            AspeAten = AspectoAtencion(revisado='no',aspecto=aspe,atencion=atencion)
-            AspeAten.save() 
+    aspectos = Aspecto.objects.filter()
+    for aspe in aspectos:
+        AspeAten = AspectoAtencion(revisado='no',aspecto=aspe,atencion=atencion)
+        AspeAten.save()
     ctx = {'emergencia':emer,'triage':triage,'causa':causa}
     return render_to_response('atencion_Plan.html',ctx,context_instance=RequestContext(request))
 
-#--------------------------------Gestion de Enfermedad (Examen Fisico)
+
 @login_required(login_url='/')
 def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
@@ -598,164 +608,283 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
 
 # --- RGV
 
-#--------------------------------Gestion de Indicaciones Terapeuticas
+#----------------------------------------------------------Gestion de INDICACIONES
 @login_required(login_url='/')
-def emergencia_indicacionesT(request,id_emergencia):
-    
-    # FUNCION PARA MANIPULAR EL FORMULARIO Y PARA LISTAR LAS INDICACIONES Terapeuticas
-    # Consultas para guardar abajo los objetos pertinentes
-    emer   = get_object_or_404(Emergencia,id=id_emergencia)
-    #usr = Usuario.objects.get(username=request.user)
-    #print "usuario es:",usr
-    ingreso = datetime.now()
+def emergencia_indicaciones_ini(request,id_emergencia):
+    print "ENTRANDO A INDICACIONES"
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    #categoria = 0
-    #indicaciones = Indicacion.objects.filter()
-    indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
-    print "indicaciones: ",indicaciones
-    #form=""
-    
-    ###Codigo Form:
     mensaje = ""
-    if request.method == 'POST':
-        form = AgregarIndTerapeuticaForm(request.POST)
-        print "Validez Formulario:",str(form.is_valid())
-        #Print de inputs del formulario
-        print "veo tipo:",form.cleaned_data['nombreT']
-        print "veo nombre:",form.cleaned_data['otroT']
-        if form.is_valid():
-            pcd = form.cleaned_data
-            p_nombre            = pcd['nombreT']
-            p_otro              = pcd['otroT']
-            #Agrego indicacion dependiendo del tipo
-            print "veo nombre:",p_nombre
-            print "veo otro:",p_otro
-            
-            indicacionesQ = Indicacion.objects.filter(asignar__emergencia = id_emergencia,asignar__indicacion__nombre = p_nombre)
-            #print "indicaciones: ",len(indicaciones)
-            if indicacionesQ:
-                # Falta agregar Condicional cuando tengo indicaciones de tipo terapeutico q no tienen categoria
-                mensaje = "Hay indicaciones con ese nombre"
-                #OJO AQUI TENGO QUE PASARLE LA TABLA DE ASIGNAR para que pueda listar la hora
-                info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
-                return render_to_response('atencion_indT.html',info,context_instance=RequestContext(request))
-            else:
-                print "no hay elementos"
-                #Agrego para ver si sirve
-                print "Input p_tipo",p_nombre
-                print "Input p_nombre",p_otro
-                i = Indicacion(nombre=p_nombre,tipo="terapeutico")
-                i.save()
-                a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
-                a.save()
-                mensaje = "Guardado Exitosamente"
-                
-                #OJO AQUI TENGO QUE PASARLE LA TABLA DE ASIGNAR para que pueda listar la hora
-                info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
-                return render_to_response('atencion_indT.html',info,context_instance=RequestContext(request))
-
-    form=AgregarIndTerapeuticaForm()
-    info = {'form':form,'indicaciones':indicaciones,'emergencia':emer,'triage':triage}
-    return render_to_response('atencion_indT.html',info,context_instance=RequestContext(request))
-
-#------------------------------Gestion de Indicaciones Diagnosticas- Generico
-@login_required(login_url='/')
-def emergencia_indicacionesD(request,id_emergencia):
-    
-    # FUNCION PARA MANIPULAR EL FORMULARIO Y PARA LISTAR LAS INDICACIONES Diagnosticas
-    # Consultas para guardar abajo los objetos pertinentes
-    emer   = get_object_or_404(Emergencia,id=id_emergencia)
-    #usr = Usuario.objects.get(username=request.user)
-    #print "usuario es:",usr
     ingreso = datetime.now()
+    print "Entra a indicaciones_ini"
+    indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
+    info = {'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'ingreso':ingreso}
+    return render_to_response('atencion_ind.html',info,context_instance=RequestContext(request))
+
+#Agrega las indicaciones dependiendo de la categoria: 
+@login_required(login_url='/')
+def emergencia_indicaciones(request,id_emergencia,tipo_ind):
+    print "ENTRANDO A INDICACIONES"
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    #categoria = 0
-    #indicaciones = Indicacion.objects.filter()
-    indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
-    print "indicaciones: ",indicaciones
+    mensaje = ""
+    ingreso = datetime.now()
+    if tipo_ind == 'listar':
+        #indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+        info = {'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
+        return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
+
+    elif tipo_ind == 'medicamento':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Pastillas asignadas",indicaciones
+        mensaje = ""
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+
+    elif tipo_ind == 'valora':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Indicaciones valoracion",indicaciones
+        mensaje = ""
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_valora.html',info,context_instance=RequestContext(request))
+
+    elif tipo_ind == 'otros':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Indicaciones valoracion",indicaciones
+        mensaje = ""
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_DOtros.html',info,context_instance=RequestContext(request))
+
+    elif tipo_ind == 'terapeutico':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Indicaciones terapeuticas",indicaciones
+        mensaje = ""
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_tera.html',info,context_instance=RequestContext(request))
+
     
-    ###Codigo Form:
+
+
+
+    else:
+        indicaciones = Indicacion.objects.filter(tipo__iexact=tipo_ind)
+        if request.method == 'POST':
+        #FORMA 2: USANDO LOS FORMS DE DJANGO:
+            if tipo_ind == 'dieta':
+                print "ENTRANDO A INDICACIONES DIETA"
+                form = AgregarIndDietaForm(request.POST)
+                
+            elif tipo_ind == 'hidrata':
+                print "ENTRANDO A INDICACIONES HIDRATACION"
+                form = AgregarIndHidrataForm(request.POST)
+
+            # elif tipo_ind == 'terapeutico':
+            #     form = AgregarIndTerForm(request.POST)
+
+            elif tipo_ind == 'lab':
+                form = AgregarIndLabForm(request.POST)
+
+            elif tipo_ind == 'imagen':
+                form = AgregarIndImgForm(request.POST)
+
+            elif tipo_ind == 'endoscopico':
+                form = AgregarIndEndosForm(request.POST)
+    
+            print "Veo si el form es valido: ", form.is_valid()
+            mensaje = "el formulario es inválido"
+            if form.is_valid():
+                pcd = form.cleaned_data
+                nombre = pcd[tipo_ind]
+                print "IMprime lo que me retorna el form:",nombre
+                indicacionesQ = Indicacion.objects.filter(asignar__emergencia = id_emergencia,asignar__indicacion__nombre = nombre)
+                
+                if indicacionesQ:
+                    mensaje = "Hay indicaciones con ese nombre"
+                    info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'ingreso':ingreso, 'tipo_ind':tipo_ind}
+                    return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
+                
+                else:
+                    indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+                    print "no hay elementos con ese nombre"
+                    i= Indicacion.objects.get(nombre = nombre)
+                    print "Veo si agarre bien el objeto",i
+                    a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                    a.save()
+                    if tipo_ind == 'dieta':
+                        extra = pcd['observacion']
+                        print "COntenido extra: ",extra
+                        ex = EspDieta(asignacion=a,observacion=extra)
+                        ex.save()
+                    elif tipo_ind == 'hidrata':
+                        print "AGREGO ALGO DE HIDRATA"
+                        sn = pcd['combina']
+                        print "SI o NO COMBINA: ",sn
+                        vol    = pcd['volumen']
+                        vel    = pcd['vel_inf']
+                        comp   = pcd['complementos']
+                        print "COntenido extra vol: ",vol
+                        print "COntenido extra vel: ",vel
+                        print "COntenido extra comp: ",comp
+                        ex = EspHidrata(asignacion=a,volumen=vol,vel_infusion=vel,complementos=comp)
+                        ex.save()
+                        if pcd['combina'] == "True":
+                            ex_sol = pcd ['combina_sol']
+                            i2= Indicacion.objects.get(nombre = ex_sol)
+                            comb = CombinarHidrata(hidratacion1= ex,hidratacion2=i2)
+                            comb.save()
+                    mensaje = "Guardado Exitosamente"
+                    info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
+                    #url="/emergencia/indi/"+id_emergencia
+                    # urL="/emergencia/indicaciones/"+id_emergencia+"/listar"
+                    # print "a ver si imprime bien el url",urL
+                    #return HttpResponse(urL)
+                    return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
+                    #return redirect(urL)
+                    #return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
+
+            else:
+                mensaje ="quiero ver errores"
+                form_errors = form.errors
+                errocito = request.POST["combina"]
+                print "Viene error combina",errocito
+                print "errores del form",form_errors
+                info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'ingreso':ingreso, 'tipo_ind':tipo_ind,'form_errors': form_errors}
+                return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
+
+        if tipo_ind == 'dieta':
+            form=AgregarIndDietaForm()
+
+        elif tipo_ind == 'hidrata':
+            form = AgregarIndHidrataForm()
+
+        elif tipo_ind == 'lab':
+            form = AgregarIndLabForm()
+
+        elif tipo_ind == 'imagen':
+            form = AgregarIndImgForm()
+
+        elif tipo_ind == 'endoscopico':
+            form = AgregarIndEndosForm()
+
+        info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'ingreso':ingreso, 'tipo_ind':tipo_ind}
+        #return render_to_response('atencion_ind_dieta.html',info,context_instance=RequestContext(request))
+        return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
+
+#--------------------------------Acciones para indicaciones de Medicamentos:
+#-----------------------AGREGAR INDICACION MEDICAMENTO-----------------------#
+@login_required(login_url='/')
+def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
+    print "Tipo Medicacion en ingresar"
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+    triage = triage[0]
+    mensaje = ""
+    ingreso = datetime.now()
+
+    indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+    print "INDICACIONES de tipo Medicacion", indicaciones
+    if request.method == 'POST':
+        print "Agarro el post"
+        nombres  = request.POST.getlist('nuevaMed')
+        dosis    = request.POST.getlist('nuevaDosis')
+        tc       = request.POST.getlist('nuevoTC')
+        frec     = request.POST.getlist('nuevaFrec')
+        tf       = request.POST.getlist('nuevoTF')
+        via      = request.POST.getlist('nuevaVAD')
+        
+        print "nombres = ",nombres
+        print "dosis = ", dosis
+        print "tc = ", tc
+        print "frec = ", frec
+        print "tf = ", tf
+        print "via = ", via
+        ver = range(len(nombres)-1)
+        print "numeros por los que tienes q iterar:",ver
+
+        for i in range(len(nombres)-1): 
+            # Condicional para saber si existe en las indicaciones:
+            indicacionesQ = Indicacion.objects.filter(asignar__emergencia = id_emergencia,asignar__indicacion__nombre = nombres[i])
+            print " existen estas indicaciones?",indicacionesQ
+            if indicacionesQ:
+                mensaje = "Hay indicaciones con ese nombre"
+                info = {'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'ingreso':ingreso, 'tipo_ind':tipo_ind}
+                return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+            else:
+                #Creo el objeto indicacion
+                ind = Indicacion(nombre=nombres[i],tipo=tipo_ind)
+                ind.save()
+                print "Veo si cree bien el objeto de ind medicamento",i
+                a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                a.save()
+                # Agregar info extra:
+                eMed= EspMedics(asignacion=a,dosis=float(dosis[i]),tipo_conc =tc[i],frecuencia=frec[i],tipo_frec=tf[i],via_admin=via[i])
+                eMed.save()
+        else:
+            mensaje = "ELSE PORQ NO HAY POST"
+            info = {'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
+            return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+
+        mensaje = "Medicaciones guardadas Exitosamente"
+        info = {'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+                
+
+    info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
+    return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+
+#-----------------------ELIMINAR INDICACION MEDICAMENTO-----------------------#
+@login_required(login_url='/')
+def emergencia_indicaciones_eliminar(request,id_emergencia,tipo_ind):
+    print "Tipo Medicacion en eliminar"
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+    triage = triage[0]
     mensaje = ""
     if request.method == 'POST':
-        form = AgregarIDLabForm(request.POST)
-        print "Validez Formulario:",str(form.is_valid())
-        #Print de inputs del formulario
-        print "veo tipo:",form.cleaned_data['nombreDL']
-        print "veo nombre:",form.cleaned_data['otroDL']
-        if form.is_valid():
-            pcd = form.cleaned_data
-            p_nombre            = pcd['nombreDL']
-            p_otro              = pcd['otroDL']
-            #Agrego indicacion dependiendo del tipo
-            print "veo nombre:",p_nombre
-            print "veo otro:",p_otro
-            
-            indicacionesQ = Indicacion.objects.filter(asignar__emergencia = id_emergencia,asignar__indicacion__nombre = p_nombre)
-            #print "indicaciones: ",len(indicaciones)
-            if indicacionesQ:
-                # Falta agregar Condicional cuando tengo indicaciones de tipo terapeutico q no tienen categoria
-                mensaje = "Hay indicaciones con ese nombre"
-                #OJO AQUI TENGO QUE PASARLE LA TABLA DE ASIGNAR para que pueda listar la hora
-                info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
-                return render_to_response('atencion_indD.html',info,context_instance=RequestContext(request))
-            else:
-                print "no hay elementos"
-                #Agrego para ver si sirve
-                print "Input p_tipo",p_nombre
-                print "Input p_nombre",p_otro
-                i = Indicacion(nombre=p_nombre,tipo="terapeutico")
-                i.save()
-                a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
-                a.save()
-                mensaje = "Guardado Exitosamente"
-                
-                #OJO AQUI TENGO QUE PASARLE LA TABLA DE ASIGNAR para que pueda listar la hora
-                info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
-                return render_to_response('atencion_indD.html',info,context_instance=RequestContext(request))
+        checkes = request.POST.getlist(u'check')
+        print "Ver elementos elegidos", checkes
+        for id_ind in checkes:
+            print "\nsi entra\n"
+            #ind       = Indicacion.objects.get(id=id_ind)
+            ind = get_object_or_404(Indicacion,id=id_ind)
+            print "Veo si existe el objeto elegido:",ind
+            asignacion = Asignar.objects.filter(emergencia = emer,indicacion = ind)
+            print "Corroboro que este asignado a esa emer",asignacion
+            # Busco la info extra y la borro:
+            extra  = EspMedics.objects.filter(asignacion=asignacion[0])
+            print "que objetos extra se crearoon",extra
+            extra.delete()
+            asignacion.delete()
 
-    form = AgregarIDLabForm(request.POST)
-    info = {'form':form,'indicaciones':indicaciones,'emergencia':emer,'triage':triage}
-    return render_to_response('atencion_indD.html',info,context_instance=RequestContext(request))
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Pastillas asignadas",indicaciones
+        mensaje = "Eliminado Exitosamente"
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
 
-
-#---------------------------------------------Gestion de Diagnostico Definitivo
+#----------------------------------Gestion de Diagnostico Definitivo
 @login_required(login_url='/')
 def emergencia_diagnostico(request,id_emergencia):
-    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
-    ###Codigo Form:
+    # at = Atencion.objects.filter(emergencia=id_emergencia)
     mensaje = ""
-    if request.method == 'POST':
-        form = AgregarDiagnosticoForm(request.POST)
-        if form.is_valid():
-            pcd = form.cleaned_data
-            p_diagnostico = pcd['diagnostico']
-            p_comentario  = pcd['comentario']
-    form = AgregarDiagnosticoForm()
-    info = {'form':form,'emergencia':emer,'triage':triage}
+    indicaciones = Indicacion.objects.filter(asignar__emergencia = id_emergencia)
+    print "Indicaciones terapeuticas",indicaciones
+    mensaje = ""
+    info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
     return render_to_response('atencion_diag.html',info,context_instance=RequestContext(request))
-            
-
-########################################################HASTA AQUI CODIGO ATENCION
-
-@login_required(login_url='/')
-def emergencia_egreso(request,id_emergencia):
-    emer   = get_object_or_404(Emergencia,id=id_emergencia)
-    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
-    triage = triage[0]
-    ###Codigo Form:
-    mensaje = ""
-    if request.method == 'POST':
-        form = AgregarEgresoForm(request.POST)
-        if form.is_valid():
-            pcd = form.cleaned_data
-            p_destino          = pcd['destino']
-            p_area_admision    = pcd['area_admision']
-            p_fecha_traslado   = pcd['fecha_traslado']
-            p_fecha_indicacion = pcd['fecha_indicacion']
-    form = AgregarEgresoForm()
-    info = {'form':form,'emergencia':emer,'triage':triage}
-    return render_to_response('atencion_egre.html',info,context_instance=RequestContext(request))

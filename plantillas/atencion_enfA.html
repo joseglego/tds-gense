@@ -1,0 +1,28 @@
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
+<script>
+function envia1(pag){
+    var formu = $('#formENFA').serialize();
+    $.post(pag,formu,function(data){
+        alert ("esto es data: "+data );
+        $("#dEnf").html(data);
+    });
+}
+</script>
+
+<!-- FORMULARIO PARA enf actual -->
+
+<div id="hola1" >
+    <form id="formENFA" method="post" action="">
+    {% csrf_token %}
+    <fieldset>
+        <center><legend>Narrativa</legend></center>
+        <center>
+        {{ form.as_p }}
+        </center>
+    </fieldset>
+</form>
+<center><button class="btn btn-mini btn-primary" onClick="envia1('/emergencia/enf_actual/{{emergencia.id}}')">Agregar</button>
+</center>
+</div>
