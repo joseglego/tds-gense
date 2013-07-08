@@ -385,7 +385,7 @@ def emergencia_enfermedad_actual(request,id_emergencia):
     triage = triage[0]
     # at = Atencion.objects.filter(emergencia=id_emergencia)
     mensaje = ""
-    atencion = Atencion.objects.get(emergencia=id_emergencia)
+    atencion = Atencion.objects.filter(emergencia=id_emergencia)
     if not(atencion):
         atencion = Atencion(emergencia=emer,medico=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),area_atencion=triage.areaAtencion)
         atencion.save()
@@ -394,7 +394,7 @@ def emergencia_enfermedad_actual(request,id_emergencia):
         if form.is_valid():
             pcd = form.cleaned_data
             narrativa          = pcd['narrativa']
-            enfA = EnfermedadActual(atencion=atencion,narrativa=narrativa)
+            enfA = EnfermedadActual(atencion=atencion[0],narrativa=narrativa)
             enfA.save()
             mensaje = " Agregado exitosamente"
     form = AgregarEnfActual()
@@ -541,33 +541,59 @@ def emergencia_antecedentes_tipo(request,id_emergencia,tipo_ant):
 @login_required(login_url='/')
 def emergencia_enfermedad(request,id_emergencia):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
     atencion = Atencion.objects.filter(emergencia=id_emergencia)
-    aspectos = Aspecto.objects.filter()
-    for aspe in aspectos:
-        AspeAten = AspectoAtencion(revisado='no',aspecto=aspe,atencion=atencion)
-        AspeAten.save()
+    aspectos = Aspecto.objects.filter(parteaspecto__partecuerpo__nombre='CABEZA Y ROSTRO')
+    aspectoAten = AspectoAtencion.objects.filter(atencion=atencion[0],aspecto__parteaspecto__partecuerpo__nombre='CABEZA Y ROSTRO')
+    '''if not(aspectoAten):
+        for aspe in aspectos:
+            AspeAten = AspectoAtencion(revisado='no',aspecto=aspe,atencion=atencion[0])
+            AspeAten.save()'''
     ctx = {'emergencia':emer,'triage':triage,'causa':causa}
-    return render_to_response('atencion_Plan.html',ctx,context_instance=RequestContext(request))
-
-
+    if paci.sexo == 1:
+        return render_to_response('atencion_Plan.html',ctx,context_instance=RequestContext(request))
+    else:
+        return render_to_response('atencion_Plan_mujer.html',ctx,context_instance=RequestContext(request))    
 @login_required(login_url='/')
 def emergencia_enfermedad_zonacuerpo(request,id_emergencia,zona_cuerpo):
+    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+    triage = triage[0]
+    causa  = 0
+    atencion     = Atencion.objects.filter(emergencia=id_emergencia)
+    partecuerpo  = ParteCuerpo.objects.filter(zonaparte__zonacuerpo__nombre=zona_cuerpo)
+    parteaspecto = ParteAspecto.objects.filter(partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
+    aspectoAten  = AspectoAtencion.objects.filter(atencion=atencion[0],aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
+    aspectos = Aspecto.objects.filter(parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
+    ctx = {'emergencia':emer,'triage':triage,'causa':causa,'paciente':paci,'partecuerpo':partecuerpo,'parteaspecto':parteaspecto,'aspectoAtencion':aspectoAten,'zona_cuerpo':zona_cuerpo}
+    return render_to_response('atencion_Plan_cuerpo.html',ctx,context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def emergencia_enfermedad_partecuerpo(request,id_emergencia,parte_cuerpo):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
     causa  = 0
-    atencion     = Atencion.objects.filter(emergencia=id_emergencia,aspectoatencion__aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
-    partecuerpo  = ParteCuerpo.objects.filter(zonaparte__zonacuerpo__nombre=zona_cuerpo)
-    parteaspecto = ParteAspecto.objects.filter(partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
-    aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
-    ctx = {'emergencia':emer,'triage':triage,'causa':causa,'partecuerpo':partecuerpo,'parteaspecto':parteaspecto,'aspectoAtencion':aspectoAten,'zona_cuerpo':zona_cuerpo}
-    return render_to_response('atencion_Plan_cuerpo.html',ctx,context_instance=RequestContext(request))
+    atencion = Atencion.objects.filter(emergencia=id_emergencia)
+    atencion = atencion[0]
+    aspectoAten  = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__nombre=parte_cuerpo)
+    aspectos = Aspecto.objects.filter(parteaspecto__partecuerpo__nombre=parte_cuerpo)
+    if not(aspectoAten):
+        for aspe in aspectos:
+            AspeAten = AspectoAtencion(revisado='no',aspecto=aspe,atencion=atencion)
+            AspeAten.save()
+    aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__nombre=parte_cuerpo)
+    ctx = {'emergencia':emer,'triage':triage,'causa':causa,'aspectoAtencion':aspectoAten,'parte_cuerpo':parte_cuerpo}
+    return render_to_response('atencion_Plan_partecuerpo.html',ctx,context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfermedad
+def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,parte_cuerpo):
     emer   = get_object_or_404(Emergencia,id=id_emergencia)
     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
     triage = triage[0]
@@ -575,7 +601,7 @@ def emergencia_enfermedad_enviarcuerpo(request,id_emergencia,zona_cuerpo):#enfer
     atencion = Atencion.objects.filter(emergencia=id_emergencia)
     atencion = atencion[0]
     '''aspectoAten = AspectoAtencion.objects.filter(atencion=atencion)'''
-    aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__zonaparte__zonacuerpo__nombre=zona_cuerpo)
+    aspectoAten = AspectoAtencion.objects.filter(atencion=atencion,aspecto__parteaspecto__partecuerpo__nombre=parte_cuerpo)
     partecuerpo = 0
     for aspAten in aspectoAten:
         input1 = request.POST[str(aspAten.aspecto.id)]

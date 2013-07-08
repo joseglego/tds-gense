@@ -23,7 +23,8 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/antecedente/(?P<id_emergencia>.*)$','emergencia_antecedentes'),    
 
     # Ingreso a Examen fisico
-    url('^emergencia/enviarcuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_enviarcuerpo'),
+    url('^emergencia/enviarcuerpo/(?P<id_emergencia>.*)/(?P<parte_cuerpo>.*)$','emergencia_enfermedad_enviarcuerpo'),
+    url('^emergencia/partecuerpo/(?P<id_emergencia>.*)/(?P<parte_cuerpo>.*)$','emergencia_enfermedad_partecuerpo'),
     url('^emergencia/cuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_zonacuerpo'),
     url('^emergencia/enfermedad/(?P<id_emergencia>.*)$','emergencia_enfermedad'),
 
