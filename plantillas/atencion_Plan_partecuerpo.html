@@ -1,58 +1,39 @@
-<script src ="/static/scripts/efectos_info_cuerpo.js"> </script> 
+<script src ="/static/scripts/efectos_info_cuerpo.js"> </script>
+<script src ="/static/scripts/atencion_Plan_partecuerpo.js"> </script>
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/atencion.css" />  
  <script>
-
-  function cargar(){
-    //e.preventDefault();
-    Fspin('cajon1');
-    var formu = $('#formularioCuerpo').serialize();
-    $.post('/emergencia/enviarcuerpo/{{emergencia.id}}/'+'{{parte_cuerpo}}',formu, function(){
-      $('#cajon1').data('spinner').stop();
-    });
-  }
-
   $(document).ready(function () {
-    $('#'+'ejemplo').hide();
-    $('.hide').hide();
-    $('input[type="hidden"]').each(function(index,valor){
-      var estado = $(valor).attr('value');
-      var nombre = $(valor).attr('id');
-      if (estado=='normalN'){
-        $('#p'+nombre+'1').addClass('On');
-      }else if(estado=='anormalN'){
-        $('#p'+nombre+'2').addClass('On');
-        $('#A'+nombre).show();
-      }
-    });
+    botones_sintomas();
   });
 </script>
 <div>
-  <button style='margin-top:0px;margin-left:0px'class="btn btn-info btn-mini" onClick="cargar();"> Guardar</button>
+  <button class="btn btn-info btn-mini" onClick="cargar('{{emergencia.id}}','{{parte_cuerpo}}');"> Guardar</button>
 </div>
 <form id='formularioCuerpo' name="cuerpo" method="post" action="/emergencia/enviarcuerpo/{{emergencia.id}}/{{parte_cuerpo}}">
   {% csrf_token %}
-<div style="display:inline-table;height:64%;padding:3px 0px 0px 5px;boder:solid;OVERFLOW: auto;">
+<div id='div_de_tabla_cuerpo'>
   <table class='table table-bordered' style='width:350px'>
     <thead>
       <tr class='btn-info'>
       <th style="width:210px;">
-        {% if parte.nombre == 'CABEZA_Y_ROSTRO' %}
+        {% if parte_cuerpo == 'CABEZA_Y_ROSTRO' %}
           CABEZA&nbsp;Y&nbsp;ROSTRO
-        {% elif parte.nombre == 'EXTREMIDADES_SUPERIORES' %}
+        {% elif parte_cuerpo == 'EXTREMIDADES_SUPERIORES' %}
           EXTREMIDADES&nbsp;SUPERIORES
-        {% elif parte.nombre == 'EXTREMIDADES_INFERIORES' %}
+        {% elif parte_cuerpo == 'EXTREMIDADES_INFERIORES' %}
           EXTREMIDADES&nbsp;INFERIORES
-        {% elif parte.nombre == 'GENITALES_MASCULINOS' %}
+        {% elif parte_cuerpo == 'GENITALES_MASCULINOS' %}
           GENITALES&nbsp;MASCULINOS&nbsp;
-        {% elif parte.nombre == 'GENITALES_FEMENINOS' %}
+        {% elif parte_cuerpo == 'GENITALES_FEMENINOS' %}
           GENITALES&nbsp;FEMENINOS
-        {% elif parte.nombre == 'EXAMEN_DE_MAMA'%}
+        {% elif parte_cuerpo == 'EXAMEN_DE_MAMA'%}
           EXAMEN&nbsp;DE&nbsp;MAMA
-        {% elif parte.nombre == 'EXAMEN_RECTAL' %}
+        {% elif parte_cuerpo == 'EXAMEN_RECTAL' %}
           EXAMEN&nbsp;RECTAL
         {% else %}
-          {{parte.nombre}}
+          {{parte_cuerpo}}
         {% endif %}
-        {{parte_cuerpo}}
+
       </th>
       <th style="width:90px">
         <center>
@@ -62,7 +43,7 @@
       </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody >
 
     {% for asp_ante in aspectoAtencion %}
       <tr class='well' style="width:150px;">
@@ -89,5 +70,4 @@
     </tbody>
   </table>
 </div>
-</form>
-</div>    
+</form>  

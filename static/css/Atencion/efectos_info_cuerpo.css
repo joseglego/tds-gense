@@ -1,10 +1,8 @@
 .BNAD,.BABN,.NAD,.ABN{
-    display: inline-block;
+  display: inline-block;
   *display: inline;
-  /*padding: 4px 12px;*/
   margin-bottom: 0;
   *margin-left: .3em;
-  /*font-size: 14px;*/
   line-height: 20px;
   color: #333333;
   text-align: center;
@@ -121,15 +119,11 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-
-
 .Off{
      display: inline-block;
   *display: inline;
-  /*padding: 4px 12px;*/
   margin-bottom: 0;
   *margin-left: .3em;
- /* font-size: 14px;*/
   line-height: 20px;
   color: #333333;
   text-align: center;
@@ -163,7 +157,6 @@
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
-  /*background-color: #006699;*/
 }
 
 #elmapa{
@@ -182,12 +175,10 @@
   margin-left: 0px;
   margin-top: 0px;
   OVERFLOW: auto;
-  /*background: #F3F9FD;*/
   background: #f5f5f5;
 }
 
 #cajon1{
-  /*padding: 8px;*/
   position: absolute;
   border:solid;
   border-color:#fff;
@@ -196,13 +187,9 @@
   margin-left: 255px;
   margin-top: 0px;
   background: #f5f5f5;
-  /*OVERFLOW: auto;*/
-  /*background: #c6e1ec;*/
-  /*background: #F3F9FD;*/
 }
 
 #cuerpou{
-
   position: absolute;
   height: 100%;
   width: 98%;
