@@ -243,6 +243,8 @@ def emergencia_calcularTriage(request,idE):
             f_avpu     = pcd['signos_avpu']
 
             f_dolor    = pcd['signos_dolor']
+            f_atencion = False
+            f_esperar = True
             f_recursos = 2
 
             print "Evaluar Todo"
@@ -337,14 +339,31 @@ def emergencia_calcularTriage(request,idE):
     info = {'form':form,'idE':idE}
     return render_to_response('calcularTriage.html',info,context_instance=RequestContext(request))
 
-def estadisticas_mes(request,ano,mes):
-    triages = Triage.objects.filter(fecha__year=ano).filter(fecha__month=mes).values('nivel').annotate(Count('nivel')).order_by('nivel')
+def estadisticas_prueba():
+#    triages = Triage.objects.filter(fecha__year=ano).filter(fecha__month=mes).values('nivel').annotate(Count('nivel')).order_by('nivel')
+#    triages = [[i['nivel'],i['nivel__count']] for i in triages]
+#    triagesBien = [[1,0],[2,0],[3,0],[4,0],[5,0]]
+#    for i in triages:
+#      triagesBien[i['nivel']] = i['count']
+    triages = Triage.objects.all().values('nivel').annotate(Count('nivel')).order_by('nivel')
     triages = [[i['nivel'],i['nivel__count']] for i in triages]
+    triagesBien = [0,0,0,0,0]
+    for i in triages:
+        triagesBien[i[0]-1] = i[1]
+    triages = []
+    for i in range(5):
+      triages.append([(i+1),triagesBien[i]])
     return triages
 
 def estadisticas(request):
     triages = Triage.objects.all().values('nivel').annotate(Count('nivel')).order_by('nivel')
     triages = [[i['nivel'],i['nivel__count']] for i in triages]
+    triagesBien = [0,0,0,0,0]
+    for i in triages:
+        triagesBien[i[0]-1] = i[1]
+    triages = []
+    for i in range(5):
+      triages.append([(i+1),triagesBien[i]])
     info = {'triages':triages}
     return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 #########################################################
