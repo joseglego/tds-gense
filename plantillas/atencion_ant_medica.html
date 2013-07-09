@@ -1,29 +1,11 @@
 <script>
     var clonLast = $(".ultimo:last").clone();
-    function envia(pag){
-      var formu = $('#formu').serialize();
-      Fspin('Dant');
-      $.post(pag,formu,function(data){  
-        $("#Dant").html(data);
-        $('#Dant').data('spinner').stop();
-      });
-    }
-
-    function CompruebaCampo(obj){
-        if ($(obj).parents("tr").hasClass("ultimo")){
-          ultimo = $(".ultimo:last");
-          ultimo.removeClass("ultimo");
-          var clonte = clonLast.clone();
-          clonte.insertAfter($(ultimo));
-        }
-    }
 </script>
 
 <form id = 'formu' name="formu" class= "tablaAgregar2" method="post" action="">
 {% csrf_token %}
 
 <div >
-<!--tabla #1-->
 <center>
 {% if tipo_ant == 'medica' %}    
     <h4 style='color:#006699;'>Antecedentes Medicos</h4>
@@ -48,7 +30,7 @@
 
 </center>
 <center>
-<div style='height:280px;OVERFLOW: auto;'>
+<div id='div_de_tabla_atecedente'>
 {% if tipo_ant == 'alergia' %}
     <table class='table table-bordered' style='width:205px'>
 {% else %}    
@@ -59,7 +41,6 @@
             <th style='width:40px'>
                 <center>Elimina</center>
             </th>
-            <!--th><center>Tipo</center></th-->
             {% if tipo_ant == 'alergia'%}
                 <th style='width:148px' ><center>Alergeno</center></th>
             {% else %}
@@ -120,7 +101,7 @@
                 </td>
                 <td>
                     <center> 
-                        <input type="text" name="nuevoNombre" value="" onChange="CompruebaCampo(this)" style="width:100px;height:12px;">
+                        <input type="text" name="nuevoNombre" value="" onChange="CompruebaCampo(this,clonLast)" style="width:100px;height:12px;">
                     <center>
                 </td>
                 {% if tipo_ant == 'medica' or  tipo_ant == 'quirurgica'%}

@@ -3,40 +3,21 @@
 {% if mensaje %}
 {{mensaje}}
 {% endif %}
-<link rel="stylesheet" type="text/css" href="/static/css/Atencion/tabla_report.css" />
 <link rel="stylesheet" type="text/css" href="/static/css/Atencion/estiloIcon.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/atencion.css" />
 <script src ="/static/css/Atencion/spin.min.js"> </script>
-<script>
-  function Fspin(div_spin){
-    var opts = {lines: 7,length: 6,width: 7, radius: 7, corners: 1,
-      rotate: 0,
-      direction: 1, // 1: clockwise, -1: counterclockwise
-      color: '#2f96b4', // #rgb or #rrggbb
-      speed: 1, trail: 160, shadow: false, hwaccel: true,className: 'spinner',
-      zIndex: 2e9,top: 'auto', left: 'auto'
-    };
-    var target = document.getElementById(div_spin);
-    var spinner = new Spinner(opts).spin(target);
-    $('#'+div_spin).data('spinner', spinner);
-  }
+<script src ="/static/scripts/atencion.js"> </script>
+<script >
   $(document).ready(function () {
     var emer = '{{emergencia.id}}';
-    $('#aInd').click(function(){
-      $('#Ind').load('/emergencia/atencion/indicacion/'+emer);
-    });
-    $('#Ant2').load('/emergencia/antecedente/'+emer );
-    $('#aEfis').click(function(){
-      Fspin('cuerpou');
-      $('#Efis').load('/emergencia/enfermedad/'+emer);
-    });
+    loadAtencion(emer);
   });
 </script>
 <div class="container row">
-  <!-- <div class="span12"> -->
     <div class="span3">
       <div class="well well-small">
         <h4>Paciente</h4>
-        <!-- <dl class="dl-horizontal"> -->
+
         <dl>
           <dt><b>Nombre:</b></dt>
           <dd>{{ emergencia.paciente }}</dd>
@@ -49,87 +30,82 @@
           <dt><b>Motivo de consulta:</b></dt>
           <dd>{{ triage.motivo.nombre}}</dd>
         </dl>
-          <!-- <dt><b>Motivo de consulta:</b></dt>
-          <dd>{{ triage.motivo.nombre}}</dd> -->
           
         <hr>
         <h4 class="info"> Signos Vitales</h4>
-        <dl>
+      <dl>
         <dt>Temperatura:&nbsp&nbsp<span style='font-weight:normal;'>{{ triage.signos_tmp }}</span></dt>
         <dt>Frecu. Cardiaca:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fc }}</span></dt>
         <dt>Tension Arterial:&nbsp&nbsp<span style='font-weight:normal;'{{ triage.signos_ta }}</span></dt>
         <dt>Fr:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fr }}</span></dt>
-        <dt>Saod:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_saod }}</em></dt>
-       <dt>rmotora:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rmotora }}</span></dt>
-       <dt>rocular:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rocular }}</span></dt>
-       <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
-       <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
+        <dt>Saod:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_saod }}</span></dt>
+        <dt>rmotora:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rmotora }}</span></dt>
+        <dt>rocular:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rocular }}</span></dt>
+        <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
+        <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
+      </dl>
 
+     <button class="btn btn-info btn-mini" > Actualizar</button>
+    </div><!--Cierra wellsmall-->
 
-       
-        </dl>
-        
-        <button style='margin-top:0px;margin-left:0px'class="btn btn-info btn-mini" > Actualizar</button>
-
-       
-      </div><!--Cierra info-alert-->
-      <center>
+    <center>
       <div class="btn-group">
-      <button class="btn button">
-        <a  href="/emergencia/descarga/{{emergencia.id}}" title="Historia Médica" data-icon="&#xe007;"></a>
-      </button>
-      <button class="btn button">
-        <a  href="#" title="Reporte Atencion"  data-icon="&#xe008;"></a>
-      </button>
-      <button class="btn button">
-        <a  href="#" title="Calcular Signos Vitales" data-icon="&#xe009;"></a>
-      </button>
-    </div><!-- Cierra botones -->
+        <button class="btn button">
+          <a  href="/emergencia/descarga/{{emergencia.id}}" title="Historia Médica" data-icon="&#xe007;"></a>
+        </button>
+        <button class="btn button">
+          <a  href="#" title="Reporte Atencion"  data-icon="&#xe008;"></a>
+        </button>
+        <button class="btn button">
+          <a  href="#" title="Calcular Signos Vitales" data-icon="&#xe009;"></a>
+        </button>
+      </div><!-- Cierra botones -->
     </center>
+  </div><!-- Cierra span3-->
 
-    </div><!-- Cierra span3-->
     <div class="span8">
-      <!-- <div class="span8" style="background:red;"> -->
       <div class="tabbable">
         <ul class="nav nav-tabs" id="myTab">
-          <li class="active">
+          <li  class="active">
+            <a id='aEnf' href="#Enf" data-toggle="tab">Enfermedad Actual</a>
+          </li>
+          <li>
             <a id='aAnt' href="#Ant" data-toggle="tab">Antecedentes</a>
           </li>
           <li>
-            <a id ='aEfis' href="#Efis" data-toggle="tab">F&iacute;sico</a>
+            <a id ='aEfis' href="#Efis" data-toggle="tab">Examen F&iacute;sico</a>
           </li>
-          <li id="Ind_a">
+          <li>
             <a id='aInd' href="#Ind" data-toggle="tab">Indicaciones</a>
           </li>
           <li>
-            <a href="#Diag" data-toggle="tab">Diagn&oacute;stico</a>
-          </li>
-          <li>
-            <a href="#Egre" data-toggle="tab">Egreso</a>
+            <a id='aDiag' href="#Diag" data-toggle="tab">Diagn&oacute;stico Definitivo</a>
           </li>
         </ul>
 
         <div class="tab-content">
-          <div  class="tab-pane active" id="Ant" >
-            <div id='Ant2' class='span2' ></div>
-            <div id="Dant" class='span5'>
-            </div> 
+          <div  class="tab-pane active" id="Enf" >
+            <div id="dEnf"></div>
           </div>
-          
-          <div class="tab-pane" id="Efis">
-            <p>Howdy, I'm in Section 2.</p>
-          </div>
-          <div class="tab-pane" id="Ind">                      
-          </div>
-          <div class="tab-pane" id="Diag">
-            <p>Howdy, I'm in Section 3.</p>
-          </div>
-          <div class="tab-pane" id="Egre">
-            <p>Howdy, I'm in Section 4.</p>
-          </div>
-        </div>
 
-      </div>
-    </div>  
-</div>
+          <div  class="tab-pane" id="Ant" >
+            <div id='Ant2' class='span2' ></div>
+            <div id="Dant" class='span5'></div>
+          </div>
+
+          <div class="tab-pane" id="Efis">
+          </div>
+
+          <div class="tab-pane" id="Ind">
+            <div id="d_But"></div>
+            <div id="d_Ind"></div>
+          </div>
+
+          <div class="tab-pane" id="Diag">
+            <div id="dDiag"></div>
+          </div>
+        </div><!--cierra tab-content-->
+      </div><!--cierra tabbable-->
+    </div><!--cierra span8-->
+  </div><!--cierra container-->
 {% endblock %}

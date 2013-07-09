@@ -143,43 +143,64 @@ class calcularTriageForm(forms.Form):
 
 
 ##################################################### FORMS ATENCION
-class AgregarAntecedentesForm(forms.Form):
-    nombreAnt = forms.ChoiceField(choices=TIPO_ANT)
-    alergia   = forms.CharField(max_length=64,required=False)
-    otro      = forms.CharField(max_length=64,required=False)
-    narrativa = forms.CharField(widget=forms.Textarea)
 
-# Agregar indicacion terapeutica
-class AgregarIndTerapeuticaForm(forms.Form):
-    nombreT    = forms.ChoiceField(choices=IND_TER)
-    otroT      = forms.CharField(max_length=64)
+# Enfermedad Actual:
+class AgregarEnfActual(forms.Form):
+    # narrativa = forms.CharField(max_length=512,widget=forms.widgets.Textarea(attrs={'rows':10, 'cols':400}))
+    narrativa = forms.CharField(widget=forms.widgets.Textarea)
+    def __init__(self, *args, **kwargs):
+      super(AgregarEnfActual, self).__init__(*args, **kwargs)
+      self.fields['narrativa'].label = ""
 
-# Agregar indicacion diagnostica Laboratorio
-class AgregarIDLabForm(forms.Form):
-    nombreDL    = forms.ChoiceField(choices=DIAG_LAB)
-    otroDL      = forms.CharField(max_length=64)
+# Indicaciones - Dieta
+class AgregarIndDietaForm(forms.Form):
+  dieta     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="dieta"),widget=forms.RadioSelect())
+  observacion = forms.CharField(max_length=100,widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':100}))
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndDietaForm, self).__init__(*args, **kwargs)
+    self.fields['dieta'].empty_label = None
+    self.fields['dieta'].label = "Tipo de Dieta:"
 
-# Agregar indicacion diagnostica Microbiologia
-class AgregarIDMicroForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_MICRO)
+# Indicaciones - Hidratacion
+class AgregarIndHidrataForm(forms.Form):
+  hidrata     = forms.ModelChoiceField(required=True,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  combina = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=ATENCION))
+  combina_sol= forms.ModelChoiceField(required=False,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  volumen = forms.FloatField(required=False)
+  vel_inf = forms.CharField(max_length=30)
+  complementos = forms.CharField(max_length=40)
+  
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndHidrataForm, self).__init__(*args, **kwargs)
+    self.fields['hidrata'].empty_label = None
+    self.fields['combina_sol'].empty_label = None
+    #------------Para cambiar los labels-------------------#
+    self.fields['hidrata'].label = "Tipo de Solución:"
+    self.fields['combina'].label = "¿Desea combinar con otro tipo de solución?:"
+    self.fields['combina_sol'].label = "Tipo de Solución Adicional:"
+    self.fields['vel_inf'].label = "Velocidad de Infusión:"
 
-# Agregar indicacion diagnostica Imagenologia
-class AgregarIDImageForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_IMG)
+# Indicaciones - Diagnosticas - Laboratorio
+class AgregarIndLabForm(forms.Form):
+  lab     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="lab"),widget=CheckboxSelectMultiple)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndLabForm, self).__init__(*args, **kwargs)
+    self.fields['lab'].empty_label = None
+    self.fields['lab'].label = "Exámenes de Laboratorio:"
 
-# Agregar indicacion diagnostica Endoscopico
-class AgregarIDEndosForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_END)
+# Indicaciones - Diagnosticas - Imagenologia
+class AgregarIndImgForm(forms.Form):
+  imagen     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="imagen"),widget=CheckboxSelectMultiple)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndImgForm, self).__init__(*args, **kwargs)
+    self.fields['imagen'].empty_label = None
+    self.fields['imagen'].label = "Tipos de exámenes:"
 
-
-class AgregarDiagnosticoForm(forms.Form):
-    diagnostico = forms.ChoiceField(choices=TABLA_DIAG)
-    comentario  = forms.CharField(widget=forms.Textarea)
-    
-class AgregarEgresoForm(forms.Form):
-    destino          = forms.ChoiceField(choices=TABLA_DEST)
-    area_admision    = forms.ChoiceField(choices=TABLA_AREADM)
-    fecha_traslado   = forms.DateTimeField()
-    fecha_indicacion = forms.DateTimeField()
-
-############################################################ Termina Forms Atencion
+# Indicaciones - Diagnosticas - Est endoscopicos
+class AgregarIndEndosForm(forms.Form):
+  endoscopico     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="endoscopico"),widget=CheckboxSelectMultiple)
+  Otros = forms.CharField(max_length=200)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndEndosForm, self).__init__(*args, **kwargs)
+    self.fields['endoscopico'].empty_label = None
+    self.fields['endoscopico'].label = "Exámenes Endoscópicos:"

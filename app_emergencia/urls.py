@@ -6,7 +6,8 @@ urlpatterns = patterns('app_emergencia.views',
 
     # Funciones de acceso a subfases de atencion
 
-    url('^emergencia/atencion/indicacion/(?P<id_emergencia>.*)$','emergencia_indi'),
+    # Acceso a Enfermedad Actual
+    url('^emergencia/enf_actual/(?P<id_emergencia>.*)$','emergencia_enfermedad_actual'),
     
     # Acceso por default a antecedentes:
     url('^emergencia/atencion/(?P<id_emergencia>.*)$','emergencia_atencion'),
@@ -22,20 +23,28 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/antecedente/(?P<id_emergencia>.*)$','emergencia_antecedentes'),    
 
     # Ingreso a Examen fisico
-    url('^emergencia/enviarcuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_enviarcuerpo'),
+    url('^emergencia/enviarcuerpo/(?P<id_emergencia>.*)/(?P<parte_cuerpo>.*)$','emergencia_enfermedad_enviarcuerpo'),
+    url('^emergencia/partecuerpo/(?P<id_emergencia>.*)/(?P<parte_cuerpo>.*)$','emergencia_enfermedad_partecuerpo'),
     url('^emergencia/cuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_zonacuerpo'),
     url('^emergencia/enfermedad/(?P<id_emergencia>.*)$','emergencia_enfermedad'),
-    
-    # Ingreso a Indicaciones Terapeuticas
-    url('^emergencia/indicacionesT/(?P<id_emergencia>.*)$','emergencia_indicacionesT'),
 
-    # Ingreso a Indicaciones Diagnosticas
-    url('^emergencia/indicacionesD/(?P<id_emergencia>.*)$','emergencia_indicacionesD'),
+    # Ingreso a Indicaciones
+    # Acciones de medicamentos:
+    # Agregar Medicamento
+    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/agregar$','emergencia_indicaciones_agregar'),
+    # # Eliminar Medicamento
+    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/eliminar$','emergencia_indicaciones_eliminar'),
+
+    # Ingreso a Indicaciones Especializadas
+    url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)$','emergencia_indicaciones'),
+
+    # Ingreso a Indicaciones general
+    url('^emergencia/indi/(?P<id_emergencia>.*)$','emergencia_indicaciones_ini'),
+
+    #-----------------------------------------------------------------------fIND
 
     # Ingreso a Diagnostico Definitivo
     url('^emergencia/diagnostico/(?P<id_emergencia>.*)$','emergencia_diagnostico'),
-
-    url('^emergencia/egreso/(?P<id_emergencia>.*)$','emergencia_egreso'),
 
     # Botones genericos de atencion:
     # Descargar historia medica 

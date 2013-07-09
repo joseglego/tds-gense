@@ -178,10 +178,13 @@ class Atencion(models.Model):
     fecha          = models.DateTimeField()
     fechaReal      = models.DateTimeField(auto_now_add=True)
     area_atencion  = models.CharField(max_length=1)
- 
-class ComentarioAtencion(models.Model):
+    def __unicode__(self):
+        return "Paciente:%s- Doctor:%s - Area:%s" % (self.emergencia.paciente.apellidos,self.medico.cedula,self.area_atencion)
+
+#_------------------------------------ Cambios Requerimientos 03_7
+class EnfermedadActual(models.Model):
     atencion = models.ForeignKey(Atencion)
-    comentario = models.CharField(max_length=512)
+    narrativa = models.CharField(max_length=512)
 
 #_------------------------------------ Cambios Requerimientos 29_6
 #----------------------------------Diagnostico Definitivo
@@ -193,7 +196,6 @@ class Diagnostico(models.Model):
 class EstablecerDiag(models.Model):
     atencion = models.ForeignKey(Atencion)
     diagnostico = models.ForeignKey(Diagnostico)
-    valoracion_esp = models.CharField(max_length=50)
 
 class Indicacion(models.Model):
     nombre = models.CharField(max_length=128, blank=False)
