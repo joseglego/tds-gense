@@ -1,18 +1,25 @@
-{% if mensaje %}
+{% if "Exitosamente" in mensaje %} 
+<div class= "alert alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
 {{mensaje}}
+</div>
+{% elif "nombre" in mensaje %}
+    <div class= "alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{mensaje}}
+    </div>
 {% endif %}
+
 <script>
 function envia1(pag){
     var formu = $('#formENFA').serialize();
     $.post(pag,formu,function(data){
-        alert ("esto es data: "+data );
         $("#dEnf").html(data);
     });
 }
 </script>
 
 <!-- FORMULARIO PARA enf actual -->
-
 <div id="hola1" >
     <form id="formENFA" method="post" action="">
     {% csrf_token %}

@@ -1,21 +1,9 @@
-{% if mensaje %}
-{{mensaje}}
-{% endif %}
 <script>
 function envia2(pag){ 
   $("#d_Ind").load(pag);
 }
-function CompruebaCampo(obj){
-  if ($(obj).parents("tr").hasClass("ultimo")){
-    ultimo = $(".ultimo:last");
-    clon = ultimo.clone();
-    ultimo.removeClass("ultimo");
-    clon.insertAfter($(ultimo));
-    $("tr.ultimo:last td center input[type='text']").prop("value","");
-    $("tr.ultimo:last td center select").prop('selectedIndex', -1);
-    }
-  }
 </script>
+
 <div id="aparece" class="btn-toolbar">
   <center>
     <div class="btn-group">
@@ -38,6 +26,7 @@ function CompruebaCampo(obj){
     </div>
   </center>
 </div>
+
 <div id="aparece2" class="btn-toolbar offset2" style="display: none;">
     <div class="btn-group">
       <button class="btn btn-mini btn-primary" onClick= "envia2('/emergencia/indicaciones/{{emergencia.id}}/lab')">Laboratorio</button>

@@ -7,10 +7,11 @@
 <link rel="stylesheet" type="text/css" href="/static/css/Atencion/atencion.css" />
 <script src ="/static/css/Atencion/spin.min.js"> </script>
 <script src ="/static/scripts/atencion.js"> </script>
-<script >
+<script>
   $(document).ready(function () {
     var emer = '{{emergencia.id}}';
     loadAtencion(emer);
+    $("[rel='tooltip']").tooltip();
   });
 </script>
 <div class="container row">
@@ -30,7 +31,6 @@
           <dt><b>Motivo de consulta:</b></dt>
           <dd>{{ triage.motivo.nombre}}</dd>
         </dl>
-          
         <hr>
         <h4 class="info"> Signos Vitales</h4>
       <dl>
@@ -47,19 +47,19 @@
 
      <button class="btn btn-info btn-mini" > Actualizar</button>
     </div><!--Cierra wellsmall-->
-
-    <center>
+      
+      <center>
       <div class="btn-group">
-        <button class="btn button">
-          <a  href="/emergencia/descarga/{{emergencia.id}}" title="Historia Médica" data-icon="&#xe007;"></a>
-        </button>
-        <button class="btn button">
-          <a  href="#" title="Reporte Atencion"  data-icon="&#xe008;"></a>
-        </button>
-        <button class="btn button">
-          <a  href="#" title="Calcular Signos Vitales" data-icon="&#xe009;"></a>
-        </button>
-      </div><!-- Cierra botones -->
+      <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}'" rel="tooltip" data-toggle="tooltip" data-original-title="Historia Médica">
+        <a  href="#" data-icon="&#xe007;"></a>
+      </button>
+      <button class="btn button btn-large" rel="tooltip" data-toggle="tooltip" data-original-title="Constancia Atenci&oacute;n">
+        <a  href="#" data-icon="&#xe008;"></a>
+      </button>
+      <button class="btn button btn-large" rel="tooltip" data-toggle="tooltip" data-original-title="Reporte Indicaciones">
+        <a  href="#" data-icon="&#xe009;"></a>
+      </button>
+    </div><!-- Cierra botones -->
     </center>
   </div><!-- Cierra span3-->
 
