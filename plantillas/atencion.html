@@ -1,52 +1,24 @@
 {% extends "base.html" %}
 {% block cuerpo %}
+{% if mensaje %}
+{{mensaje}}
+{% endif %}
 <link rel="stylesheet" type="text/css" href="/static/css/Atencion/estiloIcon.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/atencion.css" />
 <script src ="/static/css/Atencion/spin.min.js"> </script>
+<script src ="/static/scripts/atencion.js"> </script>
 <script>
-  function Fspin(div_spin){
-    var opts = {lines: 7,length: 6,width: 7, radius: 7, corners: 1,
-      rotate: 0,
-      direction: 1, // 1: clockwise, -1: counterclockwise
-      color: '#2f96b4', // #rgb or #rrggbb
-      speed: 1, trail: 160, shadow: false, hwaccel: true,className: 'spinner',
-      zIndex: 2e9,top: 'auto', left: 'auto'
-    };
-    var target = document.getElementById(div_spin);
-    var spinner = new Spinner(opts).spin(target);
-    $('#'+div_spin).data('spinner', spinner);
-  }
   $(document).ready(function () {
     var emer = '{{emergencia.id}}';
-    
-    $('#dEnf').load('/emergencia/enf_actual/'+emer);
-    
-    $('#aAnt').click(function(){
-      $('#Ant2').load('/emergencia/antecedente/'+emer);
-    });
-
-    $('#aEfis').click(function(){
-      Fspin('cuerpou');
-      $('#Efis').load('/emergencia/enfermedad/'+emer);
-    });
-
-    $('#aInd').click(function(){
-      $("#d_But").load("/emergencia/indi/"+emer);
-    });
-
-    $('#aDiag').click(function(){
-      $('#dDiag').load('/emergencia/diagnostico/'+emer);
-    });
-
+    loadAtencion(emer);
     $("[rel='tooltip']").tooltip();
-    
-
   });
 </script>
 <div class="container row">
     <div class="span3">
       <div class="well well-small">
         <h4>Paciente</h4>
-        <!-- <dl class="dl-horizontal"> -->
+
         <dl>
           <dt><b>Nombre:</b></dt>
           <dd>{{ emergencia.paciente }}</dd>
@@ -61,21 +33,22 @@
         </dl>
         <hr>
         <h4 class="info"> Signos Vitales</h4>
-        <dl>
+      <dl>
         <dt>Temperatura:&nbsp&nbsp<span style='font-weight:normal;'>{{ triage.signos_tmp }}</span></dt>
         <dt>Frecu. Cardiaca:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fc }}</span></dt>
         <dt>Tension Arterial:&nbsp&nbsp<span style='font-weight:normal;'{{ triage.signos_ta }}</span></dt>
         <dt>Fr:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_fr }}</span></dt>
         <dt>Saod:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_saod }}</span></dt>
-       <dt>rmotora:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rmotora }}</span></dt>
-       <dt>rocular:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rocular }}</span></dt>
-       <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
-       <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
-     </dl>
-     <button style='margin-top:0px;margin-left:0px'class="btn btn-info btn-mini" > Actualizar</button>
+        <dt>rmotora:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rmotora }}</span></dt>
+        <dt>rocular:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rocular }}</span></dt>
+        <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
+        <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
+      </dl>
+
+     <button class="btn btn-info btn-mini" > Actualizar</button>
     </div><!--Cierra wellsmall-->
+      
       <center>
-        
       <div class="btn-group">
       <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}'" rel="tooltip" data-toggle="tooltip" data-original-title="Historia Médica">
         <a  href="#" data-icon="&#xe007;"></a>

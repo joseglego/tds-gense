@@ -1,11 +1,12 @@
 $(document).ready(function () {
-  /* botones de los div que eliminan los div*/
-  /*se elimna caja1*/
+  /* botones 'X' que cierran los div*/
+  /*se cierra la caja1*/
   $('#boton1').click(function(){
-    $('#cajon1, #cajon2, #cajon3').slideUp();
+    $('#cajon1').slideUp();
   });
-  /*Asociaciones de los botones*/
 
+  /*Asociaciones de los botones*/
+var On = 'On';
 $('.NAD,.ABN').click(function(e){
   e.preventDefault();
   var input = $(this).attr('input');
@@ -15,9 +16,9 @@ $('.NAD,.ABN').click(function(e){
   var padre2 = $(this).parents('table').find('.BABN');
   var hijo1  = $(this).parents('table').find('.NAD');
   var hijo2  = $(this).parents('table').find('.ABN');
-  $(this).toggleClass('On');
-  if($(this).hasClass('On')){
-    $(this).siblings().removeClass('On');
+  $(this).toggleClass(On);
+  if($(this).hasClass(On)){
+    $(this).siblings().removeClass(On);
     if ( $(this).hasClass('ABN') ){ 
       $('#A'+input).show();
       $('#'+input).attr('value','anormal');
@@ -26,7 +27,7 @@ $('.NAD,.ABN').click(function(e){
     }
 
   }else{
-    $(this).siblings().addClass('On');
+    $(this).siblings().addClass(On);
     if ( $(this).hasClass('ABN') ){ 
       $('#A'+input).hide();
       $('#'+input).attr('value','normal');
@@ -37,61 +38,61 @@ $('.NAD,.ABN').click(function(e){
   }
 
   hijo1.each(function(i,valor){
-    if (!$(valor).hasClass('On')){
-      padre1.removeClass('On');
+    if (!$(valor).hasClass(On)){
+      padre1.removeClass(On);
       b1 = false;
     }
   });
 
   hijo2.each(function(i,valor){
-    if (!$(valor).hasClass('On')){
-      padre2.removeClass('On');
+    if (!$(valor).hasClass(On)){
+      padre2.removeClass(On);
       b2 = false;
     }
   });
 
-  if (b1){ padre1.addClass('On'); }
-  if (b2){ padre2.addClass('On'); }
+  if (b1){ padre1.addClass(On); }
+  if (b2){ padre2.addClass(On); }
 
 });
 
   $('.BNAD').click(function(e){
     e.preventDefault();
-    $(this).toggleClass('On');
-    $(this).siblings().removeClass('On');
+    $(this).toggleClass(On);
+    $(this).siblings().removeClass(On);
     var hijos = $(this).parents('table').find('.NAD');
-    var clase = $(this).hasClass('On'); 
+    var clase = $(this).hasClass(On); 
 
     if (clase){
-      hijos.addClass('On');
+      hijos.addClass(On);
       $(this).parents('table').find('.hide').hide();
       $(this).parents('table').find('input[type="hidden"]').attr('value','normal');
     }else{
-      hijos.removeClass('On');
+      hijos.removeClass(On);
       $(this).parents('table').find('input[type="hidden"]').attr('value','no');
     }
 
-    $(hijos).siblings().removeClass('On');
+    $(hijos).siblings().removeClass(On);
 
   });
 
   $('.BABN').click(function(e){
     e.preventDefault();
-    $(this).toggleClass('On');
-    $(this).siblings().removeClass('On');
+    $(this).toggleClass(On);
+    $(this).siblings().removeClass(On);
     var hijos = $(this).parents('table').find('.ABN');
-    var clase = $(this).hasClass('On'); 
+    var clase = $(this).hasClass(On); 
     
     if (clase){
-      hijos.addClass('On');
+      hijos.addClass(On);
       $(this).parents('table').find('.hide').show();
       $(this).parents('table').find('input[type="hidden"]').attr('value','anormal');
     }else{
-      hijos.removeClass('On');
+      hijos.removeClass(On);
       $(this).parents('table').find('.hide').hide();
       $(this).parents('table').find('input[type="hidden"]').attr('value','no');
     }
-    $(hijos).siblings().removeClass('On');
+    $(hijos).siblings().removeClass(On);
 
   });
 

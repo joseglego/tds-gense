@@ -56,3 +56,7 @@ td li {
 	width: auto;
 	background-color: grey;
 }
+
+.oculto {
+  visibilty:hidden;
+}
