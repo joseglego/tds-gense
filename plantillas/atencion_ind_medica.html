@@ -1,16 +1,59 @@
-{% if mensaje %}
+{% if "Exitosamente" in mensaje %} 
+<div class= "alert alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
 {{mensaje}}
+</div>
+{% elif "nombre" in mensaje %}
+    <div class= "alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{mensaje}}
+    </div>
 {% endif %}
 <script>
 function envia1(pag){
     var formu = $('#formMED').serialize();
-    alert ("cosas serializadas de meds:"+formu);
     $.post(pag,formu,function(data){
-    	alert ("en el post de atencion_ind_medica");
-    	alert ("esto es data: "+data );
-        $("#d_Ind").html(data);
+    	$("#d_Ind").html(data);
     });
 }
+
+function CompruebaCampo(obj){
+  if ($(obj).parents("tr").hasClass("ultimo")){
+    
+    var ultimo = $(".ultimo:last");
+    var extra = $(".ultimo2:last");
+    var clon = ultimo.clone();
+    var clon_ex = extra.clone();
+
+    ultimo.removeClass("ultimo");
+    extra.removeClass("ultimo2");
+
+    clon.insertAfter(extra);
+    clon_ex.insertAfter(clon);
+
+    // Para setear los valores de los nuevos inputs en vacio
+    $("tr.ultimo:last td center input[type='text']").prop("value","");
+
+    // Para setear los valores de los nuevos inputs en vacio: extra
+    $("tr.extra:last td center input[type='text']").prop("value","");
+
+    // Para setear los valores de los nuevos selects en vacio
+    $("tr.ultimo:last td center select").prop('selectedIndex', -1);
+    }
+  }
+
+function agregaExtra(obj){
+  	var extra = $(obj).parents("tr").next("tr#extra");
+	var opcion = $(obj).find("option:selected").val();
+	if (opcion == "sos"){
+		$(extra).show();
+	}
+	else{
+		$(extra).hide();
+	}
+    
+}
+
 $(document).ready(
     function(){
       // Para que setee en blanco las opciones del nuevo renglon, con attb no funciona
@@ -29,21 +72,13 @@ $(document).ready(
 
 .s3{
 	width:120px;
-	/*width:150px;*/
-}
-
-#tabMed rem2{
-    border-right: none;
-}
-#tabMed rem{
-    border-left: none;
 }
 </style>
 
 <form id= "formMED" method="post" action="">
   {% csrf_token %}
 <center>
-<div id="tablaInd" style='height:410px;OVERFLOW: auto;'>
+<div id="tablaMed" style='height:410px;OVERFLOW: auto;'>
 	<table id="tabMed" class="table table-bordered">
 		<caption><p class="lead">Indicaciones de Medicamentos</p></caption>
 		<thread>
@@ -81,14 +116,12 @@ $(document).ready(
 		</td>
 		<td>
 			<center>
-				<!-- <p style="width:100%;height:12px">{{i.horaA}}</p> -->
 				<p>{{i.horaA}}</p>
 			</center>
 		</td>
 		<td>
 			<center>
 				<input type="text" name="{{i.id}}nombre" value="{{i.indicacion.nombre}}" style="width:100px">
-				<!-- <input type="text" name="{{i.id}}nombre" value="{{i.indicacion.nombre}}" style="width:100px;height:12px"> -->
 			</center>
 		</td>
 		<td>
@@ -102,13 +135,14 @@ $(document).ready(
 			// var valor = "{{i.med_Conc}}"
 			// alert ("para ver el valor : "+valor);
 			// $("select#s11").val(valor); // sirve pero no agarra valor, cambiarlo de lugar 
-			// </script>
+			</script>
 			{% endif %}
 			<select id="s11" class="s1">
-				<option value="mg">mg</option>
-				<option value="gr">gr</option>
-				<option value="u">u</option>
 				<option value="cc">cc</option>
+				<option value="gr">gr</option>
+				<option value="mg">mg</option>
+				<option value="u">u</option>
+				
 			</select>
 		</td>
 		<td>
@@ -118,7 +152,6 @@ $(document).ready(
 		</td>
 		<td>
 			<center>
-				<!-- <input type="text" name="{{i.id}}t_frec" value="{{i.dosisA}}" style="width:100px;height:12px"> -->
 				<select class = "s2" name="{{i.id}}t_frec">
 					<option value="fijo">Fijo</option>
 					<option value="sos">SOS</option>
@@ -127,19 +160,19 @@ $(document).ready(
 		</td>
 		<td>
 			<center>
-				<!-- <input type="text" name="{{i.id}}via_adm" value="{{i.dosisA}}" style="width:100px;height:12px"> -->
 				<select class = "s3" name="{{i.id}}via_adm">
-					<option value="oral">Oral</option>
 					<option value="endov">Endovenosa</option>
-					<option value="nebu">Subcut&aacute;nea</option>
 					<option value="trans">Nebulizaci&oacute;n</option>
+					<option value="oral">Oral</option>
 					<option value="rect">Rectal</option>
+					<option value="nebu">Subcut&aacute;nea</option>
+					<option value="rect">T&oacute;pica</option>
 				</select>
 			</center>
 		</td>
 	</tr>
 	{% endfor %}
-	<!-- <tr class="ultimo info"> -->
+
 	<tr class="ultimo">
 		<td>
 			<center>
@@ -153,22 +186,20 @@ $(document).ready(
 		</td>
 		<td>
 			<center>
-				<!-- <p>Nombre</p> -->
 				<input type="text" name="nuevaMed" value="" onChange="CompruebaCampo(this)" style="width:100px">
 			</center>
 		</td>
 		<td id= "rem2">
 			<center>
-				<!-- <p>Dosis</p> -->
 				<input type="text" name="nuevaDosis" value="" style="width:50px">
 			</center>
 		</td>
 		<td id= "rem">
 			<select class="s1" id="s1" name="nuevoTC">
-				<option value="mg">mg</option>
-				<option value="gr">gr</option>
-				<option value="u">u</option>
 				<option value="cc">cc</option>
+				<option value="gr">gr</option>
+				<option value="mg">mg</option>
+				<option value="u">u</option>
 			</select>
 		</td>
 		<td>
@@ -178,7 +209,7 @@ $(document).ready(
 		</td>
 		<td>
 			<center>
-				<select class="s2" id="s2" name="nuevoTF">
+				<select class="s2" id="s2" name="nuevoTF" onChange="agregaExtra(this)">
 					<option value="fijo">Fijo</option>
 					<option value="sos">SOS</option>
 				</select>
@@ -187,15 +218,34 @@ $(document).ready(
 		<td>
 			<center>
 				<select class="s3" id="s3" name="nuevaVAD">
-					<option value="oral">Oral</option>
 					<option value="endov">Endovenosa</option>
-					<option value="nebu">Subcut&aacute;nea</option>
 					<option value="trans">Nebulizaci&oacute;n</option>
+					<option value="oral">Oral</option>
 					<option value="rect">Rectal</option>
+					<option value="nebu">Subcut&aacute;nea</option>
+					<option value="rect">T&oacute;pica</option>
 				</select>
 			</center>
 		</td>
 	</tr>
+	<tr id="extra" class="ultimo2" style="display: none;">
+		<td colspan="5">
+			<center>
+			<label for="situacion">Situacion&nbsp;
+				<input class="input-large" id="situacion" name="situacion" type="text" value="">
+			</label>
+		</center>
+			
+		</td>
+		<td colspan="3">
+			<center>
+				<label for="comentario">Comentario&nbsp;
+				<input class="input-large" id="comentario" name="comentario" type="text" value="">
+			</label>
+		</center>
+	</td>
+    </tr>
+
     </tbody>
   </table>
 </center>
@@ -213,6 +263,6 @@ $(document).ready(
           <button class="btn btn-mini btn-primary" onClick="envia1('/emergencia/indicaciones/{{emergencia.id}}/{{tipo_ind}}/agregar')"><i class="icon-plus icon-white"></i>Agregar</button>
         </div>
         <div class="btn-group">
-          <button class="btn btn-mini btn-primary" onClick="envia('/emergencia/indicaciones/{{emergencia.id}}/{{tipo_ind}}')" ><i class="icon-arrow-left icon-white"></i>Deshacer</button>
+          <button class="btn btn-mini btn-primary" onClick="envia1('/emergencia/indicaciones/{{emergencia.id}}/{{tipo_ind}}')" ><i class="icon-arrow-left icon-white"></i>Deshacer</button>
         </div>
 </center>
