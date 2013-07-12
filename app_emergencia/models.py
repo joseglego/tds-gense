@@ -5,6 +5,9 @@ from app_paciente.models import *
 from app_usuario.models import * 
 from app_enfermedad.models import * 
 
+from math import ceil, floor
+from datetime import datetime
+
 # Create your models here.
 AEMERGENCIA = (
     ('0','Real'),
@@ -123,6 +126,30 @@ class Emergencia(models.Model):
         return atenciones
     def horaR(self):
         return self.hora_ingreso.strftime("%H:%M del %d/%m/%y")
+    
+    def tiempo_espera(self):
+        triages = self.triages()
+        if triages:
+            triage = triages[0]
+            tiempo = triage.fecha.replace(tzinfo=None)
+        else:
+            tiempo = self.hora_ingreso.replace(tzinfo=None)
+        tiempo = datetime.now() - tiempo
+        return ceil(tiempo.total_seconds())
+
+    def tiempo_esperaR(self):
+        tiempo = self.tiempo_espera()
+        dias = int(floor(((tiempo/60)/60)/24))
+        tiempo2 = tiempo - (dias*24*60*60)
+        horas = int(floor((tiempo2/60)/60))
+        tiempo3 = tiempo2 - (horas*60*60)
+        minutos = int(floor(tiempo3/60))
+        segundos = int(floor(tiempo3%60))        
+        return str(dias)+":"+str(horas)+":"+str(minutos)+":"+str(segundos)
+
+    def tiempo_emergencia(self):
+        tiempo = self.hora_egreso - self.hora_ingreso
+        return tiempo
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)
