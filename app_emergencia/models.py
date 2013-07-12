@@ -209,12 +209,13 @@ class Atencion(models.Model):
         return "Paciente:%s- Doctor:%s - Area:%s" % (self.emergencia.paciente.apellidos,self.medico.cedula,self.area_atencion)
 
 #_------------------------------------ Cambios Requerimientos 03_7
+# Enfermedad Actual
 class EnfermedadActual(models.Model):
     atencion = models.ForeignKey(Atencion)
     narrativa = models.CharField(max_length=512)
 
 #_------------------------------------ Cambios Requerimientos 29_6
-#----------------------------------Diagnostico Definitivo
+# Diagnostico Definitivo
 class Diagnostico(models.Model):
     nombreD = models.CharField(max_length=512)
     def __unicode__(self):
@@ -223,7 +224,14 @@ class Diagnostico(models.Model):
 class EstablecerDiag(models.Model):
     atencion = models.ForeignKey(Atencion)
     diagnostico = models.ForeignKey(Diagnostico)
+    fecha          = models.DateTimeField()
+    fechaReal      = models.DateTimeField(auto_now_add=True)
+    def __unicode__(self):
+        return "Atencion: %s-Diagnostico: %s" % (self.atencion.id,self.diagnostico.nombreD)
+    def horaD(self):
+        return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
 
+#----------------------------------Indicacion
 class Indicacion(models.Model):
     nombre = models.CharField(max_length=128, blank=False)
     tipo   = models.CharField(max_length=40, blank=False)
@@ -238,37 +246,77 @@ class Asignar(models.Model):
     fecha      = models.DateTimeField()
     fechaReal  = models.DateTimeField()
     def __unicode__(self):
-        return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.nombres,self.indicacion.nombre,self.indicacion.tipo)
-    def dosisA(self):
-        result = DosisAsignar.objects.filter(asignacion=self)
-        #print "RESULTADO OBJETOS DOSIS ASIGNAR",result
+        return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo)
+    
+    #------------------------------------- Definiciones para atributos extra:
+    #---------------------------------- Para las especificaciones Medicamento
+    # Dosis
+    def med_Dosis(self):
+        result = EspMedics.objects.filter(asignacion=self)
         if result:
             return "%s" %(result[0].dosis)
         else: 
             return "%s" % ("no hay dosis")
 
+    # Tipo de Concentracion
+    def med_Conc(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].tipo_conc)
+        else: 
+            return "%s" % ("no hay asociada un tipo de concentracion")
+
+    # Frecuencia
+    def med_Frec(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].frecuencia)
+        else: 
+            return "%s" % ("no hay frec")
+
+    # Tipo de Frecuencia
+    def med_TFrec(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].tipo_frec)
+        else: 
+            return "%s" % ("no hay tipo frec")
+
+    # Via de administracion
+    def med_Viad(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].via_admin)
+        else: 
+            return "%s" % ("no hay via de administracion")
+
+    # Hora de asignacion
     def horaA(self):
+        # Dia y hora
         return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
+        # Solo hora
+        #return self.fechaReal.strftime("%H:%M:%S")
 
 # Especificaciones para las indicaciones de Dietas
 class EspDieta(models.Model):
     asignacion       = models.ForeignKey(Asignar)
     observacion      = models.CharField(max_length=512,blank=True)
     def __unicode__(self):
-        return "Paciente:%s- Dosis:%s" % (self.asignacion.emergencia.paciente.nombres,self.observacion)
+        return "Paciente:%s- Observacion:%s" % (self.asignacion.emergencia.paciente.nombres,self.observacion)
 
 # Especificaciones para las indicaciones de Hidratacion
 class EspHidrata(models.Model):
     asignacion   = models.ForeignKey(Asignar)
-    volumen      = models.IntegerField(default=0,blank=True)
+    volumen      = models.IntegerField(blank=True,null=True)
     vel_infusion = models.CharField(max_length=512,blank=True)
     complementos = models.CharField(max_length=512,blank=True)
     def __unicode__(self):
-        return "Paciente:%s- Dosis:%s" % (self.asignacion.emergencia.paciente.nombres,self.volumen)
+        return "Paciente:%s- DVolumen:%s" % (self.asignacion.emergencia.paciente.nombres,self.volumen)
 
+# Relacionar dos tipso de solucion
 class CombinarHidrata(models.Model):
-    hidratacion1 = models.ForeignKey(EspHidrata)
-    hidratacion2 = models.ForeignKey(Indicacion)
+    hidratacion1 = models.ForeignKey(EspHidrata,null=True)
+    hidratacion2 = models.ForeignKey(Indicacion,null=True)
 
 # Especificaciones para las indicaciones de Medicamentos
 class EspMedics(models.Model):
@@ -284,13 +332,13 @@ class EspMedics(models.Model):
 
     # fijo
     # SOS
-    via_admin = models.CharField(max_length=20,blank=True)
+    via_admin = models.CharField(max_length=13,blank=True)
 
-    # via endovenosa
-    # via subcutanea
+    # endovenosa
+    # subcutanea
     # nebulizacion
     # transdermico
-    # via rectal
+    # rectal
 
 # Agrega los detalles extras para el tipo de frecuencia de SOS
 class tieneSOS(models.Model):
@@ -301,4 +349,4 @@ class tieneSOS(models.Model):
 # Especificaciones para las indicaciones de Imagenologia
 class EspImg(models.Model):
     asignacion      = models.ForeignKey(Asignar)
-    parte_cuerpo    = models.CharField(max_length=20,blank=True)
+    parte_cuerpo    = models.CharField(max_length=100,blank=True)

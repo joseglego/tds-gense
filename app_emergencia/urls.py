@@ -9,18 +9,17 @@ urlpatterns = patterns('app_emergencia.views',
     # Acceso a Enfermedad Actual
     url('^emergencia/enf_actual/(?P<id_emergencia>.*)$','emergencia_enfermedad_actual'),
     
-    # Acceso por default a antecedentes:
+    # Acceso a Atencion
     url('^emergencia/atencion/(?P<id_emergencia>.*)$','emergencia_atencion'),
-
-    #url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)$','emergencia_antecedentes_medico'),
-    #url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)/(?P<opcion>.*)$','emergencia_antecedentes_medico'),
+    
+    # Acciones Antecedentes
     url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)/agregar$','emergencia_antecedentes_agregar'),
     url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)/modificar$','emergencia_antecedentes_modificar'),
     url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)/eliminar$','emergencia_antecedentes_eliminar'),
  
       # Ingreso a antecedentes
     url('^emergencia/antecedentes/(?P<id_emergencia>.*)/(?P<tipo_ant>.*)$','emergencia_antecedentes_tipo'),
-    url('^emergencia/antecedente/(?P<id_emergencia>.*)$','emergencia_antecedentes'),    
+    url('^emergencia/antecedente/(?P<id_emergencia>.*)$','emergencia_antecedentes'),
 
     # Ingreso a Examen fisico
     url('^emergencia/enviarcuerpo/(?P<id_emergencia>.*)/(?P<parte_cuerpo>.*)$','emergencia_enfermedad_enviarcuerpo'),
@@ -29,11 +28,13 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/enfermedad/(?P<id_emergencia>.*)$','emergencia_enfermedad'),
 
     # Ingreso a Indicaciones
-    # Acciones de medicamentos:
-    # Agregar Medicamento
-    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/agregar$','emergencia_indicaciones_agregar'),
-    # # Eliminar Medicamento
-    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/eliminar$','emergencia_indicaciones_eliminar'),
+    # Acciones:
+    # Agregar 
+    url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/agregar$','emergencia_indicaciones_agregar'),
+    # Eliminar
+    url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/eliminar$','emergencia_indicaciones_eliminar'),
+    # Modificar Medicamento
+    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/modificar$','emergencia_indicaciones_modificar'),
 
     # Ingreso a Indicaciones Especializadas
     url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)$','emergencia_indicaciones'),

@@ -4,99 +4,12 @@ from django import forms
 from models import *
 from django.contrib.admin.widgets import AdminDateWidget, AdminSplitDateTime
 from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
+from django.utils.safestring import mark_safe, SafeData
 
 ATENCION = (
   (True,'Si'),
   (False,'No'),
 )
-
-############## Indicacion Terapeutica ################
-IND_TER =(
-  ('oral','Tratamiento Via Oral'),
-  ('endov','Tratamiento Endovenoso'),
-  ('neb','Nebulizacion'),
-  ('Sutura de Herida','Sutura de Herida'),
-  ('Inmovilizacion','Inmovilizacion'),
-  ('rem','Remocion de Cuerpo Extraño'),
-  ('catVen','Cateterizacion de Via Venosa Central'),
-  ('sondajeNO','Sondaje Naso/Orogastrica'),
-  ('sondajeV','Sondaje Vesical'),
-  ('abseso','Drenaje de Abseso'),
-  ('otro','Otro'),
-  )
-
-
-############## Indicacion Diagnostica Lab #############
-DIAG_LAB = (
-  ('hem','Hematologia Completa'),
-  ('quim','Quimica Sanguinea'),
-  ('elect','Electrolitos'),
-  ('perfilC','Perfil de Coagulacion'),
-  ('serol','Serologia'),
-  ('marc','Marcadores Tumorales'),
-  ('perfilH','Perfil Hormonal'),
-  ('perfilI','Perfil Isquemico'),
-  ('uroana','UroAnalisis'),
-  ('copro','Coproanalisis'),
-  )
-
-############ Indicacion Diagnostica Micro #############
-DIAG_MICRO= (
-  ('hemo','Hemocultivo'),
-  ('uroc','Urocultivo'),
-  ('coproc','Coprocultivo'),
-  ('exuF','Exudado Faringeo'),
-  )
-
-####### Indicacion Diagnostica Imagenologia ##########
-DIAG_IMG= (
-  ('rad','Radiografia'),
-  ('ultra','Ultrasonido'),
-  ('ultraD','Ultrasonido Doppler'),
-  ('tomoAC','Tomografia Axial Computarizada'),
-  ('resoMN','Resonancia Magnetica Nuclear'),
-  )
-
-############ Indicacion Diagnostica Endos #############
-DIAG_END= (
-  ('eds','Endoscopia Digestiva Superior'),
-  ('edi','Endoscopia Digestiva Inferior'),
-  ('ente','Enteroscopia'),
-  ('pancre','Pancreratocolangiografia Retrogada Endoscopica'),
-  ('resoMN','Resonancia Magnetica Nuclear'),
-  )
-
-################ Tipo Antecedente ####################
-TIPO_ANT =(
-  ('hipertension','Hipertension Arterial'),
-  ('diabetes','Diabetes'),
-  ('alergia','Alergia'),
-  ('otros','Otros'),
-  )
-
-############ Diagnosticos Definitivos #################
-TABLA_DIAG = (
-  ('lista1','lista1'),
-  ('lista2','lista2'),
-  ('lista3','lista3'),
-  )
-
-############ Gestion Egresos #################
-TABLA_DEST = (
-  ('admision','Admision'),
-  ('egreso','Egreso'),
-  ('referencia','Referencia a especialista'),
-  ('traslado','Traslado'),
-  ('muerto','Muerte'),
-  )
-
-TABLA_AREADM = (
-  ('hospital','Hospitalizacion'),
-  ('quiro','Quirofano'),
-  ('hemo','Hemodinamia'),
-  ('parto','Sala de Parto'),
-  ('intensivo','Unidad de Cuidados Intensivos'),
-  )
 
 class AgregarEmergenciaForm(forms.Form):
     ingreso          = forms.DateTimeField(label="Hora y Fecha de Ingreso")
@@ -146,7 +59,6 @@ class calcularTriageForm(forms.Form):
 
 # Enfermedad Actual:
 class AgregarEnfActual(forms.Form):
-    # narrativa = forms.CharField(max_length=512,widget=forms.widgets.Textarea(attrs={'rows':10, 'cols':400}))
     narrativa = forms.CharField(widget=forms.widgets.Textarea)
     def __init__(self, *args, **kwargs):
       super(AgregarEnfActual, self).__init__(*args, **kwargs)
@@ -155,52 +67,56 @@ class AgregarEnfActual(forms.Form):
 # Indicaciones - Dieta
 class AgregarIndDietaForm(forms.Form):
   dieta     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="dieta"),widget=forms.RadioSelect())
-  observacion = forms.CharField(max_length=100,widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':100}))
+  observacion = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':100}))
   def __init__(self, *args, **kwargs):
     super(AgregarIndDietaForm, self).__init__(*args, **kwargs)
     self.fields['dieta'].empty_label = None
     self.fields['dieta'].label = "Tipo de Dieta:"
 
+
 # Indicaciones - Hidratacion
 class AgregarIndHidrataForm(forms.Form):
-  hidrata     = forms.ModelChoiceField(required=True,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
-  combina = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=ATENCION))
-  combina_sol= forms.ModelChoiceField(required=False,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
-  volumen = forms.FloatField(required=False)
-  vel_inf = forms.CharField(max_length=30)
-  complementos = forms.CharField(max_length=40)
-  
+  hidrata     = forms.ModelChoiceField(label = "Tipo de Solución",required=True,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  combina = forms.CharField(label = "¿Combinar con otro tipo de solución?:  ",max_length=5,widget=forms.RadioSelect(choices=ATENCION))
+  combina_sol= forms.ModelChoiceField(label = "Tipo de Solución Adicional:  ",required=False,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  volumen = forms.FloatField(label = "Volumen:  ",required=False)
+  vel_inf = forms.CharField(label = "Velocidad de Infusión:  ",max_length=30)
+  complementos = forms.CharField(label = "Complementos: ",max_length=40)
   def __init__(self, *args, **kwargs):
     super(AgregarIndHidrataForm, self).__init__(*args, **kwargs)
     self.fields['hidrata'].empty_label = None
     self.fields['combina_sol'].empty_label = None
-    #------------Para cambiar los labels-------------------#
-    self.fields['hidrata'].label = "Tipo de Solución:"
-    self.fields['combina'].label = "¿Desea combinar con otro tipo de solución?:"
-    self.fields['combina_sol'].label = "Tipo de Solución Adicional:"
-    self.fields['vel_inf'].label = "Velocidad de Infusión:"
+  
 
 # Indicaciones - Diagnosticas - Laboratorio
 class AgregarIndLabForm(forms.Form):
-  lab     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="lab"),widget=CheckboxSelectMultiple)
+  lab     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="lab"),widget=CheckboxSelectMultiple)
   def __init__(self, *args, **kwargs):
     super(AgregarIndLabForm, self).__init__(*args, **kwargs)
     self.fields['lab'].empty_label = None
     self.fields['lab'].label = "Exámenes de Laboratorio:"
 
+# Clase extra para agregar atributos a los elementos checkbox renderizados:
+class MyCheckboxSelectMultiple(CheckboxSelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        html = super(MyCheckboxSelectMultiple, self).render(name, value, attrs, choices)
+        return mark_safe(html.replace('<ul>', '<ul class="imagen">'))
+
+
 # Indicaciones - Diagnosticas - Imagenologia
 class AgregarIndImgForm(forms.Form):
-  imagen     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="imagen"),widget=CheckboxSelectMultiple)
+  imagen     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="imagen"),widget=MyCheckboxSelectMultiple())
   def __init__(self, *args, **kwargs):
     super(AgregarIndImgForm, self).__init__(*args, **kwargs)
     self.fields['imagen'].empty_label = None
     self.fields['imagen'].label = "Tipos de exámenes:"
 
+
 # Indicaciones - Diagnosticas - Est endoscopicos
 class AgregarIndEndosForm(forms.Form):
-  endoscopico     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="endoscopico"),widget=CheckboxSelectMultiple)
-  Otros = forms.CharField(max_length=200)
+  endoscopico     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="endoscopico"),widget=CheckboxSelectMultiple)
   def __init__(self, *args, **kwargs):
     super(AgregarIndEndosForm, self).__init__(*args, **kwargs)
+    # Para quitar la linea inicial (-----) del widget:
     self.fields['endoscopico'].empty_label = None
     self.fields['endoscopico'].label = "Exámenes Endoscópicos:"
