@@ -181,13 +181,11 @@ class Atencion(models.Model):
     def __unicode__(self):
         return "Paciente:%s- Doctor:%s - Area:%s" % (self.emergencia.paciente.apellidos,self.medico.cedula,self.area_atencion)
 
-#_------------------------------------ Cambios Requerimientos 03_7
 # Enfermedad Actual
 class EnfermedadActual(models.Model):
     atencion = models.ForeignKey(Atencion)
     narrativa = models.CharField(max_length=512)
 
-#_------------------------------------ Cambios Requerimientos 29_6
 # Diagnostico Definitivo
 class Diagnostico(models.Model):
     nombreD = models.CharField(max_length=512)
@@ -222,7 +220,7 @@ class Asignar(models.Model):
         return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo)
     
     #------------------------------------- Definiciones para atributos extra:
-    #---------------------------------- Para las especificaciones Medicamento
+    # Especificaciones Medicamento
     # Dosis
     def med_Dosis(self):
         result = EspMedics.objects.filter(asignacion=self)
@@ -284,9 +282,9 @@ class EspHidrata(models.Model):
     vel_infusion = models.CharField(max_length=512,blank=True)
     complementos = models.CharField(max_length=512,blank=True)
     def __unicode__(self):
-        return "Paciente:%s- DVolumen:%s" % (self.asignacion.emergencia.paciente.nombres,self.volumen)
+        return "Paciente:%s- DVolumen:%s" % (self.asignacion.emergencia.paciente.apellidos,self.volumen)
 
-# Relacionar dos tipso de solucion
+# Relacionar dos tipos de solucion
 class CombinarHidrata(models.Model):
     hidratacion1 = models.ForeignKey(EspHidrata,null=True)
     hidratacion2 = models.ForeignKey(Indicacion,null=True)
