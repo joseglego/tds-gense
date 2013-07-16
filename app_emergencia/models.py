@@ -4,15 +4,9 @@ from django.db import models
 from app_paciente.models import *
 from app_usuario.models import * 
 from app_enfermedad.models import * 
-
-<<<<<<< HEAD
-from datetime import datetime
-from math import floor, ceil
-=======
 from math import ceil, floor
 from datetime import datetime
 
->>>>>>> b43a637d516018105c1789415360e1ea5b980858
 # Create your models here.
 AEMERGENCIA = (
     ('0','Real'),
