@@ -463,8 +463,9 @@ def emergencia_antecedentes_agregar(request,id_emergencia,tipo_ant):
             pertenece = Pertenencia(paciente=paci,antecedente=ant)
             pertenece.save()
             if tipo_ant =='medica' or tipo_ant =='quirurgica':
-                fecha = Fecha(fecha=fechas[i],pertenencia=pertenece) 
-                fecha.save()
+                if fechas[i] != "":
+                    fecha = Fecha(fecha=fechas[i],pertenencia=pertenece) 
+                    fecha.save()
                 if tipo_ant == 'medica':
                     tratamiento = Tratamiento(nombre=atributo[i])
                     tratamiento.save()

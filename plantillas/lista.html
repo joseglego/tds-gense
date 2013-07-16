@@ -3,6 +3,11 @@
 {% if mensaje %}
 {{mensaje}}
 {% endif %}
+
+<style>
+  a#espera:link, a#espera:visited { text-decoration: none }
+  a#espera:hover { text-decoration: none }
+</style>
 <div class="container row">
   <div class="span12">
     <h4>Lista  de Pacientes {{titulo}}</h4>
@@ -18,12 +23,12 @@
     {% if lista %}
     <table class="table table-bordered table-striped">
       <tr>
-	<th>N&uacute;mero</th>
-	<th>Nombre</th>
-	<th>Hora de Ingreso</th>
-	<th>Acciones R&aacute;pidas</th>
-	<th>Clasificaci&oacute;n</th>
-	<th>Alarma</th>
+      	<th>N&uacute;mero</th>
+      	<th>Nombre</th>
+      	<th>Hora de Ingreso</th>
+      	<th>Acciones R&aacute;pidas</th>
+      	<th>Clasificaci&oacute;n</th>
+        <th>Alarma</th>
       </tr>
       {% for l in lista %}
       <tr>
@@ -31,7 +36,22 @@
 	      <td><span class="nombreLista"><a a href='/paciente/{{ l.id }}'>{{l.paciente}}</a></span></td>
         <td>{{l.horaR}}</td>
         {% if l.triage != 0 %}
-        <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/estados/triage.png" title="Recalcular"/></a></td>
+        <td>
+          <a href="/emergencia/{{l.id}}/t1">
+          <img src="/static/img/estados/triage.png" title="Recalcular"/>
+            
+          </a>
+          {% if l.numIndicaciones != 0 %}
+            <a id='espera' href="#" >
+              <img src="/static/img/Atencion/espera.png" title="Esperas"/>
+              <span style='margin-left:-10px;color:white;background:rgba(255,0,0,1);border-radius:6px;'>
+                <b><font size=2> &nbsp;{{l.numIndicaciones}}&nbsp;&nbsp;</font></b>
+              </span>
+            </a>
+         
+
+          {% endif %}
+        </td>
         {% else %}
         <td>
           <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/estados/esi1.png" title="Colocar en Nivel 1"/></a>
@@ -39,8 +59,8 @@
           <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/estados/triage.png" title="Realizar Triage"/></a>
         </td>
         {% endif %}
-	<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
-	<td><img src="/static/img/estados/alarmaVerde.png" /></td>
+        <td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
+        <td><img src="/static/img/estados/alarmaVerde.png" /></td>
       </tr>	
       {% endfor %}
     </table>
@@ -48,5 +68,8 @@
       No hay pacientes en esta area
     {% endif %}
   </div>
+  
 </div>
+
+
 {% endblock %}

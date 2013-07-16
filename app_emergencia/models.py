@@ -123,6 +123,11 @@ class Emergencia(models.Model):
         return atenciones
     def horaR(self):
         return self.hora_ingreso.strftime("%H:%M del %d/%m/%y")
+        
+    def numIndicaciones(self):
+        indicaciones = Indicacion.objects.filter(asignar__emergencia = self)
+        return len(indicaciones)
+     
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)
