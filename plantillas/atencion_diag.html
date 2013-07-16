@@ -18,12 +18,12 @@ function envia1(pag){
     });
 }
 function CompruebaCampo(obj){
-  if ($(obj).parents("tr").hasClass("ultimo")){
-    ultimo = $(".ultimo:last");
-    clon = ultimo.clone();
-    ultimo.removeClass("ultimo");
-    clon.insertAfter($(ultimo));
-    $("tr.ultimo:last td center input[type='text']").prop("value","");
+  if ($(obj).parents("tr").hasClass("ultimoD")){
+    ultimoD = $(".ultimoD:last");
+    clon = ultimoD.clone();
+    ultimoD.removeClass("ultimoD");
+    clon.insertAfter($(ultimoD));
+    $("tr.ultimoD:last td center input[type='text']").prop("value","");
     }
   }
   $(document).ready(function(){
@@ -70,7 +70,7 @@ function CompruebaCampo(obj){
         </td>
     </tr>
     {% endfor %}
-    <tr class="ultimo">
+    <tr class="ultimoD">
         <td>
             <center>
                 <input type="checkbox" name="check" value=""/>
