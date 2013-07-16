@@ -24,6 +24,7 @@
 	<th>Acciones R&aacute;pidas</th>
 	<th>Clasificaci&oacute;n</th>
 	<th>Alarma</th>
+	<th>Tiempo</th>
       </tr>
       {% for l in lista %}
       <tr>
@@ -39,8 +40,11 @@
           <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/estados/triage.png" title="Realizar Triage"/></a>
         </td>
         {% endif %}
-	<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
-	<td><img src="/static/img/estados/alarmaVerde.png" /></td>
+				<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
+				<td><img src="/static/img/estados/alarmaVerde.png" /></td>
+				<td>
+					<p id="demo{{l.id}}">{{l.tiempoEspera}}</p>
+				</td>
       </tr>	
       {% endfor %}
     </table>
@@ -49,4 +53,14 @@
     {% endif %}
   </div>
 </div>
+<script>
+	var myVar=setInterval(function(){myTimer()},1000);
+
+	function myTimer() {
+		{% for l in lista %}
+		var t= getValorHTML(id = "demo{{l.id}}");
+		t = t+1;
+		{% endfor %}
+	}
+</script>
 {% endblock %}
