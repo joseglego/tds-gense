@@ -4,99 +4,12 @@ from django import forms
 from models import *
 from django.contrib.admin.widgets import AdminDateWidget, AdminSplitDateTime
 from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
+from django.utils.safestring import mark_safe, SafeData
 
 ATENCION = (
   (True,'Si'),
   (False,'No'),
 )
-
-############## Indicacion Terapeutica ################
-IND_TER =(
-  ('oral','Tratamiento Via Oral'),
-  ('endov','Tratamiento Endovenoso'),
-  ('neb','Nebulizacion'),
-  ('Sutura de Herida','Sutura de Herida'),
-  ('Inmovilizacion','Inmovilizacion'),
-  ('rem','Remocion de Cuerpo Extraño'),
-  ('catVen','Cateterizacion de Via Venosa Central'),
-  ('sondajeNO','Sondaje Naso/Orogastrica'),
-  ('sondajeV','Sondaje Vesical'),
-  ('abseso','Drenaje de Abseso'),
-  ('otro','Otro'),
-  )
-
-
-############## Indicacion Diagnostica Lab #############
-DIAG_LAB = (
-  ('hem','Hematologia Completa'),
-  ('quim','Quimica Sanguinea'),
-  ('elect','Electrolitos'),
-  ('perfilC','Perfil de Coagulacion'),
-  ('serol','Serologia'),
-  ('marc','Marcadores Tumorales'),
-  ('perfilH','Perfil Hormonal'),
-  ('perfilI','Perfil Isquemico'),
-  ('uroana','UroAnalisis'),
-  ('copro','Coproanalisis'),
-  )
-
-############ Indicacion Diagnostica Micro #############
-DIAG_MICRO= (
-  ('hemo','Hemocultivo'),
-  ('uroc','Urocultivo'),
-  ('coproc','Coprocultivo'),
-  ('exuF','Exudado Faringeo'),
-  )
-
-####### Indicacion Diagnostica Imagenologia ##########
-DIAG_IMG= (
-  ('rad','Radiografia'),
-  ('ultra','Ultrasonido'),
-  ('ultraD','Ultrasonido Doppler'),
-  ('tomoAC','Tomografia Axial Computarizada'),
-  ('resoMN','Resonancia Magnetica Nuclear'),
-  )
-
-############ Indicacion Diagnostica Endos #############
-DIAG_END= (
-  ('eds','Endoscopia Digestiva Superior'),
-  ('edi','Endoscopia Digestiva Inferior'),
-  ('ente','Enteroscopia'),
-  ('pancre','Pancreratocolangiografia Retrogada Endoscopica'),
-  ('resoMN','Resonancia Magnetica Nuclear'),
-  )
-
-################ Tipo Antecedente ####################
-TIPO_ANT =(
-  ('hipertension','Hipertension Arterial'),
-  ('diabetes','Diabetes'),
-  ('alergia','Alergia'),
-  ('otros','Otros'),
-  )
-
-############ Diagnosticos Definitivos #################
-TABLA_DIAG = (
-  ('lista1','lista1'),
-  ('lista2','lista2'),
-  ('lista3','lista3'),
-  )
-
-############ Gestion Egresos #################
-TABLA_DEST = (
-  ('admision','Admision'),
-  ('egreso','Egreso'),
-  ('referencia','Referencia a especialista'),
-  ('traslado','Traslado'),
-  ('muerto','Muerte'),
-  )
-
-TABLA_AREADM = (
-  ('hospital','Hospitalizacion'),
-  ('quiro','Quirofano'),
-  ('hemo','Hemodinamia'),
-  ('parto','Sala de Parto'),
-  ('intensivo','Unidad de Cuidados Intensivos'),
-  )
 
 class AgregarEmergenciaForm(forms.Form):
     ingreso          = forms.DateTimeField(label="Hora y Fecha de Ingreso")
@@ -129,61 +42,86 @@ class BuscarEmergenciaForm(forms.Form):
 
 class calcularTriageForm(forms.Form):
     fecha         = forms.DateTimeField(label="Fecha y hora a la que se realiza la Evaluación")
-    motivo        = forms.ModelChoiceField(label="Motivo de Ingreso (Escala de Manchester)",required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
+    motivo        = forms.ModelChoiceField(label="Motivo de Ingreso",required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
     ingreso       = forms.CharField(label="Tipo de Ingreso",required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
     
-    atencion      = forms.NullBooleanField(label="¿Requiere Atención Inmediata?",widget=forms.RadioSelect(choices=ATENCION))
-    esperar       = forms.NullBooleanField(label="¿Puede Esperar?",widget=forms.RadioSelect(choices=ATENCION))
-    recursos      = forms.IntegerField(label="¿Cuántos Recursos Necesita?",required=False,widget=forms.RadioSelect(choices=RECURSOS))
-    
     signos_tmp    = forms.FloatField(label="Temperatura",required=False)
-    signos_fc     = forms.FloatField(label="Pulsaciones",required=False)
-    signos_fr     = forms.IntegerField(label="Ventilaciones",required=False)
-    signos_pa     = forms.IntegerField(label="Presión Sistólica/Alta",required=False)
-    signos_pb     = forms.IntegerField(label="Presión Diastólica",required=False)
+    signos_fc     = forms.FloatField(label="Frecuencia Cardíaca",required=False)
+    signos_fr     = forms.IntegerField(label="Frecuencia Respiratoria",required=False)
+    signos_pa     = forms.IntegerField(label="Presión Sistólica / Alta",required=False)
+    signos_pb     = forms.IntegerField(label="Presión Diastólica / Baja",required=False)
     signos_saod   = forms.FloatField(label="Saturación de Oxígeno",required=False)
     signos_avpu   = forms.CharField(label="Valor Obtenido en Escala AVPU",required=False,widget=forms.RadioSelect(choices=AVPU))
     signos_dolor  = forms.IntegerField(label="Intensidad del Dolor",required=False,widget=forms.Select(choices=EDOLOR))
 
 
 ##################################################### FORMS ATENCION
-class AgregarAntecedentesForm(forms.Form):
-    nombreAnt = forms.ChoiceField(choices=TIPO_ANT)
-    alergia   = forms.CharField(max_length=64,required=False)
-    otro      = forms.CharField(max_length=64,required=False)
-    narrativa = forms.CharField(widget=forms.Textarea)
 
-# Agregar indicacion terapeutica
-class AgregarIndTerapeuticaForm(forms.Form):
-    nombreT    = forms.ChoiceField(choices=IND_TER)
-    otroT      = forms.CharField(max_length=64)
-
-# Agregar indicacion diagnostica Laboratorio
-class AgregarIDLabForm(forms.Form):
-    nombreDL    = forms.ChoiceField(choices=DIAG_LAB)
-    otroDL      = forms.CharField(max_length=64)
-
-# Agregar indicacion diagnostica Microbiologia
-class AgregarIDMicroForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_MICRO)
-
-# Agregar indicacion diagnostica Imagenologia
-class AgregarIDImageForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_IMG)
-
-# Agregar indicacion diagnostica Endoscopico
-class AgregarIDEndosForm(forms.Form):
-    nombreD    = forms.ChoiceField(choices=DIAG_END)
+# Enfermedad Actual:
+class AgregarEnfActual(forms.Form):
+    narrativa = forms.CharField(widget=forms.widgets.Textarea)
+    def __init__(self, *args, **kwargs):
+      super(AgregarEnfActual, self).__init__(*args, **kwargs)
+      self.fields['narrativa'].label = ""
+      self.fields['narrativa'].widget.attrs['rows'] = 15
+      # self.fields['narrativa'].widget.attrs['cols'] = 50
 
 
-class AgregarDiagnosticoForm(forms.Form):
-    diagnostico = forms.ChoiceField(choices=TABLA_DIAG)
-    comentario  = forms.CharField(widget=forms.Textarea)
-    
-class AgregarEgresoForm(forms.Form):
-    destino          = forms.ChoiceField(choices=TABLA_DEST)
-    area_admision    = forms.ChoiceField(choices=TABLA_AREADM)
-    fecha_traslado   = forms.DateTimeField()
-    fecha_indicacion = forms.DateTimeField()
+# Indicaciones - Dieta
+class AgregarIndDietaForm(forms.Form):
+  dieta     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="dieta"),widget=forms.RadioSelect())
+  observacion = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':500}))
+  # observacion = forms.CharField(widget=forms.widgets.Textarea())
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndDietaForm, self).__init__(*args, **kwargs)
+    self.fields['dieta'].empty_label = None
+    self.fields['dieta'].label = "Tipo de Dieta:"
 
-############################################################ Termina Forms Atencion
+
+# Indicaciones - Hidratacion
+class AgregarIndHidrataForm(forms.Form):
+  hidrata     = forms.ModelChoiceField(label = "Tipo de Solución",required=True,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  combina = forms.CharField(label = "¿Combinar con otro tipo de solución?:  ",widget=forms.RadioSelect(choices=ATENCION))
+  combina_sol= forms.ModelChoiceField(label = "Tipo de Solución Adicional:  ",required=False,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
+  volumen = forms.FloatField(label = "Volumen:  ",required=False)
+  vel_inf = forms.CharField(label = "Velocidad de Infusión:  ",max_length=30)
+  complementos = forms.CharField(label = "Complementos: ",max_length=40)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndHidrataForm, self).__init__(*args, **kwargs)
+    self.fields['hidrata'].empty_label = None
+    self.fields['combina_sol'].empty_label = None
+
+
+# Indicaciones - Diagnosticas - Laboratorio
+class AgregarIndLabForm(forms.Form):
+  lab     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="lab"),widget=CheckboxSelectMultiple)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndLabForm, self).__init__(*args, **kwargs)
+    self.fields['lab'].empty_label = None
+    self.fields['lab'].label = "Exámenes de Laboratorio:"
+
+
+# Clase extra para agregar atributos a los elementos checkbox renderizados:
+class MyCheckboxSelectMultiple(CheckboxSelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        html = super(MyCheckboxSelectMultiple, self).render(name, value, attrs, choices)
+        return mark_safe(html.replace('<ul>', '<ul class="imagen">'))
+
+
+# Indicaciones - Diagnosticas - Imagenologia
+class AgregarIndImgForm(forms.Form):
+  imagen     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="imagen"),widget=MyCheckboxSelectMultiple())
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndImgForm, self).__init__(*args, **kwargs)
+    self.fields['imagen'].empty_label = None
+    self.fields['imagen'].label = "Tipos de exámenes:"
+
+
+# Indicaciones - Diagnosticas - Est endoscopicos
+class AgregarIndEndosForm(forms.Form):
+  endoscopico     = forms.ModelMultipleChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="endoscopico"),widget=CheckboxSelectMultiple)
+  def __init__(self, *args, **kwargs):
+    super(AgregarIndEndosForm, self).__init__(*args, **kwargs)
+    # Para quitar la linea inicial (-----) del widget:
+    self.fields['endoscopico'].empty_label = None
+    self.fields['endoscopico'].label = "Exámenes Endoscópicos:"

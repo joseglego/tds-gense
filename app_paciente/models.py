@@ -100,18 +100,21 @@ class Pertenencia(models.Model):
     antecedente = models.ForeignKey(Antecedente)
     def __unicode__(self):
         return "%s-%s" % (self.paciente.nombres,self.antecedente.nombre)
+    
     def fechaR(self):
         result = Fecha.objects.filter(pertenencia=self)
         if result:
             return "%s" %(result[0].fecha)
         else: 
             return "%s" % ("no hay fecha")
+    
     def lugarR(self):
         result = Lugar.objects.filter(lugarpertenencia__pertenencia=self)
         if result:
             return "%s" %(result[0].nombre)
         else: 
             return "%s" % ("no hay lugar")
+    
     def tratamientoR(self):
         result = Tratamiento.objects.filter(tratamientopertenencia__pertenencia=self)
         if result:

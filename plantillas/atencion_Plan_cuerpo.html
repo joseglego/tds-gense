@@ -1,93 +1,40 @@
-<script src ="/static/scripts/efectos_info_cuerpo.js"> </script> 
+<link rel="stylesheet" type="text/css" href="/static/css/Atencion/atencion.css" /> 
+<script src ="/static/scripts/efectos_info_cuerpo.js"> </script>
+<script src ="/static/scripts/atencion_Plan_cuerpo.js"> </script>
  <script>
-
-  function cargar(){
-     Fspin('cajon1');
-    var formu = $('#formularioCuerpo').serialize();
-    $.post('/emergencia/enviarcuerpo/{{emergencia.id}}/'+'{{zona_cuerpo}}',formu, function(){
-      $('#cajon1').data('spinner').stop();
-    });
-     
-  }
-
   $(document).ready(function () {
-    $('#'+'ejemplo').hide();
-    $('.hide').hide();
-
-    $('input[type="hidden"]').each(function(index,valor){
-      var estado = $(valor).attr('value');
-      var nombre = $(valor).attr('id');
-      if (estado=='normal'){
-        $('#p'+nombre+'1').addClass('On');
-      }else if(estado=='anormal'){
-        $('#p'+nombre+'2').addClass('On');
-        $('#A'+nombre).show();
-      }
-    });
+    inputs_de_anomalias();
   });
 </script>
-<div>
-  
-  <button style='margin-top:0px;margin-left:0px'class="btn btn-info" onClick="cargar();"> Guardar</button>
-  
-  <button style='margin-top:0px;margin-left:200px' class="btn btn-small" id="boton1">X</button>
+<div id='div_boton1'>  
+  <button  class="btn btn-small" id="boton1">X</button>
 </div>
 <center>
   
 </center>
-<form id='formularioCuerpo' name="cuerpo" method="post" action="/emergencia/enviarcuerpo/{{emergencia.id}}/{{zona_cuerpo}}">
-  {% csrf_token %}
 
-
-<div style="margin-top:4px;height:360px;OVERFLOW: auto;" >
 {% for parte in partecuerpo %}
-<div style="display:inline-table;height:64%;padding:3px 0px 0px 5px;boder:solid;OVERFLOW: auto;">
-  <table class='table table-bordered' style='width:280px'>
-    <thead>
-      <tr class='btn-info'>
-      <th style="width:150px;">
-        {{parte.nombre}}
-      </th>
-      <th style="width:90px">
-        <center>
-          <button id="b{{parte.id}}1" class='BNAD' style="width: 40px;">NAD</button>
-          <button id="b{{parte.id}}2" class='BABN' style="width: 40px;">ABN</button>
-        </center>
-      </th>
-      </tr>
-    </thead>
-    <tbody>
 
-    {% for asp_ante in aspectoAtencion %}
-      {% if asp_ante.partecuerpoR == parte.nombre %}
-      <tr class='well' style="width:150px;">
-        <td>
-            {{asp_ante.aspecto.nombre}}
-        </td>
-        <td>
-          <input type="hidden" id="{{asp_ante.aspecto.id}}" name="{{asp_ante.aspecto.id}}" value='{{asp_ante.estadoR}}'>
-          <center>
-            <button id='p{{asp_ante.aspecto.id}}1' 
-                class='NAD' style="width:40px;" input='{{asp_ante.aspecto.id}}' >NAD</button>
-            <button id='p{{asp_ante.aspecto.id}}2' 
-                class='ABN' style="width:40px;" input='{{asp_ante.aspecto.id}}'>ABN</button>
-          </center>
-        </td>
-      </tr>
-      <tr id="A{{asp_ante.aspecto.id}}" class='hide' >
-        <td>
-          <input type="text" name='A{{asp_ante.aspecto.id}}' value="{{asp_ante.anomaliaR}}" style="width:130px;height:12px">
-        </td>
-        <td></td>
-      <tr>
-      {% endif %}
-    {% endfor %}
-    </tbody>
-  </table>
- 
+  {% if parte.nombre == 'CABEZA_Y_ROSTRO' %}
+    <button id='{{parte.nombre}}' style='width:120px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">CABEZA&nbsp;Y&nbsp;ROSTRO</button>
+  {% elif parte.nombre == 'EXTREMIDADES_SUPERIORES' %}
+    <button id='{{parte.nombre}}' style='width:170px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">EXTREMIDADES&nbsp;SUPERIORES</button>
+  {% elif parte.nombre == 'EXTREMIDADES_INFERIORES' %}
+    <button id='{{parte.nombre}}' style='width:170px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">EXTREMIDADES&nbsp;INFERIORES</button>
+  {% elif parte.nombre == 'GENITALES_MASCULINOS' and paciente.sexo == 1  %}
+    <button id='{{parte.nombre}}' style='width:145px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">GENITALES&nbsp;MASCULINOS&nbsp;</button>
+  {% elif parte.nombre == 'GENITALES_FEMENINOS' and paciente.sexo == 2 %}
+    <button id='{{parte.nombre}}' style='width:140px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">GENITALES&nbsp;FEMENINOS</button>
+  {% elif parte.nombre == 'EXAMEN_DE_MAMA' and paciente.sexo == 2 %}
+    <button id='{{parte.nombre}}' style='width:110px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">EXAMEN&nbsp;DE&nbsp;MAMA</button>
+  {% elif parte.nombre == 'EXAMEN_RECTAL' %}
+    <button id='{{parte.nombre}}' style='width:105px' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">EXAMEN&nbsp;RECTAL</button>
+  {% elif parte.nombre != 'GENITALES_FEMENINOS' and parte.nombre != 'EXAMEN_DE_MAMA' and parte.nombre != 'GENITALES_MASCULINOS' %}
+    <button id='{{parte.nombre}}' class="btn btn-info btn-mini" onClick="parteCuerpo('{{parte.nombre}}','{{emergencia.id}}');">{{parte.nombre}}</button>
+  {% endif %}
+{% endfor %}
 
-</div>
- {% endfor %}
-</div>
-<form>
-</div>    
+<div id='Parte_Cuerpo_Guardar' >
+  <div id='div_Parte_Cuerpo'>
+  </div>
+</div>  
