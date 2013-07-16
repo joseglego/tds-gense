@@ -430,11 +430,13 @@ def emergencia_enfermedad_actual(request,id_emergencia):
             else:
                 enfA = EnfermedadActual(atencion=atList[0],narrativa=narrativa)
                 enfA.save()
-                mensaje = " Agregado Exitosamente: "+enfA.narrativa
+                # mensaje = " Agregado Exitosamente: "+enfA.narrativa
+                mensaje = " Agregado Exitosamente: "
                 info = {'form':form,'emergencia':emer,'triage':triage, 'mensaje':mensaje, 'ya':ya}
                 return render_to_response('atencion_enfA.html',info,context_instance=RequestContext(request))
 
-            mensaje = "Actualizado Exitosamente: "+enfA[0].narrativa
+            # mensaje = "Actualizado Exitosamente: "+enfA[0].narrativa
+            mensaje = "Actualizado Exitosamente: "
             info = {'form':form,'emergencia':emer,'triage':triage, 'mensaje':mensaje,'ya':ya}
             return render_to_response('atencion_enfA.html',info,context_instance=RequestContext(request))
 
@@ -969,6 +971,11 @@ def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
             situacion       = request.POST.getlist('situacion')
             comentario      = request.POST.getlist('comentario')
             ver = range(len(nombres)-1)
+            print "nombres", nombres
+            print "Situacion", situacion
+            print "Comentarios", comentario
+
+            print "verr rango: "+str(ver)
             
             for i in ver:
                 # Condicional para saber si existe en las indicaciones:
@@ -979,6 +986,7 @@ def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
                     return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
                 else:
                     #Creo el objeto indicacion
+                    print "nombre: ",nombres[i]
                     ind = Indicacion(nombre=nombres[i],tipo=tipo_ind)
                     ind.save()
                     a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
@@ -986,10 +994,15 @@ def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
                     # Agregar info extra:
                     eMed= EspMedics(asignacion=a,dosis=float(dosis[i]),tipo_conc =tc[i],frecuencia=frec[i],tipo_frec=tf[i],via_admin=via[i])
                     eMed.save()
-                    print "Objeto guardado",eMed.asignacion.indicacion.nombre
+                    print "Objeto guardado numero: "+str(i)+"\n"
+                    print eMed.asignacion.indicacion.nombre
                     if tf[i] =="sos":
                         print "situaciones = ", situacion
                         print "comentarios = ", comentario
+                        print "situaciones numero: "+str(i)+"\n"
+                        print situacion[i]
+                        print "comentarios numero: "+str(i)+"\n"
+                        print comentario[i]
                         tSos= tieneSOS(espMed=eMed,situacion=situacion[i],comentario=comentario[i])
                         tSos.save()
                     
@@ -1013,9 +1026,9 @@ def emergencia_indicaciones_eliminar(request,id_emergencia,tipo_ind):
     mensaje = ""
     atencion = Atencion.objects.filter(emergencia= emer)
     
-    # Nueva Version Eliminar:
     if request.method == 'POST':
         checkes = request.POST.getlist(u'check')
+        
         if tipo_ind == "diagnostico":
             # obj tiene el id de la relacion
             for obj in checkes:
@@ -1079,42 +1092,66 @@ def emergencia_indicaciones_eliminar(request,id_emergencia,tipo_ind):
             return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
 
 #--------------------------------------------MODIFICAR
-# def emergencia_indicaciones_modificar(request,id_emergencia,tipo_ind):
-#     emer   = get_object_or_404(Emergencia,id=id_emergencia)
-#     paci = Paciente.objects.filter(emergencia__id=id_emergencia)
-#     paci = paci[0]
-#     triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
-#     triage = triage[0]
-#     mensaje = ""
+def emergencia_indicaciones_modificar(request,id_emergencia,tipo_ind):
+    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    paci = Paciente.objects.filter(emergencia__id=id_emergencia)
+    paci = paci[0]
+    triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+    triage = triage[0]
+    mensaje = ""
 
-#     if tipo_ind =="diagnostico":
+    if tipo_ind =="diagnostico":
+        at = Atencion.objects.filter(emergencia=id_emergencia)
+        diags = EstablecerDiag.objects.filter(atencion=at[0])
+        for da in diags:
+            # No verifica si nombre ya existe:
+            da.diagnostico.nombreD = request.POST[str(da.id)+"nombre"]
+            d= Diagnostico.objects.get(id = da.diagnostico.id)
+            d.nombreD = request.POST[str(da.id)+"nombre"]
+            d.save()
+            da.save()
+            
+        diagsN = EstablecerDiag.objects.filter(atencion=at[0])
+        mensaje = " Modificado Exitosamente "
+        info = {'mensaje':mensaje, 'emergencia':emer,'diags':diagsN, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_diag.html',info,context_instance=RequestContext(request))
 
-#     elif tipo_ind =="medicamento":
-#         # Version 1 Sin POST:
-#         indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
-#         print "Medicamentos asignados para esa emergencia:",indicaciones
-#         for ind in indicaciones:
-#             ind.indicacion.nombre = request.POST[str(ind.id)+"nombre"]
-#             print "Lo que tengo en el input:",ind.indicacion.nombre
-#             print "Veo id de indicacion en asignar:",ind.indicacion.id
-#             ii= Indicacion.objects.get(id = ind.indicacion.id)
-#             ii.nombre = request.POST[str(ind.id)+"nombre"]
-#             ii.save()
-#             print "Veo id de indicacion elegida:",ii.id
-#             print "veo si cambio nombre editado:", ind.indicacion.nombre
-#             dosisA = DosisAsignar.objects.get(asignacion = ind)
-#             print "veo objetos dosisAsignar:",dosisA
-#             print "veo input de dosis desde el POST:", request.POST[str(ind.id)+"dosis"]
-#             dosisA.dosis=request.POST[str(ind.id)+"dosis"]
-#             dosisA.save()
-#             print "Veo si cambio el objeto elegido DOSISA:",dosisA
-#             ind.save()
-#             print "Veo si cambio el objeto elegido IND:",ind
-#         indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
-#         print "Pastillas asignadas",indicaciones
-#         mensaje = " Modificado Exitosamente"
-#         info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
-#         return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
+    elif tipo_ind == 'valora' or tipo_ind == 'otros' or tipo_ind == 'terapeutico':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        for ia in indicaciones:
+            # No verifica si nombre ya existe:
+            ia.indicacion.nombre = request.POST[str(ia.id)+"nombre"]
+            i= Indicacion.objects.get(id = ia.indicacion.id)
+            i.nombre = request.POST[str(ia.id)+"nombre"]
+            i.save()
+            ia.save()
+        indsN = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        mensaje = " Modificado Exitosamente "
+        info = {'mensaje':mensaje, 'emergencia':emer,'indicaciones':indsN, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_tera.html',info,context_instance=RequestContext(request))
+    
+    elif tipo_ind =="medicamento":
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        for ind in indicaciones:
+            ind.indicacion.nombre = request.POST[str(ind.id)+"nombre"]
+            ii= Indicacion.objects.get(id = ind.indicacion.id)
+            ii.nombre = request.POST[str(ind.id)+"nombre"]
+            ii.save()
+            ind.save()
+            extraO = EspMedics.objects.get(asignacion = ind)
+            extraO.dosis=request.POST[str(ind.id)+"dosis"]
+            extraO.tipo_conc=request.POST[str(ind.id)+"conc"]
+            extraO.frecuencia = request.POST[str(ind.id)+"frec"]
+            # Falta agregar los inputs para modificar comentario y situacion:
+            # extraO.tipo_frec = request.POST[str(ind.id)+"t_frec"]
+            extraO.via_admin = request.POST[str(ind.id)+"via_adm"]
+            extraO.save()
+            
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        print "Pastillas asignadas",indicaciones
+        mensaje = " Modificado Exitosamente"
+        info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
+        return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
 
 #----------------------------------Gestion de Diagnostico Definitivo
 @login_required(login_url='/')

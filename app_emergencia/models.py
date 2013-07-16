@@ -312,6 +312,26 @@ class Asignar(models.Model):
         return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
         # Solo hora
         #return self.fechaReal.strftime("%H:%M:%S")
+    
+    #--- Para mostrar la informacion adicional cuando el tipo_Frec es SOS:
+    # Situacion SOS:
+    def med_SOS_sit(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        result2 = tieneSOS.objects.filter(espMed=result)
+        if result2:
+            print "que encuentro en situacion: "(result2[0].situacion)
+            return "%s" %(result2[0].situacion)
+        else: 
+            return "%s" % ("NO")
+    
+    # Comentario SOS:
+    def med_SOS_com(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        result2 = tieneSOS.objects.filter(espMed=result)
+        if result2:
+            return "%s" %(result2[0].comentario)
+        else: 
+            return "%s" % ("NO")
 
 # Especificaciones para las indicaciones de Dietas
 class EspDieta(models.Model):
@@ -355,6 +375,8 @@ class EspMedics(models.Model):
     # nebulizacion
     # transdermico
     # rectal
+    def __unicode__(self):
+        return "Paciente:%s-" % (self.asignacion.emergencia.paciente.apellidos)
 
 # Agrega los detalles extras para el tipo de frecuencia de SOS
 class tieneSOS(models.Model):
