@@ -4,7 +4,6 @@ from django.db import models
 from app_paciente.models import *
 from app_usuario.models import * 
 from app_enfermedad.models import * 
-
 from math import ceil, floor
 from datetime import datetime
 
@@ -150,6 +149,25 @@ class Emergencia(models.Model):
     def tiempo_emergencia(self):
         tiempo = self.hora_egreso - self.hora_ingreso
         return tiempo
+
+    def tiempoEspera(self):
+        triages = Triage.objects.filter(emergencia=self.id).order_by("fechaReal")
+        if triages:
+            t = triages[0].fecha
+        else:
+            t = self.hora_ingreso
+        t = t.replace(tzinfo=None)
+        tiempo_actual = datetime.now()
+        tiempo = tiempo_actual - t
+        return tiempo.total_seconds()
+
+    def tiempoEsperaR(self):
+        tiempo = self.tiempoEspera()
+        dias = floor(((tiempo/60)/60)/24)
+        horas = (tiempo/60)/60
+        minutos = (tiempo%60)/60
+        segundos = (tiempo%60)%60
+        return str(horas)+":"+str(minutos)+":"+str(segundos)
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)
