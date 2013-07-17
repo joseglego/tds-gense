@@ -26,6 +26,9 @@ function CompruebaCampo(obj){
     $("tr.ultimo:last td center input[type='text']").prop("value","");
     }
   }
+  $(document).ready(function(){
+  $("[rel='tooltip']").tooltip();
+});
 </script>
 
 <form id= "formDIAG" method="post" action="">
@@ -37,7 +40,7 @@ function CompruebaCampo(obj){
     <thread>
         <tr class= "btn-info">
             <th>
-                <center><i class="icon-trash icon-white"></i></center>
+                <center><a rel="tooltip" data-toggle="tooltip" data-original-title="Eliminar"href="#"><i class="icon-trash icon-white"></i></a></center>
             </th>
             <th>
                 <center>Hora</center>

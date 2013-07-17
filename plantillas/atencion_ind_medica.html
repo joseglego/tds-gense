@@ -58,6 +58,7 @@ $(document).ready(
     function(){
       // Para que setee en blanco las opciones del nuevo renglon, con attb no funciona
       $("select#s1,select#s2,select#s3").prop('selectedIndex', -1);
+      $("[rel='tooltip']").tooltip();
   });
 </script>
 
@@ -84,7 +85,7 @@ $(document).ready(
 		<thread>
 		<tr class= "btn-info">
 			<th>
-				<center><i class="icon-trash icon-white"></i></center>
+				<center><a rel="tooltip" data-toggle="tooltip" data-original-title="Eliminar"href="#"><i class="icon-trash icon-white"></i></a></center>
 			</th>
 			<th>
 				<center>Hora</center>
@@ -162,11 +163,11 @@ $(document).ready(
 			<center>
 				<select class = "s3" name="{{i.id}}via_adm">
 					<option value="endov">Endovenosa</option>
-					<option value="trans">Nebulizaci&oacute;n</option>
+					<option value="neb">Nebulizaci&oacute;n</option>
 					<option value="oral">Oral</option>
 					<option value="rect">Rectal</option>
-					<option value="nebu">Subcut&aacute;nea</option>
-					<option value="rect">T&oacute;pica</option>
+					<option value="subc">Subcut&aacute;nea</option>
+					<option value="top">T&oacute;pica</option>
 				</select>
 			</center>
 		</td>
@@ -219,11 +220,11 @@ $(document).ready(
 			<center>
 				<select class="s3" id="s3" name="nuevaVAD">
 					<option value="endov">Endovenosa</option>
-					<option value="trans">Nebulizaci&oacute;n</option>
+					<option value="neb">Nebulizaci&oacute;n</option>
 					<option value="oral">Oral</option>
 					<option value="rect">Rectal</option>
-					<option value="nebu">Subcut&aacute;nea</option>
-					<option value="rect">T&oacute;pica</option>
+					<option value="subc">Subcut&aacute;nea</option>
+					<option value="top">T&oacute;pica</option>
 				</select>
 			</center>
 		</td>

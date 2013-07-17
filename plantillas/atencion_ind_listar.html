@@ -1,3 +1,23 @@
+<style>
+#report div.arrow { background:transparent url(/static/img/Atencion/arrows.png) no-repeat scroll 0px -16px; width:16px; height:16px; display:block; cursor:pointer;}
+#report div.up { background-position:0px 0px;}
+</style>
+ <script>
+ function envia3(pag){
+  $(".infoE").load(pag);
+}
+ $(document).ready(function(){
+  $("[rel='tooltip']").tooltip();
+  $("#report tr:odd").addClass("odd");
+  $("#report tr:not(.odd)").hide();
+  $("#report tr:first-child").show();
+  
+  $("#report tr.odd").click(function(){
+    $(this).next("tr").toggle();
+    $(this).find(".arrow").toggleClass("up");
+  });
+});
+</script>
 {% if "Exitosamente" in mensaje %} 
 <div class= "alert alert-success">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -10,16 +30,16 @@
     </div>
 {% endif %}
 
-<form name="form" class= "tablaAgregar2" method="post" action="">
+<form name="form" method="post" action="">
   {% csrf_token %}
 <center>
-<div id="tablaInd" style='height:300px;OVERFLOW: auto;'>
-<table class="table table-bordered table-hover">
+<div id="report" style='height:300px;OVERFLOW: auto;'>
+<table id="tLIST"class="table table-bordered table-hover">
     <caption><p class="lead">Indicaciones Totales</p></caption>
     <thead>
       <tr class= "btn-info ">
         <th>
-        <center><i class="icon-trash icon-white"></i></center>
+        <center><a rel="tooltip" data-toggle="tooltip" data-original-title="Eliminar"href="#"><i class="icon-trash icon-white"></i></a></center>
       </th>
       <th>
           <center>Hora</center>
@@ -30,12 +50,16 @@
         <th>
           <center>Nombre</center>
         </th>
+        <th>
+          <center><a rel="tooltip" data-toggle="tooltip" data-original-title="Informaci&oacute;n Adicional"href="#"><i class="icon-info-sign icon-white"></i></a></center>
+        </th>
 
       </tr>
     </thead>
     <tbody>
       {% for i in indicaciones %}
       <tr>
+      <!-- <tr onClick= "envia3('/emergencia/infoInd/{{i.id}}/{{i.indicacion.tipo}}')"> -->
           <td>
               <center>
                   <input type="checkbox" name="check" value="{{i.id}}" />
@@ -43,20 +67,42 @@
           </td>
           <td>
               <center>
-                  <p style="width:100%;height:12px">{{i.horaA}}</p>
+                  <p style="width:150px;height:12px">{{i.horaA}}</p>
               </center>
           </td>
           <td>
               <center>
-                  <p style="width:100%;height:12px">{{i.indicacion.tipo}}</p>
+                  {% if i.indicacion.tipo == 'dieta'%}
+                  <p style="width:70px;height:12px"> Dieta </p>
+                  {% elif i.indicacion.tipo == 'hidrata'%}
+                  <p style="width:70px;height:12px"> Hidrataci&oacute;n </p>
+                  {% elif i.indicacion.tipo == 'medicamento'%}
+                  <p style="width:70px;height:12px"> Medicamento </p>
+                  {% elif i.indicacion.tipo == 'lab' or i.indicacion.tipo == 'imagen' or i.indicacion.tipo == 'endoscopico' or i.indicacion.tipo == 'valora' or i.indicacion.tipo == 'otros'%}
+                  <p style="width:70px;height:12px"> Diagn&oacute;stico</p>
+                  
+                  {% elif i.indicacion.tipo == 'terapeutico'%}
+                  <p style="width:70px;height:12px"> Terap&eacute;utico </p>
+                  {% endif %}
               </center>
           </td>
           <td>
               <center>
-                  <input type="text" name="{{i.indicacion.nombre}}tipo_ind" value="{{i.indicacion.nombre}}" style="width:100px;height:12px"></center>
+                <p style="width:250px;height:12px;">{{i.indicacion.nombre}}</p>
+              </center>
+          </td>
+          <td>
+              <center>
+                <div class="arrow" onClick= "envia3('/emergencia/infoInd/{{i.id}}/{{i.indicacion.tipo}}')"></div>
+              </center>
           </td>
       </tr>
-            {% endfor %}
+      <tr class="extraINFO">
+        <td colspan="5">
+          <div class="infoE"></div>
+        </td>
+       </tr>
+       {% endfor %}
     </tbody>
   </table>
 </div>

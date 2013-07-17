@@ -63,11 +63,15 @@ class AgregarEnfActual(forms.Form):
     def __init__(self, *args, **kwargs):
       super(AgregarEnfActual, self).__init__(*args, **kwargs)
       self.fields['narrativa'].label = ""
+      self.fields['narrativa'].widget.attrs['rows'] = 15
+      # self.fields['narrativa'].widget.attrs['cols'] = 50
+
 
 # Indicaciones - Dieta
 class AgregarIndDietaForm(forms.Form):
   dieta     = forms.ModelChoiceField(queryset=Indicacion.objects.filter(tipo__iexact="dieta"),widget=forms.RadioSelect())
-  observacion = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':100}))
+  observacion = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5, 'cols':500}))
+  # observacion = forms.CharField(widget=forms.widgets.Textarea())
   def __init__(self, *args, **kwargs):
     super(AgregarIndDietaForm, self).__init__(*args, **kwargs)
     self.fields['dieta'].empty_label = None
@@ -77,7 +81,7 @@ class AgregarIndDietaForm(forms.Form):
 # Indicaciones - Hidratacion
 class AgregarIndHidrataForm(forms.Form):
   hidrata     = forms.ModelChoiceField(label = "Tipo de Solución",required=True,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
-  combina = forms.CharField(label = "¿Combinar con otro tipo de solución?:  ",max_length=5,widget=forms.RadioSelect(choices=ATENCION))
+  combina = forms.CharField(label = "¿Combinar con otro tipo de solución?:  ",widget=forms.RadioSelect(choices=ATENCION))
   combina_sol= forms.ModelChoiceField(label = "Tipo de Solución Adicional:  ",required=False,queryset=Indicacion.objects.filter(tipo__iexact="hidrata"),widget=forms.RadioSelect())
   volumen = forms.FloatField(label = "Volumen:  ",required=False)
   vel_inf = forms.CharField(label = "Velocidad de Infusión:  ",max_length=30)
@@ -86,7 +90,7 @@ class AgregarIndHidrataForm(forms.Form):
     super(AgregarIndHidrataForm, self).__init__(*args, **kwargs)
     self.fields['hidrata'].empty_label = None
     self.fields['combina_sol'].empty_label = None
-  
+
 
 # Indicaciones - Diagnosticas - Laboratorio
 class AgregarIndLabForm(forms.Form):
@@ -95,6 +99,7 @@ class AgregarIndLabForm(forms.Form):
     super(AgregarIndLabForm, self).__init__(*args, **kwargs)
     self.fields['lab'].empty_label = None
     self.fields['lab'].label = "Exámenes de Laboratorio:"
+
 
 # Clase extra para agregar atributos a los elementos checkbox renderizados:
 class MyCheckboxSelectMultiple(CheckboxSelectMultiple):

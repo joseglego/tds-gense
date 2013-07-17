@@ -27,8 +27,10 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/cuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_zonacuerpo'),
     url('^emergencia/enfermedad/(?P<id_emergencia>.*)$','emergencia_enfermedad'),
 
-    # Ingreso a Indicaciones
+    # Ingreso a Indicaciones-----------------------------------------------------------------------------
     # Acciones:
+    # Listar detalles indicacion:
+    url('^emergencia/infoInd/(?P<id_asignacion>.*)/(?P<tipo_ind>.*)$','emergencia_indicacion_info'),
     # Agregar 
     url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/agregar$','emergencia_indicaciones_agregar'),
     # Eliminar
