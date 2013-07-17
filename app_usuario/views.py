@@ -118,7 +118,7 @@ def usuario_aprobar(request,cedulaU):
 	usuario.habilitado = True
 	usuario.is_active = True
 	usuario.save()
-	email = EmailMessage('[GenSE] Admin - Activación de Cuenta','Estimado/a '+usuario.first_name+' '+usuario.last_name+'\n\nSe aprobó su solicitud de activación de cuenta\n\nSaludos,\nAdministrador del Sistema', to=[usuario.email]) 
+	email = EmailMessage('[GenSE] Admin - Activacion de Cuenta','Estimado/a '+usuario.first_name+' '+usuario.last_name+'\n\nSe aprobo su solicitud de activacion de cuenta\n\nSaludos,\nAdministrador del Sistema', to=[usuario.email]) 
 	email.send()
 	return redirect("/usuario/pendientes")
 
