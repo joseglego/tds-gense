@@ -137,5 +137,5 @@ class TratamientoPertenencia(models.Model):
     tratamiento = models.ForeignKey(Tratamiento)
 
 class Fecha(models.Model):
-    fecha       = models.DateField()
+    fecha       = models.IntegerField(default=2013,blank=True)
     pertenencia = models.ForeignKey(Pertenencia)

@@ -44,19 +44,19 @@
         <dt>rverbal:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_rverbal }}</span></dt>
         <dt>Dolor:&nbsp&nbsp<span style='font-weight:normal;' >{{ triage.signos_dolor }}</span></dt>
       </dl>
-
-     <button class="btn btn-info btn-mini" > Actualizar</button>
+      <center><button class="btn btn-info btn-mini" onclick="location='/paciente/{{emergencia.id}}'"> Actualizar</button></center>
+     
     </div><!--Cierra wellsmall-->
       
       <center>
       <div class="btn-group">
-      <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}'" rel="tooltip" data-toggle="tooltip" data-original-title="Historia Médica">
+      <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}/historia'" rel="tooltip" data-toggle="tooltip" data-original-title="Historia Médica">
         <a  href="#" data-icon="&#xe007;"></a>
       </button>
-      <button class="btn button btn-large" rel="tooltip" data-toggle="tooltip" data-original-title="Constancia Atenci&oacute;n">
+      <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}/constancia'" rel="tooltip" data-toggle="tooltip" data-original-title="Constancia Atenci&oacute;n">
         <a  href="#" data-icon="&#xe008;"></a>
       </button>
-      <button class="btn button btn-large" rel="tooltip" data-toggle="tooltip" data-original-title="Reporte Indicaciones">
+      <button class="btn button btn-large" onclick="location='/emergencia/descarga/{{emergencia.id}}/reportInd'" rel="tooltip" data-toggle="tooltip" data-original-title="Reporte Indicaciones">
         <a  href="#" data-icon="&#xe009;"></a>
       </button>
     </div><!-- Cierra botones -->

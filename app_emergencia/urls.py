@@ -27,14 +27,16 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/cuerpo/(?P<id_emergencia>.*)/(?P<zona_cuerpo>.*)$','emergencia_enfermedad_zonacuerpo'),
     url('^emergencia/enfermedad/(?P<id_emergencia>.*)$','emergencia_enfermedad'),
 
-    # Ingreso a Indicaciones
+    # Ingreso a Indicaciones-----------------------------------------------------------------------------
     # Acciones:
+    # Listar detalles indicacion:
+    url('^emergencia/infoInd/(?P<id_asignacion>.*)/(?P<tipo_ind>.*)$','emergencia_indicacion_info'),
     # Agregar 
     url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/agregar$','emergencia_indicaciones_agregar'),
     # Eliminar
     url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/eliminar$','emergencia_indicaciones_eliminar'),
-    # Modificar Medicamento
-    # url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/modificar$','emergencia_indicaciones_modificar'),
+    # Modificar
+    url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)/modificar$','emergencia_indicaciones_modificar'),
 
     # Ingreso a Indicaciones Especializadas
     url('^emergencia/indicaciones/(?P<id_emergencia>.*)/(?P<tipo_ind>.*)$','emergencia_indicaciones'),
@@ -48,6 +50,6 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/diagnostico/(?P<id_emergencia>.*)$','emergencia_diagnostico'),
 
     # Botones genericos de atencion:
-    # Descargar historia medica 
-    url('^emergencia/descarga/(?P<id_emergencia>.*)$','emergencia_descarga'),
+    # Descargar de pdfs: 
+    url('^emergencia/descarga/(?P<id_emergencia>.*)/(?P<tipo_doc>.*)$','emergencia_descarga'),
 )

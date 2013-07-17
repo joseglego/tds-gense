@@ -19,16 +19,17 @@
 <center>
     <div class="btn btn-info" style='background:rgba(0,0,0,0.05)'>
         <input class="btn btn-info btn-mini" type="button" value="Eliminar" 
-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/eliminar')" />
-        <input class="btn btn-info btn-mini" type="button" value="Modificar" 
-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/modificar')"/>
-        <input class="btn btn-info btn-mini" type="button" value="Agregar" 
-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/agregar')"/>
-        <input class="btn btn-info btn-mini" type="button" value="Actualizar" 
-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}')"/>
+-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/eliminar')" />
+-        <input class="btn btn-info btn-mini" type="button" value="Modificar" 
+-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/modificar')"/>
+-        <input class="btn btn-info btn-mini" type="button" value="Agregar" 
+-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}/agregar')"/>
+-        <input class="btn btn-info btn-mini" type="button" value="Actualizar" 
+-        onClick="envia('/emergencia/antecedentes/{{emergencia.id}}/{{tipo_ant}}')"/>
     </div>
-
 </center>
+
+
 <center>
 <div id='div_de_tabla_atecedente'>
 {% if tipo_ant == 'alergia' %}
@@ -39,7 +40,8 @@
     <thead>
         <tr class ='btn-info' >
             <th style='width:40px'>
-                <center>Elimina</center>
+                <!-- <center>Elimina</center> -->
+                <center><i class="icon-trash icon-white"></i></center>
             </th>
             {% if tipo_ant == 'alergia'%}
                 <th style='width:148px' ><center>Alergeno</center></th>

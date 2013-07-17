@@ -4,7 +4,6 @@ from django.db import models
 from app_paciente.models import *
 from app_usuario.models import * 
 from app_enfermedad.models import * 
-
 from math import ceil, floor
 from datetime import datetime
 
@@ -126,6 +125,10 @@ class Emergencia(models.Model):
         return atenciones
     def horaR(self):
         return self.hora_ingreso.strftime("%H:%M del %d/%m/%y")
+        
+    def numIndicaciones(self):
+        indicaciones = Indicacion.objects.filter(asignar__emergencia = self)
+        return len(indicaciones)
     
     def tiempo_espera(self):
         triages = self.triages()
@@ -150,6 +153,26 @@ class Emergencia(models.Model):
     def tiempo_emergencia(self):
         tiempo = self.hora_egreso - self.hora_ingreso
         return tiempo.total_seconds()
+
+    def tiempoEspera(self):
+        triages = Triage.objects.filter(emergencia=self.id).order_by("fechaReal")
+        if triages:
+            t = triages[0].fecha
+        else:
+            t = self.hora_ingreso
+        t = t.replace(tzinfo=None)
+        tiempo_actual = datetime.now()
+        tiempo = tiempo_actual - t
+        return tiempo.total_seconds()
+
+    def tiempoEsperaR(self):
+        tiempo = self.tiempoEspera()
+        dias = floor(((tiempo/60)/60)/24)
+        horas = (tiempo/60)/60
+        minutos = (tiempo%60)/60
+        segundos = (tiempo%60)%60
+        return str(horas)+":"+str(minutos)+":"+str(segundos)
+
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)
@@ -207,14 +230,14 @@ class Atencion(models.Model):
     area_atencion  = models.CharField(max_length=1)
     def __unicode__(self):
         return "Paciente:%s- Doctor:%s - Area:%s" % (self.emergencia.paciente.apellidos,self.medico.cedula,self.area_atencion)
+    def horaA(self):
+        return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
 
-#_------------------------------------ Cambios Requerimientos 03_7
 # Enfermedad Actual
 class EnfermedadActual(models.Model):
     atencion = models.ForeignKey(Atencion)
     narrativa = models.CharField(max_length=512)
 
-#_------------------------------------ Cambios Requerimientos 29_6
 # Diagnostico Definitivo
 class Diagnostico(models.Model):
     nombreD = models.CharField(max_length=512)
@@ -249,7 +272,16 @@ class Asignar(models.Model):
         return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo)
     
     #------------------------------------- Definiciones para atributos extra:
-    #---------------------------------- Para las especificaciones Medicamento
+
+    # Especificaciones Dieta
+    def dieta_OB(self):
+        result = EspDieta.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].observacion)
+        else: 
+            return "%s" % ("no hay observacion")
+    
+    # Especificaciones Medicamento
     # Dosis
     def med_Dosis(self):
         result = EspMedics.objects.filter(asignacion=self)
@@ -296,6 +328,26 @@ class Asignar(models.Model):
         return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
         # Solo hora
         #return self.fechaReal.strftime("%H:%M:%S")
+    
+    #--- Para mostrar la informacion adicional cuando el tipo_Frec es SOS:
+    # Situacion SOS:
+    def med_SOS_sit(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        result2 = tieneSOS.objects.filter(espMed=result)
+        if result2:
+            print "que encuentro en situacion: "(result2[0].situacion)
+            return "%s" %(result2[0].situacion)
+        else: 
+            return "%s" % ("NO")
+    
+    # Comentario SOS:
+    def med_SOS_com(self):
+        result = EspMedics.objects.filter(asignacion=self)
+        result2 = tieneSOS.objects.filter(espMed=result)
+        if result2:
+            return "%s" %(result2[0].comentario)
+        else: 
+            return "%s" % ("NO")
 
 # Especificaciones para las indicaciones de Dietas
 class EspDieta(models.Model):
@@ -311,9 +363,9 @@ class EspHidrata(models.Model):
     vel_infusion = models.CharField(max_length=512,blank=True)
     complementos = models.CharField(max_length=512,blank=True)
     def __unicode__(self):
-        return "Paciente:%s- DVolumen:%s" % (self.asignacion.emergencia.paciente.nombres,self.volumen)
+        return "Paciente:%s- DVolumen:%s" % (self.asignacion.emergencia.paciente.apellidos,self.volumen)
 
-# Relacionar dos tipso de solucion
+# Relacionar dos tipos de solucion
 class CombinarHidrata(models.Model):
     hidratacion1 = models.ForeignKey(EspHidrata,null=True)
     hidratacion2 = models.ForeignKey(Indicacion,null=True)
@@ -339,6 +391,8 @@ class EspMedics(models.Model):
     # nebulizacion
     # transdermico
     # rectal
+    def __unicode__(self):
+        return "Paciente:%s-" % (self.asignacion.emergencia.paciente.apellidos)
 
 # Agrega los detalles extras para el tipo de frecuencia de SOS
 class tieneSOS(models.Model):
