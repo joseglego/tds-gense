@@ -149,7 +149,7 @@ class Emergencia(models.Model):
 
     def tiempo_emergencia(self):
         tiempo = self.hora_egreso - self.hora_ingreso
-        return tiempo
+        return tiempo.total_seconds()
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)

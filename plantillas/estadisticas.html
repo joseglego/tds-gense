@@ -33,8 +33,21 @@
                        'colors':['red','orange','yellow','green','blue'],
                        'height':200};
  
+
+        var data2 = google.visualization.arrayToDataTable([
+          ['fecha' {% for ascii, cantidad in egresos %}, '{{ascii}}'{% endfor %}],
+          ['hoy'  {% for ascii, cantidad in egresos %}, {{cantidad}} {% endfor %}],
+        ]);
+
+        var options2 = {
+          title: 'Total de Egresos',
+          'colors':['blue','green','yellow','red','black'],
+          'width':500,
+        };
+
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart2 = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
 
         function selectHandler() {
           var selectedItem = chart.getSelection()[0];
@@ -46,23 +59,50 @@
 
         google.visualization.events.addListener(chart, 'select', selectHandler);    
         chart.draw(data, options);
+        chart2.draw(data2,options2);
       }
 
     </script>
 {% endblock %}
 
 {% block cuerpo %}
-    <div class="span4">
-      <h4>Todos los Triages Realizados</h4>
+    <div class="span12 text-right">
+      <a href="/estadisticas/dia/{{inicio.year}}-{{inicio.month}}-{{inicio.day}}">Ver Semana Anterior</a> |
+      <a href="/estadisticas/">Ver Semana Actual </a> |
+      <a href="/estadisticas/dia/{{sig.year}}-{{sig.month}}-{{sig.day}}"> Siguiente Semana </a>
+    </div>
+    <div class="span12">
+      <h5> Datos Generales </h5>
+      Generado: <strong>{{fecha}}</strong><br/>
+      Primer D&iacute;a de la Semana: <strong>{{inicio}}</strong>
+      &Uacute;ltimo D&iacute;a de la Semana: <strong>{{fin}}</strong><br/>
+      Emergencias Ingresadas: <strong>{{total_ingresos}}</strong><br/>
+      Emergencias Completadas: <strong>{{total_egresos}}</strong><br/>
+    </div>
+    <div class="span3">
+      <h5>Triages Realizados</h5>
       <ul>
       {% for nivel,cantidad in triages %}
       <strong>Nivel {{nivel}}:</strong> {{cantidad}}<br/>
       {% endfor %}
       </ul>
     </div>
-    <div class="span3">
-      <h5>Todo el Per&iacute;odo</h5>
+    <div class="span6">
+      <h5>Grafica de Triage</h5>
       <div id="chart_div">
+      </div>
+    </div>
+    <div class="span3">
+      <h5>Egresos Realizados</h5>
+      <ul>
+      {% for nivel,cantidad in egresos %}
+      <strong>{{nivel}}:</strong> {{cantidad}}<br/>
+      {% endfor %}
+      </ul>
+    </div>
+    <div class="span6">
+      <h5>Grafica de Egresos</h5>
+      <div id="chart_div2">
       </div>
     </div>
 {% endblock %}

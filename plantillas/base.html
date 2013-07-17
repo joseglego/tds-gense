@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap-responsive.min.css">
     <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap-collapse.js"></script>
 
 
     <!-- Propios -->
@@ -132,11 +133,11 @@
         <p class="muted credit">&reg;P&aacute;gina desarrollada en la <a href="http://www.usb.ve/">Universidad Sim&oacute;n Bol&iacute;var</a> para el <a href="http://www.centromedicodecaracas.com.ve/">Centro M&eacute;dico de Caracas</a>.</p>
       </div>
     </div>
-    <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script type="text/javascript" src="/static/libs/bootstrap/js/bootstrap-collapse.js"></script>
-
 
     {% block scripts2 %}
+    <script>
+      $('.dropdown-toggle').dropdown()
+    </script>
     {% endblock %}
   </body>
 </html>

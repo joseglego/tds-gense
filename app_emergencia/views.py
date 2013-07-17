@@ -14,7 +14,8 @@ from django.shortcuts import render_to_response,redirect,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Manejo de Informacion de esta aplicacion
-from datetime import datetime
+from django.utils.timezone import utc
+from datetime import datetime, date, timedelta
 from models import *
 from forms import *
 from app_usuario.forms import *
@@ -358,8 +359,36 @@ def estadisticas_prueba():
       triages.append([(i+1),triagesBien[i]])
     return triages
 
-def estadisticas(request):
-    triages = Triage.objects.all().values('nivel').annotate(Count('nivel')).order_by('nivel')
+def estadisticas_sem(request,anho,mes,dia):
+    # Datos generales
+    fecha = date(int(anho),int(mes),int(dia))
+    ini_sem = fecha - timedelta(days=7)
+    sig_sem = fecha + timedelta(days=7)
+    fin_sem = fecha - timedelta(days=1)
+
+    ingresos = Emergencia.objects.filter(hora_ingreso__range=[ini_sem,fecha])
+    es = Emergencia.objects.filter(hora_egreso__range=[ini_sem,fecha])
+    
+    # Cuanto se tardo cada emergencia
+    horas0a2=0
+    horas2a4=0
+    horas4a6=0
+    horas6aM=0
+    hora = 3600
+    for e in es:
+        t = e.tiempo_emergencia() 
+        if t < 2*hora:
+            horas0a2 += 1
+        elif t >= 2*hora and t < 4*hora:
+            horas2a4 += 1
+        elif t >= 4*hora and t < 6*hora:
+            horas4a6 += 1
+        else:
+            horas6aM += 1
+    total = horas0a2 + horas2a4 + horas4a6 + horas6aM
+    
+    # Resultados de los Triages
+    triages = Triage.objects.filter(fecha__range=[ini_sem,fin_sem]).values('nivel').annotate(Count('nivel')).order_by('nivel')
     triages = [[i['nivel'],i['nivel__count']] for i in triages]
     triagesBien = [0,0,0,0,0]
     for i in triages:
@@ -367,9 +396,13 @@ def estadisticas(request):
     triages = []
     for i in range(5):
       triages.append([(i+1),triagesBien[i]])
-    info = {'triages':triages}
+    egresos = [['Total',total],['Menos de 2 horas',horas0a2],['2 a 4 horas',horas2a4],['4 a 6 horas',horas4a6],['Más de 6 horas',horas6aM]]
+    info = {'triages':triages,'fecha':fecha,'inicio':ini_sem,'fin':fin_sem,'sig':sig_sem,'total_ingresos':len(ingresos),'total_egresos':total,'egresos':egresos}
     return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 
+def estadisticas(request):
+    hoy = datetime.today()
+    return redirect('/estadisticas/dia/'+str(hoy.year)+'-'+str(hoy.month)+'-'+str(hoy.day))
 
 #########################################################
 #                                                       #

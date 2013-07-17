@@ -41,7 +41,7 @@ urlpatterns = patterns('',
 
     # Estadisticas
     url('^estadisticas/$','app_emergencia.views.estadisticas'),
-    url('^estadisticas/mes/(?P<ano>\d+)-(?P<mes>\d+)$','app_emergencia.views.estadisticas_mes'),
+    url('^estadisticas/dia/(?P<anho>\d+)-(?P<mes>\d+)-(?P<dia>\d+)$','app_emergencia.views.estadisticas_sem'),
                        
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),
