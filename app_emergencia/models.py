@@ -225,6 +225,8 @@ class Atencion(models.Model):
     area_atencion  = models.CharField(max_length=1)
     def __unicode__(self):
         return "Paciente:%s- Doctor:%s - Area:%s" % (self.emergencia.paciente.apellidos,self.medico.cedula,self.area_atencion)
+    def horaA(self):
+        return self.fechaReal.strftime("%d/%m/%y a las %H:%M:%S")
 
 # Enfermedad Actual
 class EnfermedadActual(models.Model):
@@ -265,6 +267,15 @@ class Asignar(models.Model):
         return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo)
     
     #------------------------------------- Definiciones para atributos extra:
+
+    # Especificaciones Dieta
+    def dieta_OB(self):
+        result = EspDieta.objects.filter(asignacion=self)
+        if result:
+            return "%s" %(result[0].observacion)
+        else: 
+            return "%s" % ("no hay observacion")
+    
     # Especificaciones Medicamento
     # Dosis
     def med_Dosis(self):
