@@ -389,13 +389,37 @@ def generar_pdf(html):
         return HttpResponse(result.getvalue(), mimetype='application/pdf')
     return HttpResponse('Error al generar el PDF: %s' % cgi.escape(html))
 
-def emergencia_descarga(request,id_emergencia):
+def emergencia_descarga(request,id_emergencia,tipo_doc):
     emer  = get_object_or_404(Emergencia,id=id_emergencia)
-    #triages = Triage.objects.filter(emergencia=self.id).order_by("-fechaReal")
-    #ctx = {'emergencia':emer,'triage':triage}
+    ingreso = datetime.now()
+    atList = Atencion.objects.filter(emergencia=id_emergencia)
+    atList2=atList[0]
+    diags = EstablecerDiag.objects.filter(atencion=atList2)
+    dieta = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta")
+    dieta2 = dieta[0]
+    medicamento = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "medicamento")
     # TERMINAR CONSULTAS PARA INGRESAR AL CONTEXTO
-    ctx  = {'emergencia':emer}
-    html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
+    if tipo_doc == 'historia':
+        # Faltan consultas:
+        triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
+        triage2=triage[0]
+        
+        enfA = EnfermedadActual.objects.get(atencion=atList[0].id)
+        print "Triage en descarga",triage2
+        ctx  = {'emergencia':emer,'ingreso':ingreso,'triage':triage2,'atencion':atList2,'enfA':enfA,'diags':diags,'dieta':dieta2,'medicamento':medicamento}
+        html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
+    
+    elif tipo_doc == 'constancia':
+        
+        print "DIetas en descarga:",dieta
+        print"Medicamcion en descarga",medicamento
+        info = {'ingreso':ingreso,'emergencia':emer,'diags':diags,'dieta':dieta2,'medicamento':medicamento}
+        html = render_to_string('const_asist.html',info, context_instance=RequestContext(request))
+    
+    elif tipo_doc == 'reportInd':
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+        ctx  = {'emergencia':emer,'indicaciones':indicaciones,'ingreso':ingreso}
+        html = render_to_string('reporte_ind.html',ctx, context_instance=RequestContext(request))
     return generar_pdf(html)
 
 #----------------------------------Gestion de Enfermedad Actual
@@ -476,10 +500,9 @@ def emergencia_antecedentes_agregar(request,id_emergencia,tipo_ant):
             ant.save()
             pertenece = Pertenencia(paciente=paci,antecedente=ant)
             pertenece.save()
-            if tipo_ant =='medica' or tipo_ant =='quirurgica':
-                if fechas[i] != "":
-                    fecha = Fecha(fecha=fechas[i],pertenencia=pertenece) 
-                    fecha.save()
+            if tipo_ant =='medica' or tipo_ant =='quirurgica':                
+                fecha = Fecha(fecha=int(fechas[i]),pertenencia=pertenece) 
+                fecha.save()
                 if tipo_ant == 'medica':
                     tratamiento = Tratamiento(nombre=atributo[i])
                     tratamiento.save()
@@ -507,7 +530,7 @@ def emergencia_antecedentes_modificar(request,id_emergencia,tipo_ant):
             pertenece = Pertenencia.objects.filter(paciente=paci,antecedente=ant)
             if pertenece:
                 fecha             = Fecha.objects.get(pertenencia=pertenece[0])
-                fecha.fecha       = request.POST[str(ant.id)+"fecha"]
+                fecha.fecha       = int(request.POST[str(ant.id)+"fecha"])
                 fecha.pertenencia = pertenece[0]
                 fecha.save()
             if tipo_ant == 'medica':
@@ -767,7 +790,7 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                             ex = EspImg(asignacion=a,parte_cuerpo=p_cuerpo)
                             ex.save()
 
-                    mensaje = "Procedimientos Guardado Exitosamente"
+                    mensaje = "Procedimientos Guardados Exitosamente"
                     info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
                     return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
 
