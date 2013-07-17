@@ -50,6 +50,6 @@ urlpatterns = patterns('app_emergencia.views',
     url('^emergencia/diagnostico/(?P<id_emergencia>.*)$','emergencia_diagnostico'),
 
     # Botones genericos de atencion:
-    # Descargar historia medica 
-    url('^emergencia/descarga/(?P<id_emergencia>.*)$','emergencia_descarga'),
+    # Descargar de pdfs: 
+    url('^emergencia/descarga/(?P<id_emergencia>.*)/(?P<tipo_doc>.*)$','emergencia_descarga'),
 )

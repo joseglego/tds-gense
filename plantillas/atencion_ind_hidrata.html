@@ -157,7 +157,9 @@ $(document).ready(
 
             {% if tipo_ind == 'lab'%}
             <center><legend>Indicaciones de Laboratorio</legend></center>
+            <div id="listaLAB" style='height:350px; width:445px; OVERFLOW: auto;'>
             {{ form.as_p }}
+            </div>
             {% endif %}
 
             {% if tipo_ind == 'imagen'%}
