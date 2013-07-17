@@ -15,21 +15,33 @@
     {% if lista %}
     <table class="table table-bordered table-striped">
       <tr>
-	<th>N&uacute;mero</th>
-	<th>Nombre</th>
-	<th>Acciones</th>
-	<th>IDE</th>
-	<th>Hora de Ingreso</th>
-	<th>Tiempo</th>
-	<th>Alarma</th>
-	<th>Tiempo</th>
+        <th>N&uacute;mero</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+        <th>IDE</th>
+        <th>Hora de Ingreso</th>
+        <th>Tiempo</th>
+        <th>Alarma</th>
+        <th>Tiempo</th>
       </tr>
       {% for l in lista %}
       <tr>
         <td>{{l.id}}</td>
-	      <td><span class="nombreLista"><a a href='/paciente/{{ l.id }}'>{{l.paciente}}</a></span></td>
+        <td><span class="nombreLista"><a a href='/paciente/{{ l.id }}'>{{l.paciente}}</a></span></td>
         {% if l.triage != 0 %}
-        <td><a href="/emergencia/{{l.id}}/t1"><img src="/static/img/estados/triage.png" title="Recalcular"/></a></td>
+        <td>
+          <a href="/emergencia/{{l.id}}/t1">
+            <img src="/static/img/estados/triage.png" title="Recalcular"/>
+          </a>
+          {% if l.numIndicaciones != 0 %}
+            <a id='espera' href="#" >
+              <img src="/static/img/Atencion/espera.png" title="Esperas"/>
+              <span style='margin-left:-10px;color:white;background:rgba(255,0,0,1);border-radius:6px;'>
+                <b><font size=2> &nbsp;{{l.numIndicaciones}}&nbsp;&nbsp;</font></b>
+              </span>
+            </a>
+          {% endif %}
+        </td>
         {% else %}
         <td>
           <a href="/emergencia/{{l.id}}/t1"><img src="/static/img/estados/esi1.png" title="Colocar en Nivel 1"/></a>
@@ -37,11 +49,11 @@
           <a href="/emergencia/{{l.id}}/triage/calcular"><img src="/static/img/estados/triage.png" title="Realizar Triage"/></a>
         </td>
         {% endif %}
-				<td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
-			  <td>{{l.horaR}}</td>
-				<td><p id="tiempo_{{l.id}}">{{l.tiempo_esperaR}}</td>
-				<td><img id="imagen_{{l.id}}" src="/static/img/estados/alarmaVerde.png" /></td>
-      </tr>	
+        <td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
+        <td>{{l.horaR}}</td>
+        <td><p id="tiempo_{{l.id}}">{{l.tiempo_esperaR}}</td>
+        <td><img id="imagen_{{l.id}}" src="/static/img/estados/alarmaVerde.png" /></td>
+      </tr> 
       {% endfor %}
     </table>
     {% else %}
@@ -50,14 +62,14 @@
   </div>
 </div>
 <script>
-	var myVar=setInterval(function(){myTimer()},1000);
+  var myVar=setInterval(function(){myTimer()},1000);
 
-	function myTimer() {
-		{% for l in lista %}
-		var t= getValorHTML(id = "demo{{l.id}}");
-		t = t+1;
-		{% endfor %}
-	}
+  function myTimer() {
+    {% for l in lista %}
+    var t= getValorHTML(id = "demo{{l.id}}");
+    t = t+1;
+    {% endfor %}
+  }
 </script>
 {% endblock %}
 
@@ -90,12 +102,12 @@
       if (mins < 10) mins = "0"+mins;
       if (hors < 10) hors = "0"+hors;
       if (dias < 10) dias = "0"+dias;
-		 
+
       tiempo = dias+":"+hors+":"+mins+":"+segs;
       $("#tiempo_{{l.id}}").html(tiempo);
 
       tiempo = (dias*24*60)+(hors*60)+mins;
-	
+
       tExc = tiempoMax;
       tRoj = tiempoMax * .66;
       tAma = tiempoMax * .33;
