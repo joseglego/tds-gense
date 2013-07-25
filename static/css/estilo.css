@@ -59,3 +59,7 @@ td li {
 .oculto {
   visibilty:hidden;
 }
+
+.bar-inverse{
+  background-color:#010101 !important;
+}

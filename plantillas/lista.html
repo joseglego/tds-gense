@@ -19,7 +19,6 @@
 	<th>Nombre</th>
 	<th>Acciones</th>
 	<th>IDE</th>
-	<th>Ingreso</th>
 	<th>Tiempo</th>
 	<th>Alarma</th>
       </tr>
@@ -49,7 +48,6 @@
         </td>
         {% endif %}
         <td>{% if l.triage != 0 %}<img src="/static/img/estados/nivel{{ l.triage }}.png" title="Nivel {{ l.triage }}"/>{% endif %}</td>
-        <td>{{l.horaR}}</td>
 	<td>
 	  <span id="tiempo_{{l.id}}">{{l.tiempo_esperaR}}</span>
 	  <img id="imagen_{{l.id}}" src="/static/img/estados/alarmaVerde.png" />
@@ -59,6 +57,7 @@
 	    <div id="barra_verde_{{l.id}}" class="bar bar-success"></div>
 	    <div id="barra_amarilla_{{l.id}}" class="bar bar-warning"></div>
 	    <div id="barra_roja_{{l.id}}" class="bar bar-danger"></div>
+	    <div id="barra_negra_{{l.id}}" class="bar bar-inverse"></div>
 	  </div>
 
 	</td>
@@ -76,7 +75,7 @@
 <script>
   $('.dropdown-toggle').dropdown()
   var myVar=setInterval(function(){myTimer()},1000);
-  var tiempoMax = 30*60;
+  var tiempoMax = 120;
   function myTimer() {
   {% for l in lista %}
   var tiempo=$("#tiempo_{{l.id}}").html();
@@ -114,10 +113,6 @@
 					      if (tiempo  > tExc) {
 				   var alarma = $("#imagen_{{l.id}}").attr("src");
 				   if (alarma != "/static/img/estados/alarmaNegra.png") {
-				   if ($("#mensaje").length == 0) $("#cuerpo").prepend('<div class="row"><div id="mensaje" class="span12 alert alert-danger"></div></div>')
-
-				   $("#mensaje").append('El paciente <strong>{{l.paciente}}</strong> ha excedido el tiempo de atenci&oacute;n!!!<br/>');
-				   $("#mensaje").slideDown();
 				   $("#imagen_{{l.id}}").attr("src","/static/img/estados/alarmaNegra.png");          
 				   }
 				   } else if (tiempo > tRoj) {
@@ -130,8 +125,8 @@
 	     if (t >= 100) {
     $("#barra_amarilla_{{l.id}}").css({"width":"0%"});
     $("#barra_verde_{{l.id}}").css({"width":"0%"});
-    $("#barra_roja_{{l.id}}").css({"width":"100%"});
-    
+    $("#barra_roja_{{l.id}}").css({"width":"0%"});
+    $("#barra_negra_{{l.id}}").css({"width":"100%"});
     } else if (t < 100 && t >= 66) {
       t -= 66;
       $("#barra_verde_{{l.id}}").css({"width":"33%"});
@@ -142,7 +137,7 @@
 	$("#barra_verde_{{l.id}}").css({"width":"33%"});
 	$("#barra_amarilla_{{l.id}}").css({"width":t+"%"});
 	} else {
-	$("#barra_verde_{{l.id}}").css({"width":"33%"});
+	$("#barra_verde_{{l.id}}").css({"width":t+"%"});
 	}
 	
 	{% endfor %}
