@@ -444,7 +444,7 @@ def emergencia_descarga(request,id_emergencia,tipo_doc):
     
     elif tipo_doc == 'constancia':
         
-        print "DIetas en descarga:",dieta
+        print "Dietas en descarga:",dieta
         print"Medicamcion en descarga",medicamento
         info = {'ingreso':ingreso,'emergencia':emer,'diags':diags,'dieta':dieta2,'medicamento':medicamento}
         html = render_to_string('const_asist.html',info, context_instance=RequestContext(request))
@@ -745,25 +745,26 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
 
     #------------------ Gestion de indicaciones con interfaz de tabla----------------------#
     if tipo_ind == 'listar':
-        indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
         # print "Indicacion tipo en listar: ",indicaciones[0].indicacion.tipo
         # ed = EspDieta.objects.filter()
         info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones}
         return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
 
     elif tipo_ind == 'medicamento':
-        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind,status=0)
         info = {'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
         return render_to_response('atencion_ind_medica.html',info,context_instance=RequestContext(request))
 
     elif tipo_ind == 'valora' or tipo_ind == 'otros' or tipo_ind == 'terapeutico':
-        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind)
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,indicacion__tipo=tipo_ind,status=0)
         info = {'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
         return render_to_response('atencion_ind_tera.html',info,context_instance=RequestContext(request))
     
     #------------ Gestion de indicaciones con interfaz de forms de Django-------------------#
     else:
-        indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
+        # indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
         if request.method == 'POST':
             if tipo_ind == 'dieta':
                 print "estoy en post de dieta"
@@ -797,12 +798,13 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                             return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
                         
                         else:
-                            indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+                            indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
+                            # indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
                             i= Indicacion.objects.get(nombre = nombre[i])
-                            a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                            a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),status=0)
                             a.save()
 
-                    mensaje = "Procedimientos Guardado Exitosamente"
+                    mensaje = "Procedimientos Guardados Exitosamente"
                     info = {'form':form,'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
                     return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
 
@@ -815,9 +817,10 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                             return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
                         
                         else:
-                            indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+                            indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
+                            # indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
                             i= Indicacion.objects.get(nombre = nombre[i])
-                            a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                            a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),status=0)
                             a.save()
                             p_cuerpo = request.POST["c_"+str(i.id)]
                             ex = EspImg(asignacion=a,parte_cuerpo=p_cuerpo)
@@ -836,9 +839,10 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                         info = {'form':form,'mensaje':mensaje,'tipo_ind':tipo_ind,'emergencia':emer}
                         return render_to_response('atencion_ind_hidrata.html',info,context_instance=RequestContext(request))
                     else:
-                        indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+                        indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
+                        # indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
                         i= Indicacion.objects.get(nombre = nombre)
-                        a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                        a = Asignar(emergencia=emer,indicacion=i,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),status=0)
                         a.save()
                         if tipo_ind == 'dieta':
                             extra = pcd['observacion']
@@ -867,7 +871,8 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
 
         #---------Renderizado de formularios al ingresar por primera vez-----#
         if tipo_ind == 'dieta':
-            d = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta")
+            d = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta",status=0)
+            
             if d:
                 e = EspDieta.objects.filter(asignacion=d[0])
                 print "ver observacion: ",e[0].observacion
@@ -881,7 +886,7 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                 form = AgregarIndDietaForm()
 
         elif tipo_ind == 'hidrata':
-            h = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "hidrata")
+            h = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "hidrata",status=0)
             if h:
                 e = EspHidrata.objects.filter(asignacion=h[0])
                 c = CombinarHidrata.objects.filter(hidratacion1 = e[0])
@@ -895,7 +900,7 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                 form = AgregarIndHidrataForm()
 
         elif tipo_ind == 'lab':
-            labi = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "lab")
+            labi = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "lab",status=0)
             if labi:
                 lab_list=[]
                 for l in labi:
@@ -908,7 +913,7 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                 form = AgregarIndLabForm()
 
         elif tipo_ind == 'imagen':
-            img = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "imagen")
+            img = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "imagen",status=0)
             if img:
                 img_list=[]
                 for im in img:
@@ -921,7 +926,7 @@ def emergencia_indicaciones(request,id_emergencia,tipo_ind):
                 form = AgregarIndImgForm()
 
         elif tipo_ind == 'endoscopico':
-            end = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "endoscopico")
+            end = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "endoscopico",status=0)
             if end:
                 end_list=[]
                 
@@ -1011,7 +1016,7 @@ def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
                     #Creo el objeto indicacion
                     ind = Indicacion(nombre=nombres[i],tipo=tipo_ind)
                     ind.save()
-                    a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                    a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),status=0)
                     a.save()
             mensaje = "Indicaciones guardadas Exitosamente"
             info = {'mensaje':mensaje,'emergencia':emer,'triage':triage,'indicaciones':indicaciones,'tipo_ind':tipo_ind}
@@ -1046,7 +1051,7 @@ def emergencia_indicaciones_agregar(request,id_emergencia,tipo_ind):
                     print "nombre: ",nombres[i]
                     ind = Indicacion(nombre=nombres[i],tipo=tipo_ind)
                     ind.save()
-                    a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now())
+                    a = Asignar(emergencia=emer,indicacion=ind,persona=emer.responsable,fecha=datetime.now(),fechaReal=datetime.now(),status=0)
                     a.save()
                     # Agregar info extra:
                     eMed= EspMedics(asignacion=a,dosis=float(dosis[i]),tipo_conc =tc[i],frecuencia=frec[i],tipo_frec=tf[i],via_admin=via[i])
@@ -1101,49 +1106,53 @@ def emergencia_indicaciones_eliminar(request,id_emergencia,tipo_ind):
             for obj in checkes:
                 asig = Asignar.objects.get(id=obj)
                 tipo = asig.indicacion.tipo
-                print "Tipo de indicacion a borrar: ",tipo
+                print "ASIG object: ",asig
 
-                if tipo == 'dieta':
-                    extra= EspDieta.objects.get(asignacion=asig)
-                    extra.delete()
-                    asig.delete()
+                asig.status=1
+                asig.save()
 
-                elif tipo == 'hidrata':
-                    extra = EspHidrata.objects.get(asignacion=asig)
-                    ver = CombinarHidrata.objects.filter(hidratacion1=extra)
-                    if ver:
-                        extra2=ver[0]
-                        extra2.delete()
-                    extra.delete()
-                    asig.delete()
 
-                elif tipo =="imagen":
-                    extra = EspImg.objects.get(asignacion=asig)
-                    extra.delete()
-                    asig.delete()
+                # if tipo == 'dieta':
+                #     extra= EspDieta.objects.get(asignacion=asig)
+                #     extra.delete()
+                #     asig.delete()
 
-                elif tipo =="lab" or tipo =="endoscopico":
-                    asig.delete()
+                # elif tipo == 'hidrata':
+                #     extra = EspHidrata.objects.get(asignacion=asig)
+                #     ver = CombinarHidrata.objects.filter(hidratacion1=extra)
+                #     if ver:
+                #         extra2=ver[0]
+                #         extra2.delete()
+                #     extra.delete()
+                #     asig.delete()
 
-                elif tipo == "medicamento":
-                    print "objeto asignar a eliminar:",asig
-                    # Busco la info extra y la borro:
-                    extra  = EspMedics.objects.get(asignacion=asig)
-                    ver = tieneSOS.objects.filter(espMed=extra)
-                    if ver:
-                        extra2=ver[0]
-                        extra2.delete()
-                    extra.delete()
-                    pastilla = Indicacion.objects.filter(nombre=asig.indicacion.nombre)
-                    pastilla[0].delete()
-                    asig.delete()
+                # elif tipo =="imagen":
+                #     extra = EspImg.objects.get(asignacion=asig)
+                #     extra.delete()
+                #     asig.delete()
 
-                elif tipo == 'valora' or tipo == 'otros' or tipo == 'terapeutico':
-                    ind  = Indicacion.objects.filter(nombre=asig.indicacion.nombre) 
-                    ind[0].delete()
-                    asig.delete()
+                # elif tipo =="lab" or tipo =="endoscopico":
+                #     asig.delete()
 
-            indicaciones = Asignar.objects.filter(emergencia = id_emergencia)
+                # elif tipo == "medicamento":
+                #     print "objeto asignar a eliminar:",asig
+                #     # Busco la info extra y la borro:
+                #     extra  = EspMedics.objects.get(asignacion=asig)
+                #     ver = tieneSOS.objects.filter(espMed=extra)
+                #     if ver:
+                #         extra2=ver[0]
+                #         extra2.delete()
+                #     extra.delete()
+                #     pastilla = Indicacion.objects.filter(nombre=asig.indicacion.nombre)
+                #     pastilla[0].delete()
+                #     asig.delete()
+
+                # elif tipo == 'valora' or tipo == 'otros' or tipo == 'terapeutico':
+                #     ind  = Indicacion.objects.filter(nombre=asig.indicacion.nombre) 
+                #     ind[0].delete()
+                #     asig.delete()
+
+            indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
             mensaje = "Indicacion Eliminado Exitosamente"
             info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
             return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))

@@ -55,6 +55,12 @@ EDOLOR = (
     (9,"9"),
     (10,"10"),
 )
+
+# STATUS = (
+#     (1,'No Completado'),
+#     (2,'Completado'),
+# )
+
 class AreaEmergencia(models.Model):
     tipo   = models.CharField(max_length=1,choices=AEMERGENCIA)
     nombre = models.CharField(max_length=48)
@@ -268,8 +274,23 @@ class Asignar(models.Model):
     persona    = models.ForeignKey(Usuario)
     fecha      = models.DateTimeField()
     fechaReal  = models.DateTimeField()
+    status     = models.IntegerField(choices=AFIRMACION)
+    # status     = models.IntegerField(choices=STATUS)
+    
     def __unicode__(self):
-        return "Paciente:%s- Nombre:%s- Tipo:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo)
+        return "Paciente:%s- Nombre:%s- Tipo:%s - Status:%s" % (self.emergencia.paciente.apellidos,self.indicacion.nombre,self.indicacion.tipo,self.status)
+
+    def statusA(self):
+        resp = "No Completado"
+        if (self.status == 1):
+            resp = "Completado"
+        return resp
+
+    # def statusA(self):
+    #     resp = "No Completado"
+    #     if (self.status == 1):
+    #         resp = "Completado"
+    #     return resp
     
     #------------------------------------- Definiciones para atributos extra:
 

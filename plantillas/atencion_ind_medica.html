@@ -84,9 +84,9 @@ $(document).ready(
 		<caption><p class="lead">Indicaciones de Medicamentos</p></caption>
 		<thread>
 		<tr class= "btn-info">
-			<th>
+			<!-- <th>
 				<center><a rel="tooltip" data-toggle="tooltip" data-original-title="Eliminar"href="#"><i class="icon-trash icon-white"></i></a></center>
-			</th>
+			</th> -->
 			<th>
 				<center>Hora</center>
 			</th>
@@ -110,11 +110,11 @@ $(document).ready(
 <tbody>
 	{% for i in indicaciones %}
 	<tr class="well">
-		<td>
+		<!-- <td>
 			<center>
 				<input type="checkbox" name="check" value="{{i.id}}" />
 			</center>
-		</td>
+		</td> -->
 		<td>
 			<center>
 				<p>{{i.horaA}}</p>
@@ -224,11 +224,11 @@ $(document).ready(
 	{% endfor %}
 
 	<tr class="ultimo">
-		<td>
+		<!-- <td>
 			<center>
 				<input type="checkbox" name="check" value=""/>
 			</center>
-		</td>
+		</td> -->
 		<td>
 			<!-- <center>
 				<p>Hora</p>
@@ -303,9 +303,9 @@ $(document).ready(
 <br>
 </form>
 <center>
-        <div class="btn-group"> 
+        <!-- <div class="btn-group"> 
           <button id="diet" class="btn btn-mini btn-primary" onClick="envia1('/emergencia/indicaciones/{{emergencia.id}}/normal/eliminar')"><i class="icon-remove-sign icon-white"></i>&nbsp;Eliminar</button>
-        </div>
+        </div> -->
         <div class="btn-group">
           <button class="btn btn-mini btn-primary" onClick="envia1('/emergencia/indicaciones/{{emergencia.id}}/{{tipo_ind}}/modificar')"><i class="icon-edit icon-white"></i>Modificar</button>
         </div>
