@@ -4,6 +4,16 @@ from app_emergencia import views
 
 urlpatterns = patterns('app_emergencia.views',
 
+    #Acesso a esperas
+    url('^emergencia/espera_agregar/(?P<id_emergencia>.*)/(?P<id_espera>.*)$','emergencia_espera_agregar'),
+    url('^emergencia/espera_eliminar/(?P<id_emergencia>.*)/(?P<id_espera>.*)$','emergencia_espera_eliminar'),
+    url('^emergencia/espera_estado/(?P<id_emergencia>.*)/(?P<id_espera>.*)/(?P<espera>.*)$','emergencia_espera_estado'),
+    url('^emergencia/espera_asignadas/(?P<id_emergencia>.*)$','emergencia_espera_asignadas'),
+    url('^emergencia/espera_noAsignadas/(?P<id_emergencia>.*)$','emergencia_espera_noAsignadas'),
+    url('^emergencia/espera_asignadasCheck/(?P<id_emergencia>.*)$','emergencia_espera_asignadasCheck'),
+    url('^emergencia/espera_id/(?P<id_emergencia>.*)$','emergencia_espera_id'),
+    url('^emergencia/espera_idN/(?P<id_emergencia>.*)$','emergencia_espera_idN'),
+
     # Funciones de acceso a subfases de atencion
 
     # Acceso a Enfermedad Actual

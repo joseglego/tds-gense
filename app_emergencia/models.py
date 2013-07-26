@@ -13,6 +13,11 @@ AEMERGENCIA = (
     ('1','Referencia'),
 )
 
+REALIZADO = (
+    ('0','no realizado'),
+    ('1','realizado'),
+)
+
 ICAUSA = (
     ('0','No Violento'),
     ('1','Colision de Vehiculos'),
@@ -132,9 +137,13 @@ class Emergencia(models.Model):
     def horaR(self):
         return self.hora_ingreso.strftime("%H:%M del %d/%m/%y")
         
-    def numIndicaciones(self):
-        indicaciones = Indicacion.objects.filter(asignar__emergencia = self)
-        return len(indicaciones)
+    def numEsperasNoAtendidas(self):
+        emerEspera = EsperaEmergencia.objects.filter(emergencia=self)
+        NoAten = 0
+        for esp in emerEspera:
+            if esp.estado == '0':
+                NoAten = NoAten+1
+        return NoAten
     
     def tiempo_espera(self):
         triages = self.triages()
@@ -179,6 +188,18 @@ class Emergencia(models.Model):
         segundos = (tiempo%60)%60
         return str(horas)+":"+str(minutos)+":"+str(segundos)
 
+
+class Espera(models.Model):
+    nombre = models.CharField(max_length=48)
+    def __unicode__(self):
+        return "%s" % self.nombre
+
+class EsperaEmergencia(models.Model):
+    espera     = models.ForeignKey(Espera)
+    emergencia = models.ForeignKey(Emergencia)
+    estado     = models.CharField(max_length=1,choices=REALIZADO)
+    def __unicode__(self):
+        return "%s" % self.espera.nombre
 
 class ComentarioEmergencia(models.Model):
     emergencia = models.ForeignKey(Emergencia)
