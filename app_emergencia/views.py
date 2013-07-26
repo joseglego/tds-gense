@@ -568,19 +568,19 @@ def emergencia_enfermedad_actual(request,id_emergencia):
                 enfA = EnfermedadActual(atencion=atList[0],narrativa=narrativa)
                 enfA.save()
                 # mensaje = " Agregado Exitosamente: "+enfA.narrativa
-                mensaje = " Agregado Exitosamente: "
+                mensaje = " Agregado Exitosamente "
                 info = {'form':form,'emergencia':emer,'triage':triage, 'mensaje':mensaje, 'ya':ya}
                 return render_to_response('atencion_enfA.html',info,context_instance=RequestContext(request))
 
             # mensaje = "Actualizado Exitosamente: "+enfA[0].narrativa
-            mensaje = "Actualizado Exitosamente: "
+            mensaje = "Actualizado Exitosamente "
             info = {'form':form,'emergencia':emer,'triage':triage, 'mensaje':mensaje,'ya':ya}
             return render_to_response('atencion_enfA.html',info,context_instance=RequestContext(request))
 
     enfa= EnfermedadActual.objects.filter(atencion=atList[0])
     
     if enfa:
-        mensaje = "Ya se ha establecido una narrativa para este paciente:"
+        mensaje = "Ya se ha establecido una narrativa para este paciente"
         form = AgregarEnfActual(initial={'narrativa':enfa[0].narrativa})
         ya="si"
     else:
@@ -1233,7 +1233,7 @@ def emergencia_indicaciones_eliminar(request,id_emergencia,tipo_ind):
                 #     asig.delete()
 
             indicaciones = Asignar.objects.filter(emergencia = id_emergencia,status=0)
-            mensaje = "Indicacion Eliminado Exitosamente"
+            mensaje = "Cambio de status realizado Exitosamente"
             info = {'mensaje':mensaje, 'emergencia':emer,'triage':triage,'indicaciones':indicaciones, 'tipo_ind':tipo_ind}
             return render_to_response('atencion_ind_listar.html',info,context_instance=RequestContext(request))
 
