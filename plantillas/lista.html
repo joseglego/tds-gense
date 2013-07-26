@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block cuerpo %}
+<script src ="/static/scripts/esperas.js"> </script>
+<style>
+  a.espera:link, a.espera:visited, a.espera:active { text-decoration: none }
+</style>
 <div class="container row">
   <div class="span12">
     <h4>Lista  de Pacientes {{titulo}}</h4>
@@ -31,14 +35,15 @@
           <a href="/emergencia/{{l.id}}/t1">
             <img src="/static/img/estados/triage.png" title="Recalcular"/>
           </a>
-          {% if l.numIndicaciones != 0 %}
-          <a id='espera' href="#" >
+          <a id='espera{{l.id}}' class='espera' data-html="true" href="#" data-toggle="popover" data-placement="right" 
+          title="" data-original-title="Lista De Esperas" idEmer="{{l.id}}" >
             <img src="/static/img/Atencion/espera.png" title="Esperas"/>
             <span style='margin-left:-10px;color:white;background:rgba(255,0,0,1);border-radius:6px;'>
-              <b><font size=2> &nbsp;{{l.numIndicaciones}}&nbsp;&nbsp;</font></b>
+              <b>
+                <font id="texto{{l.id}}" size=2 texto='{{l.numEsperasNoAtendidas}}'> &nbsp;{{l.numEsperasNoAtendidas}}&nbsp;&nbsp;</font>
+              </b>
             </span>
           </a>
-          {% endif %}
         </td>
         {% else %}
         <td>

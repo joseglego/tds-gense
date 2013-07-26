@@ -9,6 +9,10 @@ admin.site.register(AreaAdmision)
 admin.site.register(Cubiculo)
 admin.site.register(Destino)
 
+#--Esperas
+admin.site.register(Espera)
+admin.site.register(EsperaEmergencia)
+
 #--Fases Atencion
 admin.site.register(Atencion)
 admin.site.register(EnfermedadActual)

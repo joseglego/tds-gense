@@ -405,6 +405,86 @@ def estadisticas(request):
     hoy = datetime.today()
     return redirect('/estadisticas/dia/'+str(hoy.year)+'-'+str(hoy.month)+'-'+str(hoy.day))
 
+
+#########################################################
+#                                                       #
+#          Views para Casos de Uso de Esperas           #
+#                                                       #
+#########################################################
+
+def emergencia_espera_agregar(request,id_emergencia,id_espera):
+    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    espe   = get_object_or_404(Espera,id=id_espera)
+    espera = EsperaEmergencia(emergencia=emer,espera=espe,estado='0')
+    espera.save()
+    return HttpResponse()
+
+def emergencia_espera_eliminar(request,id_emergencia,id_espera):
+    emer   = get_object_or_404(Emergencia,id=id_emergencia)
+    espe   = get_object_or_404(Espera,id=id_espera)
+    espera = EsperaEmergencia.objects.get(emergencia=emer,espera=espe)
+    espera.delete() 
+    return HttpResponse()
+
+def emergencia_espera_estado(request,id_emergencia,id_espera,espera):
+    emer        = get_object_or_404(Emergencia,id=id_emergencia)
+    espe        = get_object_or_404(Espera,id=id_espera)
+    espera1        = EsperaEmergencia.objects.get(espera=espe,emergencia=emer)
+    espera1.estado = str(espera)
+    espera1.save() 
+    return HttpResponse()
+
+def emergencia_espera_asignadas(request,id_emergencia):
+    emer        = get_object_or_404(Emergencia,id=id_emergencia)
+    esperasEmer = EsperaEmergencia.objects.filter(emergencia=emer)
+    esp = ""
+    for i in esperasEmer:
+        esp = esp+str(i.espera.nombre)+","
+    return HttpResponse(esp)
+
+def emergencia_espera_noAsignadas(request,id_emergencia):
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    esperasEmer = EsperaEmergencia.objects.filter(emergencia=emer)
+    esperasEmer = [str(i.espera.nombre) for i in esperasEmer]
+    esperas     = Espera.objects.filter()
+    esperas     = [str(i.nombre) for i in esperas ]
+    for EspEmer in esperasEmer:
+        esperas.remove(EspEmer)
+    esp = ""
+    for i in esperas:
+        esp = esp+i+","
+    return HttpResponse(esp)
+
+def emergencia_espera_asignadasCheck(request,id_emergencia):
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    esperasEmer = EsperaEmergencia.objects.filter(emergencia=emer)
+    esperasEmer = [str(i.estado) for i in esperasEmer]
+    esp = ""
+    for i in esperasEmer:
+        esp = esp+i+","
+    return HttpResponse(esp)
+
+def emergencia_espera_id(request,id_emergencia):
+    esperas = EsperaEmergencia.objects.filter(emergencia__id=id_emergencia)
+    esperas = [str(i.espera.id) for i in esperas]
+    esp = ""
+    for i in esperas:
+        esp = esp+i+","
+    return HttpResponse(esp)
+
+def emergencia_espera_idN(request,id_emergencia):
+    emer = get_object_or_404(Emergencia,id=id_emergencia)
+    esperasEmer = EsperaEmergencia.objects.filter(emergencia=emer)
+    esperasEmer = [str(i.espera.id) for i in esperasEmer]
+    esperas     = Espera.objects.filter()
+    esperas     = [str(i.id) for i in esperas ]
+    for EspEmer in esperasEmer:
+        esperas.remove(EspEmer)
+    esp = ""
+    for i in esperas:
+        esp = esp+i+","
+    return HttpResponse(esp)
+
 #########################################################
 #                                                       #
 #          Views para Casos de Uso de Atencion          #
