@@ -113,7 +113,7 @@
                 <b>  3.4.- Enfermedad Actual:</b> {{enfA.narrativa}} <br>
                 <b>  3.5.- Antecedentes Pertinentes: </b> <br>
                 <b>3.6.- Ex&aacute;men F&iacute;sico:</b> <br> 
-                <b>3.7.- Indicaciones:</b> dieta {%if dieta%}{{dieta.indicacion.nombre}}({{dieta.dieta_OB}}){% endif%}, medicamentos {% for m in medicamento %} {{m.indicacion.nombre}}({{m.med_Dosis}} {{m.med_Conc}}), {%endfor%}<br>
+                <b>3.7.- Indicaciones:</b> dieta {%if dieta%}{{dieta.indicacion}}({{dieta.dieta_OB}}){% endif%}, medicamentos {% for m in medicamento %} {{m.indicacion}}({{m.med_Dosis}} {{m.med_Conc}}), {%endfor%}<br>
                 <b>3.8.- Diagn&oacute;stico Final: </b> {% for d in diags %} {{d.diagnostico.nombreD}},{%endfor%} <br>
                  <b>3.8.- Destino Definitivo: </b></p>
                 
