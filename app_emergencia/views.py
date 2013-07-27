@@ -396,7 +396,7 @@ def estadisticas_per(request,dia,mes,anho,dia2,mes2,anho2):
     for i in range(5):
       triages.append([(i+1),triagesBien[i]])
     egresos = [['Total',total],['Menos de 2 horas',horas0a2],['2 a 4 horas',horas2a4],['4 a 6 horas',horas4a6],['Más de 6 horas',horas6aM]]
-    info = {'triages':triages,'fecha':date.today(),'inicio':fecha0,'fin':fecha,'sig':sig_sem,'total_ingresos':len(ingresos),'total_egresos':total,'egresos':egresos}
+    info = {'triages':triages,'fecha':date.today(),'inicio':fecha0,'fin':fecha-timedelta(days=1),'sig':sig_sem,'total_ingresos':len(ingresos),'total_egresos':total,'egresos':egresos}
     return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 
 def estadisticas_sem(request,dia,mes,anho):
