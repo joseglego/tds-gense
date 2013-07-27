@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% block scripts %}
+<!--Datetime Picker -->
+<script type="text/javascript" src="/static/libs/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="/static/libs/datepicker/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
 {% block cuerpo %}
 {% if mensaje %}
 {{ mensaje }}
@@ -41,10 +47,21 @@
 	<tr>
 	  <td> {{form.fecha.label}} </td>
 	  <td>
-	    <div class="input-append">
+	    <div id="ingreso_picker" class="input-append">
 	      {{form.fecha}}
 	      <span id="ahora" class="btn">Ahora</span>
+	      <span class="add-on">
+		<i data-time-icon="icon-time" data-date-icon="icon-calendar">
+		</i>
+	      </span>
 	    </div>
+	    <script type="text/javascript">
+	      $(function() {
+	      $('#ingreso_picker').datetimepicker({
+	      language: 'pt-BR'
+	      });
+	      });
+	    </script>
 	  </td>
 	</tr>
 	<tr>

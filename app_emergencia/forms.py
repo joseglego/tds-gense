@@ -12,7 +12,7 @@ ATENCION = (
 )
 
 class AgregarEmergenciaForm(forms.Form):
-    ingreso          = forms.DateTimeField(label="Hora y Fecha de Ingreso")
+    ingreso          = forms.DateTimeField(label="Hora y Fecha de Ingreso",widget=forms.TextInput(attrs={'placeholder':'dd/MM/aaaa hh:mm:ss','data-format':'dd-MM-yyyy hh:mm:ss'}))
     cedula           = forms.CharField(label="Número de Cédula",max_length=9)
     nombres          = forms.CharField(label="Nombres", max_length=64)
     apellidos        = forms.CharField(label="Apellidos", max_length=64)
@@ -21,9 +21,9 @@ class AgregarEmergenciaForm(forms.Form):
     cel              = forms.CharField(label="Número de Teléfono Celular",max_length=11,required=False)
     email            = forms.EmailField(label="Correo Electrónico",max_length=64,required=False)
     direccion        = forms.CharField(label="Dirección",max_length=128,required=False)
-    tlf_casa         = forms.CharField(label="Número de Teleéfono de Habitación",max_length=11,required=False)    
+    tlf_casa         = forms.CharField(label="Número de Teléfono de Habitación",max_length=11,required=False)    
     contacto_nombre  = forms.CharField(label="Nombre de la Persona de Contacto",max_length=64,required=False)
-    contacto_rel     = forms.ChoiceField(label="Vínculo entre El Conacto y el Paciente",choices=RELACION,required=False)
+    contacto_rel     = forms.ChoiceField(label="Vínculo entre El Contacto y el Paciente",choices=RELACION,required=False)
     contacto_tlf     = forms.CharField(label="Número de Teléfono del Contacto",max_length=11,required=False)
     foto             = forms.ImageField(label="Foto",required=False)
     
@@ -41,7 +41,7 @@ class BuscarEmergenciaForm(forms.Form):
 
 
 class calcularTriageForm(forms.Form):
-    fecha         = forms.DateTimeField(label="Fecha y hora a la que se realiza la Evaluación")
+    fecha         = forms.DateTimeField(label="Fecha y hora a la que se realiza la Evaluación",widget=forms.TextInput(attrs={'placeholder':'dd/MM/aaaa hh:mm:ss','data-format':'dd-MM-yyyy hh:mm:ss'}))
     motivo        = forms.ModelChoiceField(label="Motivo de Ingreso",required=False,queryset=Motivo.objects.exclude(nombre__startswith=" "))
     ingreso       = forms.CharField(label="Tipo de Ingreso",required=False,max_length=1,widget=forms.Select(choices=ICAUSA))
     
