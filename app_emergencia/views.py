@@ -360,15 +360,13 @@ def estadisticas_prueba():
       triages.append([(i+1),triagesBien[i]])
     return triages
 
-def estadisticas_sem(request,anho,mes,dia):
+def estadisticas_per(request,dia,mes,anho,dia2,mes2,anho2):
     # Datos generales
-    fecha = date(int(anho),int(mes),int(dia))
-    ini_sem = fecha - timedelta(days=7)
+    fecha0 = date(int(anho),int(mes),int(dia))
+    fecha = date(int(anho2),int(mes2),int(dia2))
     sig_sem = fecha + timedelta(days=7)
-    fin_sem = fecha - timedelta(days=1)
-
-    ingresos = Emergencia.objects.filter(hora_ingreso__range=[ini_sem,fecha])
-    es = Emergencia.objects.filter(hora_egreso__range=[ini_sem,fecha])
+    ingresos = Emergencia.objects.filter(hora_ingreso__range=[fecha0,fecha])
+    es = Emergencia.objects.filter(hora_egreso__range=[fecha0,fecha])
     
     # Cuanto se tardo cada emergencia
     horas0a2=0
@@ -389,7 +387,7 @@ def estadisticas_sem(request,anho,mes,dia):
     total = horas0a2 + horas2a4 + horas4a6 + horas6aM
     
     # Resultados de los Triages
-    triages = Triage.objects.filter(fecha__range=[ini_sem,fin_sem]).values('nivel').annotate(Count('nivel')).order_by('nivel')
+    triages = Triage.objects.filter(fecha__range=[fecha0,fecha]).values('nivel').annotate(Count('nivel')).order_by('nivel')
     triages = [[i['nivel'],i['nivel__count']] for i in triages]
     triagesBien = [0,0,0,0,0]
     for i in triages:
@@ -398,12 +396,17 @@ def estadisticas_sem(request,anho,mes,dia):
     for i in range(5):
       triages.append([(i+1),triagesBien[i]])
     egresos = [['Total',total],['Menos de 2 horas',horas0a2],['2 a 4 horas',horas2a4],['4 a 6 horas',horas4a6],['Más de 6 horas',horas6aM]]
-    info = {'triages':triages,'fecha':fecha,'inicio':ini_sem,'fin':fin_sem,'sig':sig_sem,'total_ingresos':len(ingresos),'total_egresos':total,'egresos':egresos}
+    info = {'triages':triages,'fecha':date.today(),'inicio':fecha0,'fin':fecha,'sig':sig_sem,'total_ingresos':len(ingresos),'total_egresos':total,'egresos':egresos}
     return render_to_response('estadisticas.html',info,context_instance=RequestContext(request))
 
+def estadisticas_sem(request,dia,mes,anho):
+    fecha = datetime(int(anho),int(mes),int(dia))
+    fecha0 = fecha - timedelta(weeks=1)
+    return redirect('/estadisticas/'+str(fecha0.day)+'-'+str(fecha0.month)+'-'+str(fecha0.year)+'/'+dia+'-'+mes+'-'+anho)
+    
 def estadisticas(request):
     hoy = datetime.today()
-    return redirect('/estadisticas/dia/'+str(hoy.year)+'-'+str(hoy.month)+'-'+str(hoy.day))
+    return redirect('/estadisticas/'+str(hoy.day)+'-'+str(hoy.month)+'-'+str(hoy.year))
 
 
 #########################################################

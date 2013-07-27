@@ -63,3 +63,8 @@ td li {
 .bar-inverse{
   background-color:#010101 !important;
 }
+
+.picker-switch {
+  list-style:none;
+  text-align:center;
+}
