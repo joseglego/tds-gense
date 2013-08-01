@@ -41,8 +41,9 @@ urlpatterns = patterns('',
 
     # Estadisticas
     url('^estadisticas/$','app_emergencia.views.estadisticas'),
-    url('^estadisticas/dia/(?P<anho>\d+)-(?P<mes>\d+)-(?P<dia>\d+)$','app_emergencia.views.estadisticas_sem'),
-                       
+    url('^estadisticas/(?P<dia>\d+)-(?P<mes>\d+)-(?P<anho>\d+)$','app_emergencia.views.estadisticas_sem'),
+    url('^estadisticas/(?P<dia>\d+)-(?P<mes>\d+)-(?P<anho>\d+)/(?P<dia2>\d+)-(?P<mes2>\d+)-(?P<anho2>\d+)$','app_emergencia.views.estadisticas_per'),
+
     # Paciente
     url('^paciente/listarPacientes$','app_paciente.views.paciente_listarPacientes'),
     url('^paciente/buscarjson/(?P<ced>\w+)$','app_paciente.views.buscarPacienteJson'),                           
