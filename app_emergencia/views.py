@@ -508,22 +508,23 @@ def emergencia_descarga(request,id_emergencia,tipo_doc):
     atList = Atencion.objects.filter(emergencia=id_emergencia)
     atList2=atList[0]
     diags = EstablecerDiag.objects.filter(atencion=atList2)
-    dieta = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta")
-    dieta2 = dieta[0]
     medicamento = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "medicamento")
+    
     # TERMINAR CONSULTAS PARA INGRESAR AL CONTEXTO
     if tipo_doc == 'historia':
         # Faltan consultas:
         triage = Triage.objects.filter(emergencia=id_emergencia).order_by("-fechaReal")
         triage2=triage[0]
-        
+        dieta = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta")
+        dieta2 = dieta[0]
         enfA = EnfermedadActual.objects.get(atencion=atList[0].id)
         print "Triage en descarga",triage2
         ctx  = {'emergencia':emer,'ingreso':ingreso,'triage':triage2,'atencion':atList2,'enfA':enfA,'diags':diags,'dieta':dieta2,'medicamento':medicamento}
         html = render_to_string('historia_med.html',ctx, context_instance=RequestContext(request))
     
     elif tipo_doc == 'constancia':
-        
+        dieta = Asignar.objects.filter(emergencia = id_emergencia, indicacion__tipo = "dieta")
+        dieta2 = dieta[0]
         print "Dietas en descarga:",dieta
         print"Medicamcion en descarga",medicamento
         info = {'ingreso':ingreso,'emergencia':emer,'diags':diags,'dieta':dieta2,'medicamento':medicamento}
